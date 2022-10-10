@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { DragSortableView } from "react-native-drag-sort";
 import { orders } from "../../services/utils/dummyData";
+
 const Delivery = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {

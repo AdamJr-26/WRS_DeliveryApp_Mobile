@@ -16,7 +16,7 @@ import SimpleIcons from "react-native-vector-icons/SimpleLineIcons";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const ActionNewOrder = ({ navigation }) => {
+const NewDeliverOrder = ({ navigation }) => {
   const getVH = Dimensions.get("window").height;
   const getVW = Dimensions.get("window").width;
 
@@ -105,7 +105,7 @@ const ActionNewOrder = ({ navigation }) => {
                   </Text>
                   <TextInput
                     placeholder="0"
-                    className="font-bold text-gray-800 flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
+                    className="font-bold text-gray-800 text-[19px] flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
                     keyboardType="numeric"
                     value="15"
                   />
@@ -116,7 +116,7 @@ const ActionNewOrder = ({ navigation }) => {
                   </Text>
                   <TextInput
                     placeholder="0"
-                    className="font-bold text-gray-800 flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
+                    className="font-bold text-gray-800 text-[19px] flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
                     keyboardType="numeric"
                     value="0"
                   />
@@ -127,7 +127,7 @@ const ActionNewOrder = ({ navigation }) => {
                   </Text>
                   <TextInput
                     placeholder="0"
-                    className="font-bold text-gray-800 flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
+                    className="font-bold text-gray-800 text-[19px] flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
                     keyboardType="numeric"
                     value="15"
                   />
@@ -138,7 +138,7 @@ const ActionNewOrder = ({ navigation }) => {
                   </Text>
                   <TextInput
                     placeholder="0"
-                    className="font-bold text-gray-800 flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
+                    className="font-bold text-gray-800 text-[19px] flex-col items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
                     keyboardType="numeric"
                     value="15"
                   />
@@ -170,4 +170,4 @@ const ActionNewOrder = ({ navigation }) => {
   );
 };
 
-export default ActionNewOrder;
+export default NewDeliverOrder;

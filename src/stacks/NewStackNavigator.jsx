@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import NewCustomer from "../screens/new.screen.stack/NewCustomer";
 import NewDelivery from "../screens/new.screen.stack/NewDelivery";
-import NewOrder from "../screens/new.screen.stack/NewOrder";
+import NewDeliverOrder from "../screens/new.screen.stack/NewDeliverOrder";
 import New from "../screens/home/New";
 
 
@@ -20,7 +20,7 @@ const MainStackNavigator = ({navigation}) => {
       <Stack.Screen name='Add'  component={New} />
         <Stack.Screen name='New Customer' component={NewCustomer} />
         <Stack.Screen name='New Delivery' component={NewDelivery} />
-        <Stack.Screen name='Deliver Order' component={NewOrder} />
+        <Stack.Screen name='Deliver Order' component={NewDeliverOrder} />
     </Stack.Navigator>
   )
 }
