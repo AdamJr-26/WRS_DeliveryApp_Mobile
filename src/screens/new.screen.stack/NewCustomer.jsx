@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import AppTextInput from "../components/AppTextInput";
-
+import AppTextInput from "../../components/general/AppTextInput";
 const ActionNewCustomer = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");

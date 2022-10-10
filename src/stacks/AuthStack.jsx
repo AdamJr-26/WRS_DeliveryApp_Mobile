@@ -1,11 +1,13 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AuthLogin from "../screens/AuthLogin";
-import AuthSignup from "../screens/AuthSignup";
-import AuthSendOtp from "../screens/AuthSendOtp";
-import AuthEnterOtp from "../screens/AuthEnterOtp";
-import AuthNewPassword from "../screens/AuthNewPassword";
+
+
+import AuthLogin from "../screens/auth/login/AuthLogin";
+import AuthSignup from "../screens/auth/signup/AuthSignup";
+import AuthSendOtp from "../screens/auth/reset-password/AuthSendOtp";
+import AuthEnterOtp from "../screens/auth/reset-password/AuthEnterOtp";
+import AuthNewPassword from "../screens/auth/reset-password/AuthNewPassword";
 
 const AuthStack = () => {
   const Stack = createNativeStackNavigator();

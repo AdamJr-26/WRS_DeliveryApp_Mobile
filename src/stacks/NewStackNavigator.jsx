@@ -1,10 +1,13 @@
 import { View, Text } from 'react-native'
 import React, { useLayoutEffect } from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ActionNewCustomer from '../screens/ActionNewCustomer';
-import ActionNewDelivery from '../screens/ActionNewDelivery';
-import AddScreen from '../screens/AddScreen';
-import ActionNewOrder from '../screens/ActionNewOrder';
+
+import NewCustomer from "../screens/new.screen.stack/NewCustomer";
+import NewDelivery from "../screens/new.screen.stack/NewDelivery";
+import NewOrder from "../screens/new.screen.stack/NewOrder";
+import New from "../screens/home/New";
+
+
 const MainStackNavigator = ({navigation}) => {
     const Stack = createNativeStackNavigator()
     useLayoutEffect(() => {
@@ -14,10 +17,10 @@ const MainStackNavigator = ({navigation}) => {
     }, []);
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Add' component={AddScreen} />
-        <Stack.Screen name='New Customer' component={ActionNewCustomer} />
-        <Stack.Screen name='New Delivery' component={ActionNewDelivery} />
-        <Stack.Screen name='Deliver Order' component={ActionNewOrder} />
+      <Stack.Screen name='Add'  component={New} />
+        <Stack.Screen name='New Customer' component={NewCustomer} />
+        <Stack.Screen name='New Delivery' component={NewDelivery} />
+        <Stack.Screen name='Deliver Order' component={NewOrder} />
     </Stack.Navigator>
   )
 }

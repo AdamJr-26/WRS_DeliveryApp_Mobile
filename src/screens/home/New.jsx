@@ -12,9 +12,9 @@ import MatcomIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MatIcons from "react-native-vector-icons/MaterialIcons";
 const getVW = Dimensions.get("screen").width;
 const getVH = Dimensions.get("screen").height;
-import NewScreenOptions from "../components/NewScreenOptions";
+import NewScreenOptions from "../../components/new/NewScreenOptions";
 // import CreateRenderOrderComponent from "../components/CreateRenderOrderComponent";
-const AddScreen = ({ navigation }) => {
+const New = ({ navigation }) => {
   // const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -44,4 +44,4 @@ const AddScreen = ({ navigation }) => {
   );
 };
 
-export default AddScreen;
+export default New;

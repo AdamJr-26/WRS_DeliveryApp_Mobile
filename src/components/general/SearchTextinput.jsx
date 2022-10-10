@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const UserStackNavigator = () => {
+const SearchTextinput = () => {
   return (
     <View>
-      <Text>UserStackNavigator</Text>
+      <Text>SearchTextinput</Text>
     </View>
   )
 }
 
-export default UserStackNavigator
+export default SearchTextinput

@@ -12,11 +12,9 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect } from "react";
-import AuthTextInput from "../components/AuthTextInput";
-import AppTextInput from "../components/AppTextInput";
-import MatComIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-const AuthNewPassword = ({ navigation }) => {
+import AuthTextInput from "../../../components/auth/AuthTextInput";
+import AppTextInput from "../../../components/general/AppTextInput";
+const AuthEnterOtp = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -27,7 +25,7 @@ const AuthNewPassword = ({ navigation }) => {
 
   const onSubmit = () => {
     if (true) {
-      navigation.navigate("Login");
+      navigation.navigate("new password");
     }
   };
   return (
@@ -37,7 +35,7 @@ const AuthNewPassword = ({ navigation }) => {
           style={{
             height: windowHeight / 3,
           }}
-          className="w-full rounded-xl relative overflow-hidden "
+          className="w-full rounded-xl overflow-hidden "
         >
           <Image
             source={{
@@ -47,18 +45,13 @@ const AuthNewPassword = ({ navigation }) => {
           />
         </View>
         <View className="p-2 mt-3">
-          <Text className="text-[32px] font-bold text-gray-700">Reset </Text>
-          <Text className="text-[32px] font-bold text-gray-700">Password</Text>
+          <Text className="text-[32px] font-bold text-gray-700">Enter OTP</Text>
+          <Text className="font-semibold text-gray-500 text-[13px] mt-3">
+            An 4 digit code has been sent to your *your_email@gmail
+          </Text>
         </View>
         <View className="mt-5">
-            <AuthTextInput iconName="lock-outline" placeholder="New Password" isSecure={true} type="password" />
-            <AuthTextInput iconName="lock-outline" placeholder="Confirm Password" isSecure={true} type="password" />
-        </View>
-        <View className="flex-row items-center mt-3 gap-3">
-            <View className="p-2 bg-green-500 w-[30px] h-[30px] rounded-full">
-            <MatComIcons name="check"color="white" />
-            </View>
-            <Text className="text-gray-500  font-bold">Matched</Text>
+          <AppTextInput placeholder="0000" label="4 digit OTP" type="numeric" />
         </View>
         <TouchableOpacity
           onPress={onSubmit}
@@ -73,4 +66,4 @@ const AuthNewPassword = ({ navigation }) => {
   );
 };
 
-export default AuthNewPassword;
+export default AuthEnterOtp;

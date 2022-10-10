@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import React from "react";
 
-import Main from "./src/screens/main";
+import Main from "./src/screens/Main";
 export default function App() {
   return <Main />
 }

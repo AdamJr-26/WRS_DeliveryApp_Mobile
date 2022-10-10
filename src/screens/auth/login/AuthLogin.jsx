@@ -12,8 +12,8 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect } from "react";
-import AuthTextInput from "../components/AuthTextInput";
-
+// import AuthTextInput from "../../../components/auth/AuthTextInput";
+import AuthTextInput from "../../../components/auth/AuthTextInput";
 const Login = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({

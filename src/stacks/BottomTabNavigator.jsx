@@ -3,12 +3,12 @@ import React, { useLayoutEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Deliveries from "../screens/Deliveries";
-import Customers from "../screens/Customers";
+import Deliveries from "../screens/home/Deliveries";
+import Customers from "../screens/home/Customers";
 import Home from "../screens/home/Home";
-import Schedules from "../screens/Schedules";
-import AddScreen from '../screens/AddScreen';
+import Schedules from "../screens/home/Schedules";
 import NewStackNavigator from "./NewStackNavigator";
+
 
 
 const BottomTabNavigator = () => {

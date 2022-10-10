@@ -15,11 +15,11 @@ import {
   FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import DateTimePicker from "../components/DateTimePicker";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { orders } from "../utils/dummyData";
-import SchedulesRenderItem from "../components/SchedulesRenderItem";
+import DateTimePicker from "../../components/general/DateTimePicker"
 
+import { SafeAreaView } from "react-native-safe-area-context";
+import { orders } from "../../services/utils/dummyData";
+import SchedulesRenderItem from "../../components/schedules/SchedulesRenderItem";
 
 const Ordered = () => {
   const renderItem = ({ item }) => <SchedulesRenderItem item={item} />;
@@ -58,7 +58,7 @@ const Schedules = () => {
   const [scheduleType, setScheduleType] = useState("scheduled");
   return (
     <SafeAreaView  className="flex-1 ">
-      <ScrollView showsVerticalScrollIndicator={false} className={Platform.OS === "android" ? "pt-5" : "pt-0"}>
+      <ScrollView showsVerticalScrollIndicator={false} className={Platform.OS === "android flex-1" ? "pt-5" : "pt-0"}>
         <View className="flex-col ">
           <View className="p-2">
             <View className="flex-row items-center bg-white p-2 border-[1px] border-gray-200 rounded-xl ">

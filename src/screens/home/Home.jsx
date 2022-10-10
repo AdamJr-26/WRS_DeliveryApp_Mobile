@@ -11,7 +11,7 @@ import {
 import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import HomeDrawerLayout from "../components/HomeDrawerLayout";
+
 const Home = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {

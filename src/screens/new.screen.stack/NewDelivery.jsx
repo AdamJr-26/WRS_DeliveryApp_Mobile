@@ -102,7 +102,7 @@ const ActionNewDelivery = ({ navigation }) => {
                 key={i}
                 className="relative h-[80px] flex-row items-center justify-between border-[1px] border-gray-200 rounded-lg py-2 my-1"
               >
-                <View className="absolute top-[-5px] right-[-5px] bg-red-500 rounded-full"  >
+                <View className="absolute top-[-5px] right-[-5px] bg-gray-500 rounded-full"  >
                   <Ionicons name="close" size={20} color="white" />
                 </View>
                 <View className="flex-row items-center justify-center">
