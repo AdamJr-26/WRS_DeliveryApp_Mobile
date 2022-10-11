@@ -15,7 +15,7 @@ import {
   FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import DateTimePicker from "../../components/general/DateTimePicker"
+import DateTimePicker from "../../components/general/DateTimePicker";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { orders } from "../../services/utils/dummyData";
@@ -26,11 +26,9 @@ const Ordered = () => {
   return (
     <SafeAreaView>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {
-          orders.map(item=>(
-            <SchedulesRenderItem key={item.id} item={item} />
-          ))
-        }
+        {orders.map((item) => (
+          <SchedulesRenderItem key={item.id} item={item} />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -46,6 +44,7 @@ const Scheduled = () => {
 // ----------------------------
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
+// ----------------------------------
 
 const Schedules = () => {
   const navigation = useNavigation();
@@ -56,9 +55,15 @@ const Schedules = () => {
   }, []);
   const [placesModalIsVisible, setPlacesModalIsVisible] = useState(false);
   const [scheduleType, setScheduleType] = useState("scheduled");
+  
+  const [date, setDate] = useState(new Date());
+
   return (
-    <SafeAreaView  className="flex-1 ">
-      <ScrollView showsVerticalScrollIndicator={false} className={Platform.OS === "android flex-1" ? "pt-5" : "pt-0"}>
+    <SafeAreaView className="flex-1 ">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className={Platform.OS === "android flex-1" ? "pt-5" : "pt-0"}
+      >
         <View className="flex-col ">
           <View className="p-2">
             <View className="flex-row items-center bg-white p-2 border-[1px] border-gray-200 rounded-xl ">
@@ -67,6 +72,7 @@ const Schedules = () => {
             </View>
           </View>
         </View>
+        <Text>{date.getMonth().toString()}</Text>
         <Text className="px-2 font-semibold">Schedule Type</Text>
         <View className="p-2">
           <View className="w-full p-1 bg-gray-200 flex-row rounded-md">
@@ -102,7 +108,7 @@ const Schedules = () => {
           </View>
           <View className="flex-row gap-1 w-[100%] mt-2">
             <View className="w-[50%] p-2 shadow-md shadow-blue-500 bg-gray-50  rounded-xl flex-row items-center justify-between">
-              <DateTimePicker />
+              <DateTimePicker date={date} setDate={setDate} />
             </View>
             <TouchableOpacity
               onPress={() => setPlacesModalIsVisible(!placesModalIsVisible)}

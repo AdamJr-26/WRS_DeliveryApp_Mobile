@@ -1,10 +1,8 @@
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { View, Text, Button, TouchableOpacity, useEffect } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-const DateTimePicker = () => {
-  const [date, setDate] = useState(new Date());
-
+const DateTimePicker = ({ date, setDate }) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
@@ -27,12 +25,17 @@ const DateTimePicker = () => {
     showMode("time");
   };
   return (
-    <TouchableOpacity  onPress={showDatepicker} className="w-[100%] flex-row items-center justify-between" >
-      <Text className="font-semibold text-gray-700">
-        {date.getMonth().toLocaleString()}-
-        {date.getDay().toLocaleString()}-{date.getFullYear().toLocaleString()}
+    <TouchableOpacity
+      onPress={showDatepicker}
+      className="w-[100%] flex-row items-center justify-around relative"
+    >
+      <Text className="font-semibold text-gray-700 text-center w-full ">
+        {date.getMonth().toLocaleString()}-{date.getDay().toLocaleString()}-
+        {date.getFullYear().toLocaleString()}
       </Text>
-      <Ionicons name="arrow-down-circle-outline" size={25}  />
+      <View className="">
+        <Ionicons name="arrow-down-circle-outline" size={25} />
+      </View>
     </TouchableOpacity>
   );
 };

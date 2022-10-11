@@ -121,7 +121,7 @@ const Home = () => {
           </View>
         </View>
         {/* delivery list */}
-        <View className=" bg-gray-100  h-full relative">
+        <View className=" bg-gray-100  relative">
           <View className="h-[100px] bg-gray-700"></View>
           <View className="absolute top-2 mx-[5%] bg-white h-[200px] w-[90%] rounded-xl p-2 shadow-xl">
             <View className="flex-row gap-3 items-center justify-center">
@@ -133,6 +133,10 @@ const Home = () => {
               <Text className="text-[#2389DA]">My Delivery</Text>
             </View>
           </View>
+        </View>
+        {/* guidesssssssssss */}
+        <View className="mt-[120px] p-2 bg-white rounded-xl">
+          <Text className="font-bold">Guides</Text>
         </View>
       </View>
     </DrawerLayoutAndroid>

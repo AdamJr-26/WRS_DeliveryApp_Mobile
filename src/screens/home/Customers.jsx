@@ -163,13 +163,12 @@ const Customers = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('New',{
+                    navigation.navigate("New", {
                       screen: "Deliver Order",
-                      params: {user: 'Adam Marcaida Jr.'}
-                    })
-                    setShowCustomerInfo(false)
-                  }
-                  }
+                      params: { user: "Adam Marcaida Jr." },
+                    });
+                    setShowCustomerInfo(false);
+                  }}
                   className="flex flex-grow w-1/2 border-[5px] border-white bg-gray-200 p-2 rounded-xl flex-col items-center justify-center"
                 >
                   <Text className="text-[24px] text-gray-700 font-bold text-center">
@@ -177,7 +176,16 @@ const Customers = ({ navigation }) => {
                   </Text>
                   <Text className="text-gray-500 font-semibold">Order</Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="flex flex-grow w-1/2 border-[5px] border-white bg-gray-200 p-2 rounded-xl flex-col items-center justify-center">
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("New", {
+                      screen: "New Schedule",
+                      params: { user: "Adam Marcaida Jr." },
+                    });
+                    setShowCustomerInfo(false);
+                  }}
+                  className="flex flex-grow w-1/2 border-[5px] border-white bg-gray-200 p-2 rounded-xl flex-col items-center justify-center"
+                >
                   <Text className="text-[24px] text-gray-700 font-bold text-center">
                     Oct. 10
                   </Text>
@@ -187,9 +195,15 @@ const Customers = ({ navigation }) => {
                   <Text className="text-[24px] text-gray-700 font-bold text-center">
                     Retailer
                   </Text>
-                  <Text className="text-gray-500 font-semibold">Customer Type</Text>
+                  <Text className="text-gray-500 font-semibold">
+                    Customer Type
+                  </Text>
                 </TouchableOpacity>
               </View>
+              <ScrollView className="p-2">
+                <Text className="font-bold text-gray-700">Note:</Text>
+                <Text>Short description about sa customer</Text>
+              </ScrollView>
             </View>
           </View>
         </View>
