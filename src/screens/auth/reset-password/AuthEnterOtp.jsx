@@ -12,7 +12,6 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect } from "react";
-import AuthTextInput from "../../../components/auth/AuthTextInput";
 import AppTextInput from "../../../components/general/AppTextInput";
 const AuthEnterOtp = ({ navigation }) => {
   useEffect(() => {
@@ -38,9 +37,7 @@ const AuthEnterOtp = ({ navigation }) => {
           className="w-full rounded-xl overflow-hidden "
         >
           <Image
-            source={{
-              uri: "https://www.pngmart.com/files/21/Food-Delivery-Transparent-Images-PNG.png",
-            }}
+            source={require('../../../../assets/hero/otp.png')}
             className=" w-full h-full object-contain "
           />
         </View>
@@ -51,7 +48,8 @@ const AuthEnterOtp = ({ navigation }) => {
           </Text>
         </View>
         <View className="mt-5">
-          <AppTextInput placeholder="0000" label="4 digit OTP" type="numeric" />
+          <AppTextInput placeholder="OTP" />
+          {/* <AppTextInput placeholder="0000" label="4 digit OTP" type="numeric" /> */}
         </View>
         <TouchableOpacity
           onPress={onSubmit}

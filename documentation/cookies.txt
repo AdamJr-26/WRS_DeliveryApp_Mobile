@@ -1,0 +1,10 @@
+
+issue:
+does not auto link.
+how to link:
+1. open terminal
+2. enter: npm link @dependecy-name ex. npm link @react-native-community/cookies
+* still doesn't work. iyak!!!!!
+https://openbase.com/js/@react-native-community/cookies/documentation
+https://stackoverflow.com/questions/49874385/what-is-react-native-link
+

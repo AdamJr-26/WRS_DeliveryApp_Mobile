@@ -22,3 +22,8 @@ avoiding overlapping with bottom-tabs
 https://github.com/th3rdwave/react-native-safe-area-context
 
 npx expo install @react-native-community/datetimepicker@6.2.0 react-native-safe-area-context@4.3.1
+
+
+charts
+https://react-chartjs-2.js.org/docs/chartjs-v2
+(chartv2)

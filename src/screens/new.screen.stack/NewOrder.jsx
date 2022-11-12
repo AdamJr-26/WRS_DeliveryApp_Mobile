@@ -118,7 +118,7 @@ const NewOrder = ({ navigation }) => {
           {/* all added gallons */}
           {addedGallon?.length ? (
             addedGallon.map((gallon) => (
-              <OrderGallonInputCard gallon={gallon} />
+              <OrderGallonInputCard key={gallon.id} gallon={gallon} />
             ))
           ) : (
             <View className="flex-row items-center justify-center p-2">
@@ -168,6 +168,7 @@ const NewOrder = ({ navigation }) => {
               { id: 3, name: "Small Bottle", volume: "1" },
             ].map((item) => (
               <TouchableOpacity
+                
                 onPress={() => {
                   dispatchtAddedGallon({
                     type: "add",

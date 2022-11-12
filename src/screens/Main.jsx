@@ -5,7 +5,7 @@ import AuthStack from "../stacks/AuthStack";
 import BottomTabNavigator from "../stacks/BottomTabNavigator";
 
 const Main = () => {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -16,3 +16,4 @@ const Main = () => {
 };
 
 export default Main;
+

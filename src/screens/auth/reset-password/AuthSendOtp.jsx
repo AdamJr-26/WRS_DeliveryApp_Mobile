@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import AppTextInput from "../../../components/general/AppTextInput";
-import AuthTextInput from "../../../components/auth/AuthTextInput";
+// import AuthTextInput from "../../../components/auth/AuthTextInput";
 const AuthSendOtp = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
@@ -38,9 +38,7 @@ const AuthSendOtp = ({ navigation }) => {
           className="w-full rounded-xl overflow-hidden "
         >
           <Image
-            source={{
-              uri: "https://www.pngmart.com/files/21/Food-Delivery-Transparent-Images-PNG.png",
-            }}
+            source={require('../../../../assets/hero/forgot.png')}
             className=" w-full h-full object-contain "
           />
         </View>
@@ -55,7 +53,8 @@ const AuthSendOtp = ({ navigation }) => {
           </Text>
 
           <View className="mt-3">
-            <AuthTextInput iconName="at" placeholder="Email ID " />
+            <AppTextInput label="Enter Email" placeholder="youremail@gmail.com"/>
+            {/* <AuthTextInput iconName="at" placeholder="Email ID " /> */}
           </View>
           <TouchableOpacity onPress={onSubmit} className="mt-5 p-4 bg-[#2389DA] flex-row items-center justify-center rounded-2xl">
             <Pressable>

@@ -12,9 +12,9 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect } from "react";
-import AppTextInput from "../../../components/general/AppTextInput";
-import AuthTextInput from "../../../components/auth/AuthTextInput";
+// import AuthTextInput from "../../../components/auth/AuthTextInput";
 import MatComIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import AppTextInput from "../../../components/general/AppTextInput";
 
 const AuthNewPassword = ({ navigation }) => {
   useEffect(() => {
@@ -40,9 +40,7 @@ const AuthNewPassword = ({ navigation }) => {
           className="w-full rounded-xl relative overflow-hidden "
         >
           <Image
-            source={{
-              uri: "https://www.pngmart.com/files/21/Food-Delivery-Transparent-Images-PNG.png",
-            }}
+            source={require('../../../../assets/hero/reset.png')}
             className=" w-full h-full object-contain "
           />
         </View>
@@ -50,15 +48,10 @@ const AuthNewPassword = ({ navigation }) => {
           <Text className="text-[32px] font-bold text-gray-700">Reset </Text>
           <Text className="text-[32px] font-bold text-gray-700">Password</Text>
         </View>
-        <View className="mt-5">
-            <AuthTextInput iconName="lock-outline" placeholder="New Password" isSecure={true} type="password" />
-            <AuthTextInput iconName="lock-outline" placeholder="Confirm Password" isSecure={true} type="password" />
-        </View>
-        <View className="flex-row items-center mt-3 gap-3">
-            <View className="p-2 bg-green-500 w-[30px] h-[30px] rounded-full">
-            <MatComIcons name="check"color="white" />
-            </View>
-            <Text className="text-gray-500  font-bold">Matched</Text>
+        <View className="gap-y-10 mt-2">
+          <AppTextInput label="New Password" placeholder="New Password" />
+          <AppTextInput label="Confirm New Password" placeholder="Confirm New Password" />
+           
         </View>
         <TouchableOpacity
           onPress={onSubmit}
