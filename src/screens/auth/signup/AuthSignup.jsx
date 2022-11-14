@@ -227,6 +227,7 @@ const AuthSignup = ({ navigation }) => {
                 errors={errors.address}
               />
               <AuthPasswordTextInput
+                placeholder="Password"
                 label="Password"
                 values={values.password}
                 onChangeText={handleChange("password")}
@@ -234,8 +235,9 @@ const AuthSignup = ({ navigation }) => {
                 errors={errors.password}
               />
               <AuthPasswordTextInput
+                placeholder="Confirm Password"
                 label="Confirm Password"
-                values={values.password}
+                values={values.confirm_password}
                 onChangeText={handleChange("confirm_password")}
                 onBlur={handleBlur("confirm_password")}
                 errors={errors.confirm_password}

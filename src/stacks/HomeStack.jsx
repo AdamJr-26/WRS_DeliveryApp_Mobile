@@ -11,7 +11,7 @@ import NewStackNavigator from "./NewStackNavigator";
 
 
 
-const BottomTabNavigator = () => {
+const HomeStack = () => {
   const Tab = createBottomTabNavigator();
 
   return (
@@ -56,4 +56,4 @@ const BottomTabNavigator = () => {
   );
 };
 
-export default BottomTabNavigator;
+export default HomeStack;

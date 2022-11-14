@@ -11,7 +11,7 @@ import {
 import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
-
+import { useAuth } from "../../hooks/auth";
 const Home = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -23,17 +23,31 @@ const Home = () => {
   const drawer = useRef();
   const window = useWindowDimensions();
   const deviceViewHeight = window.height;
+
   useEffect(() => {
     return () => {
-      drawer.current.closeDrawer();
+      drawer?.current?.closeDrawer();
     };
   }, []);
+  // =============================== LOGOUT =========================================
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    const { success, error } = await logout();
+    console.log("dataaaaaaaaaaa", success);
+    if (success && !error) {
+      console.log("success", success);
+      // navigation.navigate("Login", { name: "Login" });
+    } else {
+      console.log("error", error);
+    }
+  };
+  // ============================== DRAWER =========================================
   const DrawerLayout = () => (
     <View className=" flex-col">
       <View className="bg-gray-700 px-3 py-10 gap-3 w-fit relative flex-col items-center justify-center">
         <View className="absolute top-2 left-2">
           <MatIcon
-            onPress={() => drawer.current.closeDrawer()}
+            onPress={() => drawer?.current?.closeDrawer()}
             name="close"
             size={30}
             color="#FFFFFF"
@@ -79,9 +93,14 @@ const Home = () => {
         </View>
         {/* logout */}
         <View>
-          <TouchableOpacity className="flex-row items-center justify-center gap-2 ">
-            <MatIcon name="logout" size={25} color='gray' />
-            <Text className="text-[19px] font-semibold text-red-900">Logout</Text>
+          <TouchableOpacity
+            onPress={handleLogout}
+            className="flex-row items-center justify-center gap-2 "
+          >
+            <MatIcon name="logout" size={25} color="gray" />
+            <Text className="text-[19px] font-semibold text-red-900">
+              Logout
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -112,7 +131,7 @@ const Home = () => {
             </View>
             <View className="flex-1 items-end ">
               <MatIcon
-                onPress={() => drawer.current.openDrawer()}
+                onPress={() => drawer?.current?.openDrawer()}
                 name="menu-open"
                 color="#FFFFFf"
                 size={30}

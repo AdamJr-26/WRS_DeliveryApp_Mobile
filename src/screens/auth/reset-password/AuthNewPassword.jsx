@@ -10,13 +10,18 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useEffect } from "react";
 // import AuthTextInput from "../../../components/auth/AuthTextInput";
 import MatComIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AppTextInput from "../../../components/general/AppTextInput";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { axios } from "../../../services/api/axios";
+import AuthPasswordTextInput from "../../../components/auth/AuthPasswordTextInput";
 
-const AuthNewPassword = ({ navigation }) => {
+const AuthNewPassword = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -24,7 +29,7 @@ const AuthNewPassword = ({ navigation }) => {
   }, []);
   const windowWidth = Dimensions.get("screen").width;
   const windowHeight = Dimensions.get("screen").height;
-
+  const { otp, gmail } = route.params;
   const onSubmit = () => {
     if (true) {
       navigation.navigate("Login");
@@ -40,7 +45,7 @@ const AuthNewPassword = ({ navigation }) => {
           className="w-full rounded-xl relative overflow-hidden "
         >
           <Image
-            source={require('../../../../assets/hero/reset.png')}
+            source={require("../../../../assets/hero/reset.png")}
             className=" w-full h-full object-contain "
           />
         </View>
@@ -48,19 +53,80 @@ const AuthNewPassword = ({ navigation }) => {
           <Text className="text-[32px] font-bold text-gray-700">Reset </Text>
           <Text className="text-[32px] font-bold text-gray-700">Password</Text>
         </View>
-        <View className="gap-y-10 mt-2">
-          <AppTextInput label="New Password" placeholder="New Password" />
-          <AppTextInput label="Confirm New Password" placeholder="Confirm New Password" />
-           
-        </View>
-        <TouchableOpacity
-          onPress={onSubmit}
-          className="mt-5 p-4 bg-[#2389DA] flex-row items-center justify-center rounded-2xl"
+        <Formik
+          initialValues={{
+            new_password: "",
+            confirm_new_password: "",
+          }}
+          validationSchema={Yup.object().shape({
+            new_password: Yup.string()
+              .min(6, "Password must be at least 6 characters")
+              .max(16, "Password must not exceed 16 letters")
+              .required("Password is required"),
+            confirm_new_password: Yup.string()
+              .oneOf([Yup.ref("new_password"), null], "Password must match")
+              .min(6, "Password must be aleast 6 characters")
+              .max(16, "Password must not exceed 16 letters")
+              .required("Confirm password is required"),
+          })}
+          onSubmit={async (values) => {
+            try {
+              const res = await axios.post("/auth/new-password/personel", {
+                gmail: gmail,
+                token: otp,
+                new_password: values.new_password,
+                confirm_new_password: values.confirm_new_password,
+              });
+              console.log("res.data", res.data);
+              if (res.data) {
+                Alert.alert("Forgot Password Successfully");
+                navigation.navigate("Login");
+              }
+            } catch (error) {
+              console.log("errorrrr", error);
+              Alert.alert("session Expired, please try again");
+            }
+          }}
         >
-          <Pressable>
-            <Text className="text-gray-50 font-bold">Submit</Text>
-          </Pressable>
-        </TouchableOpacity>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            isValid,
+          }) => (
+            <>
+              <View className="flex-col">
+                <AuthPasswordTextInput
+                  placeholder="New Password"
+                  label="New Password"
+                  values={values.new_password}
+                  onChangeText={handleChange("new_password")}
+                  onBlur={handleBlur("new_password")}
+                  errors={errors.new_password}
+                />
+                <AuthPasswordTextInput
+                  placeholder="Confirm New Password"
+                  label="Confirm New Password"
+                  values={values.confirm_new_password}
+                  onChangeText={handleChange("confirm_new_password")}
+                  onBlur={handleBlur("confirm_new_password")}
+                  errors={errors.confirm_new_password}
+                />
+              </View>
+              <TouchableOpacity
+                disabled={!isValid}
+                onPress={handleSubmit}
+                className="mt-5 p-4 bg-[#2389DA] flex-row items-center justify-center rounded-2xl"
+              >
+                <Pressable>
+                  <Text className="text-gray-50 font-bold">Submit</Text>
+                </Pressable>
+              </TouchableOpacity>
+            </>
+          )}
+        </Formik>
       </ScrollView>
     </View>
   );

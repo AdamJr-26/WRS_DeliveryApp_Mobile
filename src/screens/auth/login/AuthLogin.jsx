@@ -12,6 +12,7 @@ import {
   ScrollView,
   Button,
   TextInput,
+  Alert,
 } from "react-native";
 import React, { useEffect } from "react";
 import { Formik } from "formik";
@@ -20,6 +21,7 @@ import AuthEmailTextInput from "../../../components/auth/AuthEmailTextInput";
 import AuthPasswordTextInput from "../../../components/auth/AuthPasswordTextInput";
 import loginHero from "../../../../assets/hero/login.png";
 import { useAuth } from "../../../hooks/auth";
+import AppButton from "../../../components/general/AppButton";
 const Login = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
@@ -34,7 +36,7 @@ const Login = ({ navigation }) => {
       .email("Please enter valid gmail")
       .required("Gmail Address is Required"),
     password: Yup.string()
-      .min(8, ({ min }) => `Password must be at least ${min} characters`)
+      .min(6, ({ min }) => `Password must be at least ${min} characters`)
       .required("Password is required"),
   });
 
@@ -59,11 +61,15 @@ const Login = ({ navigation }) => {
             validationSchema={loginValidationSchema}
             initialValues={{ gmail: "", password: "" }}
             onSubmit={async (values) => {
-              const { res, error } = await login(values);
-              if (res && !error) {
-                console.log(res);
+              console.log("logging in");
+              const { success, error } = await login(values);
+              if (success && !error) {
+                // navigation.navigate("Home");
               } else {
-                console.log(error);
+                const errorData = error?.response?.data
+                console.log(errorData);
+                Alert.alert(errorData?.errors?.login_personel?.fullError)
+                // display modal that login failed
               }
             }}
           >
@@ -77,8 +83,6 @@ const Login = ({ navigation }) => {
             }) => (
               <>
                 <View className="flex-col">
-                  <Text>{values.gmail}</Text>
-
                   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <AuthEmailTextInput
                       values={values.gmail}
@@ -91,6 +95,7 @@ const Login = ({ navigation }) => {
                   </TouchableWithoutFeedback>
                   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <AuthPasswordTextInput
+                    placeholder="Password"
                       values={values.password}
                       onChangeText={handleChange("password")}
                       onBlur={handleBlur("password")}
@@ -100,7 +105,7 @@ const Login = ({ navigation }) => {
                 </View>
 
                 <View classNam="flex-row flex-wrap text-gray-200 "></View>
-                <View className="flex-row justify-end">
+                <View className="flex-row justify-end my-3">
                   <Text
                     className="font-bold text-[#2389DA] "
                     onPress={() => navigation.navigate("forgot password")}
@@ -108,15 +113,11 @@ const Login = ({ navigation }) => {
                     Forgot Password
                   </Text>
                 </View>
-
-                <TouchableOpacity
+                <AppButton
                   disabled={!isValid}
-                  className="mt-5 p-4 bg-[#2389DA] flex-row items-center justify-center rounded-2xl"
-                >
-                  <Pressable onPress={handleSubmit}>
-                    <Text className="text-gray-50 font-bold">Login</Text>
-                  </Pressable>
-                </TouchableOpacity>
+                  onPress={handleSubmit}
+                  text="Login"
+                />
               </>
             )}
           </Formik>
