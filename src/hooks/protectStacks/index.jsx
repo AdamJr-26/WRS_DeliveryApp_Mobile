@@ -6,15 +6,9 @@ import AuthStack from "../../stacks/AuthStack";
 import HomeStack from "../../stacks/HomeStack";
 
 import { View, Text, ActivityIndicator } from "react-native";
+import GetstartedStack from "../../stacks/GetstartedStack";
 const ProtectRoutes = () => {
-  const { isLoading, isLoggedIn } = useAuth();
-  console.log(
-    "isLoggedIn.. protectRoutes",
-    isLoggedIn,
-    "isLoggedIn",
-    isLoggedIn
-  );
-
+  const { isLoading, isLoggedIn, user } = useAuth();
   if (isLoading && !isLoggedIn) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -22,10 +16,17 @@ const ProtectRoutes = () => {
       </View>
     );
   }
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        {isLoggedIn !== null ? <HomeStack /> : <AuthStack />}
+        {isLoggedIn === null ? (
+          <AuthStack />
+        ) : user?.admin ? (
+          <HomeStack />
+        ) : (
+          <GetstartedStack />
+        )}
       </NavigationContainer>
     </SafeAreaProvider>
   );

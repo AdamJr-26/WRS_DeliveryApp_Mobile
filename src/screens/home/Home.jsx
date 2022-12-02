@@ -1,164 +1,66 @@
 import {
   View,
   Text,
-  Button,
+  ScrollView,
   Image,
-  DrawerLayoutAndroid,
   useWindowDimensions,
   TouchableOpacity,
-  RefreshControl,
 } from "react-native";
-import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import React, { useLayoutEffect } from "react";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { useAuth } from "../../hooks/auth";
-const Home = () => {
-  const navigation = useNavigation();
+import heroes from "../../../assets/hero";
+const Home = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, []);
-
-  const drawer = useRef();
   const window = useWindowDimensions();
   const deviceViewHeight = window.height;
 
-  useEffect(() => {
-    return () => {
-      drawer?.current?.closeDrawer();
-    };
-  }, []);
-  // =============================== LOGOUT =========================================
-  const { logout } = useAuth();
-  const handleLogout = async () => {
-    const { success, error } = await logout();
-    console.log("dataaaaaaaaaaa", success);
-    if (success && !error) {
-      console.log("success", success);
-      // navigation.navigate("Login", { name: "Login" });
-    } else {
-      console.log("error", error);
-    }
-  };
-  // ============================== DRAWER =========================================
-  const DrawerLayout = () => (
-    <View className=" flex-col">
-      <View className="bg-gray-700 px-3 py-10 gap-3 w-fit relative flex-col items-center justify-center">
-        <View className="absolute top-2 left-2">
-          <MatIcon
-            onPress={() => drawer?.current?.closeDrawer()}
-            name="close"
-            size={30}
-            color="#FFFFFF"
-          />
-        </View>
-        <View className="w-[120px] h-[120px] border-2 border-blue-500 rounded-full p-1">
-          <Image
-            source={{
-              uri: "https://res.cloudinary.com/dy1od3qwx/image/upload/v1661686514/xfyoilmuhgvkd1qnznkg.png",
-            }}
-            className=" w-full h-full rounded-full "
-          />
-        </View>
-        <View className="flex flex-col justify-center items-center">
-          <Text className="text-[24px] text-gray-100 font-bold whitespace-nowrap">
-            Adam Marcaida Jr.
-          </Text>
-          <Text className="text-gray-300 font-semibold">Nickname: Pogi</Text>
-        </View>
-      </View>
-      <View className={`flex-col justify-between h-[475px]`}>
-        {/* navigation */}
-        <View className="p-3 flex-col gap-3">
-          <TouchableOpacity className="flex flex-row relative  items-center px-2 py-4  border-[1px] bg-blue-50 border-gray-200 rounded-lg ">
-            <MatIcon name="security" size={25} color="gray" />
-            <Text className="text-[16px] font-regular ml-2">
-              Change Password
-            </Text>
-            <View className="absolute right-2 ">
-              <MatIcon name="arrow-right" size={25} color="#2389DA" />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity className="flex flex-row relative  items-center px-2 py-4  border-[1px] bg-blue-50 border-gray-200 rounded-lg ">
-            <MatIcon name="home-switch" size={25} color="gray" />
-            <Text className="text-[16px] font-regular ml-2">
-              Change Station
-            </Text>
-            <View className="absolute right-2 ">
-              <MatIcon name="arrow-right" size={25} color="#2389DA" />
-            </View>
-          </TouchableOpacity>
-        </View>
-        {/* logout */}
-        <View>
-          <TouchableOpacity
-            onPress={handleLogout}
-            className="flex-row items-center justify-center gap-2 "
-          >
-            <MatIcon name="logout" size={25} color="gray" />
-            <Text className="text-[19px] font-semibold text-red-900">
-              Logout
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-
+  const { user } = useAuth();
+  console.log("user", user);
   return (
-    <DrawerLayoutAndroid
-      ref={drawer}
-      drawerWidth={300}
-      drawerPosition="right"
-      renderNavigationView={DrawerLayout}
+    <View
+      className={Platform.OS === "android" ? "pt-8  flex-1" : "pt-0 flex-1"}
     >
-      <View className={Platform.OS === "android" ? "pt-5" : "pt-0"}>
-        <View className="flex flex-col  bg-gray-700 h-[100px] p-2">
-          <View className=" flex-row p-4 mt-2 w-full items-center justify-between  ">
-            <View className="flex-row  items-center gap-3 h-auto w-auto outline-dotted">
-              <Image
-                source={{
-                  uri: "https://res.cloudinary.com/dy1od3qwx/image/upload/v1661686514/xfyoilmuhgvkd1qnznkg.png",
-                }}
-                className="h-7 w-7 bg-gray-300 p-4 rounded-full"
-              />
-              <View className="flex-col">
-                <Text className="text-[12px] text-gray-300">Welcome,</Text>
-                <Text className="text-[16px] text-gray-50">Adam Marcaida</Text>
-              </View>
-            </View>
-            <View className="flex-1 items-end ">
-              <MatIcon
-                onPress={() => drawer?.current?.openDrawer()}
-                name="menu-open"
-                color="#FFFFFf"
-                size={30}
-              />
-            </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className="flex gap-2 p-3 bg-white"
+      >
+        <View className="flex gap-y-2">
+          <Ionicons name="menu-outline" size={32} color="gray" />
+          <View className="flex gap-y-1">
+            <Text className="font-bold text-[24px] text-gray-600">
+              Hello, {user?.firstname} {user?.lastname}
+            </Text>
+            <Text className="font-semibold text-gray-500 ">
+              Have a safe ride.
+            </Text>
           </View>
         </View>
-        {/* delivery list */}
-        <View className=" bg-gray-100  relative">
-          <View className="h-[100px] bg-gray-700"></View>
-          <View className="absolute top-2 mx-[5%] bg-white h-[200px] w-[90%] rounded-xl p-2 shadow-xl">
-            <View className="flex-row gap-3 items-center justify-center">
-              <MatIcon
-                name="truck-delivery-outline"
-                size={20}
-                color="#2389DA"
-              />
-              <Text className="text-[#2389DA]">My Delivery</Text>
-            </View>
-          </View>
+
+        <View className="flex justify-center items-center relative h-[400px] border-[1px] border-gray-300 p-[10px]  rounded-xl ">
+          <Text className="absolute top-2 font-bold text-[24px] text-gray-700">
+            No Delivery
+          </Text>
+          <Image source={heroes?.delivery_truck} className="h-[45%] w-full " />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("New", {
+                screen: "New Delivery",
+              });
+            }}
+            className="absolute bottom-2 bg-[#2389DA] w-[80%] p-4 rounded-xl "
+          >
+            <Text className="text-white text-center font-semibold ">
+              Create Now
+            </Text>
+          </TouchableOpacity>
         </View>
-        {/* guidesssssssssss */}
-        <View className="mt-[120px] p-2 bg-white rounded-xl">
-          <Text className="font-bold">Guides</Text>
-        </View>
-      </View>
-    </DrawerLayoutAndroid>
+      </ScrollView>
+    </View>
   );
 };
 

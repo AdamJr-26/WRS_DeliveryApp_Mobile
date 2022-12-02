@@ -1,7 +1,6 @@
-import { View, Text } from "react-native";
+
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 
 import AuthLogin from "../screens/auth/login/AuthLogin";
 import AuthSignup from "../screens/auth/signup/AuthSignup";
