@@ -75,35 +75,29 @@ const ActionNewDelivery = ({ navigation }) => {
     gallon_id: "",
     total: "",
   };
-
   const [form, setForm] = useState([]);
   useEffect(() => {
     function createForm() {
       const f = [];
       for (let i = 0; i < selectedGallons?.length; i++) {
-        f.push(initialValue);
+        f.push({ id: i, gallon_id: "", total: "" });
       }
       setForm(f);
     }
     createForm();
   }, [selectedGallons]);
 
-
-
   const handleFormInputsChange = (value, index, id) => {
-    setForm((prevData)=>{
-      if(prevData instanceof Object){
-        prevData[index]['gallon_id'] = id
-        prevData[index]['total'] = value
-        console.log("prevData", prevData)
-      }
-
-    });
+    const data = [...form];
+    data[index]["gallon_id"] = id;
+    data[index]["total"] = value;
+    console.log("idid", id);
+    setForm(data);
   };
   // create form that list of object that has gallon_id and total
   // put name in text input and get id by name.
   // to get total or value of an text input? hmm?
-  console.log("formformformform", form);
+  console.log("[FORM]", form);
   return (
     <SafeAreaView className="m-1 bg-gray-50 p-2 flex-1 ">
       <ScrollView>
@@ -199,7 +193,6 @@ const ActionNewDelivery = ({ navigation }) => {
               <Text className="text-gray-700 font-bold">Selected gallons</Text>
             </View>
             <View className="flex-col p-2 ">
-
               {selectedGallons?.map((gallon, i) => (
                 <View
                   key={i}
@@ -219,7 +212,9 @@ const ActionNewDelivery = ({ navigation }) => {
                       <Text className="text-gray-700 font-semibold text-[19px]">
                         {gallon?.gallon_name}
                       </Text>
-                      <Text className="text-gray-500">{gallon?.liter} Liter(s)</Text>
+                      <Text className="text-gray-500">
+                        {gallon?.liter} Liter(s)
+                      </Text>
                     </View>
                   </View>
                   <View className=" h-full flex-col justify-center items-center px-3 absolute right-0 ">
@@ -235,7 +230,6 @@ const ActionNewDelivery = ({ navigation }) => {
                     />
                   </View>
                 </View>
-
               ))}
             </View>
           </View>

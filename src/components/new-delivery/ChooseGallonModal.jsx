@@ -60,22 +60,29 @@ const ChooseGallonModal = ({
         setIsShow(!isShow);
       }}
     >
-      <ScrollView
-        className=""
-        horizontal={true}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="flex-1 flex-col justify-between ">
-          <View className=" h-auto flex-1">
-            <Pressable
-              className="h-full"
-              onPress={() => setIsShow(!isShow)}
-            ></Pressable>
-          </View>
-          <View className=" bg-white h-200 p-5 flex gap-y-2">
+      <View className="flex-1 flex-col justify-between ">
+        <View className=" h-auto flex-1">
+          <Pressable
+            className="h-full"
+            onPress={() => setIsShow(!isShow)}
+          ></Pressable>
+        </View>
+        <View className=" bg-white h-200 p-5 flex gap-y-2">
+          <View className="flex-row justify-between">
             <Text className="font-bold text-gray-700 text-[24px]">
               Choose vehicle
             </Text>
+            <TouchableOpacity className="bg-[#2389DA] items-center justify-center px-7 rounded-full">
+              <Pressable>
+                <Text className="font-bold text-white">Use</Text>
+              </Pressable>
+            </TouchableOpacity>
+          </View>
+          <ScrollView
+            className=""
+            horizontal={true}
+            showsVerticalScrollIndicator={false}
+          >
             <View className="flex-row gap-x-5">
               {gallon_data?.map((gallon) => (
                 <TouchableOpacity
@@ -109,9 +116,9 @@ const ChooseGallonModal = ({
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </Modal>
   ) : (
     <View className="flex-1 items-center justify-center">
