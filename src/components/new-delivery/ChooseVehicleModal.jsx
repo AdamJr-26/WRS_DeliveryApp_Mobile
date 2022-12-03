@@ -13,8 +13,14 @@ import {
 import React, { useState, useEffect } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MatComIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import useFetch from "../../hooks/api/swr/useFetch";
 
-const ChooseVehicleModal = ({ setIsShow, isShow }) => {
+const ChooseVehicleModal = ({ setIsShow, isShow, setSelectedVehicle }) => {
+  const { data, error } = useFetch({
+    url: "/api/vehicles",
+  });
+  const vehicles = data?.data;
+
   return (
     <Modal
       animationType="slide"
@@ -41,26 +47,28 @@ const ChooseVehicleModal = ({ setIsShow, isShow }) => {
               Choose Vehicle
             </Text>
             <View className="flex-row gap-x-5">
-              {[1, 2, 3, 4].map((item) => (
-                <View
-                  key={item}
+              {vehicles?.map((vehicle) => (
+                <TouchableOpacity
+                  key={vehicle?._id}
                   className="h-[200px] relative border-[1px] border-gray-200 w-[150px] overflow-hidden rounded-xl bg-white shadow-2xl shadow-gray-500 "
                 >
-                  <Image
-                    source={{
-                      uri: "https://res.cloudinary.com/dy1od3qwx/image/upload/v1661686514/xfyoilmuhgvkd1qnznkg.png",
-                    }}
-                    className=" w-[100%] h-[70%]  "
-                  />
-                  <View>
-                    <Text className="text-center py-1 w-full font-bold text-gray-800">
-                      Vehicle 1
-                    </Text>
-                    <Text className="text-center py-1 w-full font-bold text-gray-400 text-[16px]">
-                      PKS 6545
-                    </Text>
-                  </View>
-                </View>
+                  <Pressable onPress={() => setSelectedVehicle(vehicle)}>
+                    <Image
+                      source={{
+                        uri: vehicle?.vehicle_image,
+                      }}
+                      className=" w-[100%] h-[70%]  "
+                    />
+                    <View>
+                      <Text className="text-center py-1 w-full font-bold text-gray-800">
+                        {vehicle?.vehicle_name}
+                      </Text>
+                      <Text className="text-center py-1 w-full font-bold text-gray-400 text-[16px]">
+                        {vehicle?.vehicle_id}
+                      </Text>
+                    </View>
+                  </Pressable>
+                </TouchableOpacity>
               ))}
             </View>
           </View>

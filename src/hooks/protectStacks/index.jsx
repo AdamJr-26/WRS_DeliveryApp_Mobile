@@ -15,20 +15,20 @@ const ProtectRoutes = () => {
         <ActivityIndicator size={60} color="#2389DA" />
       </View>
     );
+  } else {
+    return (
+      <SafeAreaProvider>
+        <NavigationContainer>
+          {isLoggedIn === null ? (
+            <AuthStack />
+          ) : user?.admin ? (
+            <HomeStack />
+          ) : (
+            <GetstartedStack />
+          )}
+        </NavigationContainer>
+      </SafeAreaProvider>
+    );
   }
-
-  return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        {isLoggedIn === null ? (
-          <AuthStack />
-        ) : user?.admin ? (
-          <HomeStack />
-        ) : (
-          <GetstartedStack />
-        )}
-      </NavigationContainer>
-    </SafeAreaProvider>
-  );
 };
 export default ProtectRoutes;

@@ -9,26 +9,49 @@ import {
   Button,
   Pressable,
   Modal,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MatComIcon from "react-native-vector-icons/MaterialCommunityIcons";
 // swr
-import useGallons from "../../hooks/api/swr/useGallons";
+
 import useSWR, { useSWRConfig } from "swr";
-import * as SecureStore from "expo-secure-store";
-
-
-const ChooseGallonModal = ({ setIsShow, isShow }) => {
-
-  const { gallons, gallonsError } = useGallons({
-    url: "/api/gallons",});
+import useFetch from "../../hooks/api/swr/useFetch";
+const ChooseGallonModal = ({
+  setIsShow,
+  isShow,
+  selectedGallons,
+  dispatchSelectedGallons,
+}) => {
+  const { data: gallons, error: gallonsError } = useFetch({
+    url: "/api/gallons",
+  });
   const { mutate } = useSWRConfig();
-  useEffect(() => {
-    mutate("/api/gallons");
-  }, []);
+  const gallon_data = gallons?.data;
 
-  return (
+  const addGallons = (gallon) => {
+    dispatchSelectedGallons({
+      type: "add",
+      data: {
+        id: gallon?._id,
+        gallon_name: gallon?.name,
+        liter: gallon?.liter,
+        gallon_image: gallon?.gallon_image,
+      },
+    });
+  };
+  const checkIfExisting = (selectedGallons, gallon) => {
+    for (let i = 0; i < selectedGallons.length; i++) {
+      if (selectedGallons[i]?.id === gallon?._id) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
+  return gallons && !gallonsError ? (
     <Modal
       animationType="slide"
       transparent={true}
@@ -54,25 +77,35 @@ const ChooseGallonModal = ({ setIsShow, isShow }) => {
               Choose vehicle
             </Text>
             <View className="flex-row gap-x-5">
-              {[1, 2, 3, 4].map((item) => (
+              {gallon_data?.map((gallon) => (
                 <TouchableOpacity
-                  key={item}
-                  className="h-[200px] relative border-[1px] border-gray-200 w-[150px] overflow-hidden rounded-xl bg-white shadow-2xl shadow-gray-500 "
+                  key={gallon?._id}
+                  className={
+                    checkIfExisting(selectedGallons, gallon)
+                      ? "h-[200px] relative border-[3px] border-blue-500 w-[150px] overflow-hidden rounded-xl bg-white shadow-2xl shadow-gray-500 py-2 "
+                      : "h-[200px] relative border-[1px] border-gray-200 w-[150px] overflow-hidden rounded-xl bg-white shadow-2xl shadow-gray-500 py-2 "
+                  }
                 >
-                  <Image
-                    source={{
-                      uri: "https://res.cloudinary.com/dy1od3qwx/image/upload/v1661686514/xfyoilmuhgvkd1qnznkg.png",
+                  <Pressable
+                    onPress={() => {
+                      addGallons(gallon);
                     }}
-                    className=" w-[100%] h-[70%]  "
-                  />
-                  <View>
-                    <Text className="text-center py-1 w-full font-bold text-gray-800">
-                      GALLON 1
-                    </Text>
-                    <Text className="text-center py-1 w-full font-bold text-gray-400 text-[16px]">
-                      25 liter(s)
-                    </Text>
-                  </View>
+                  >
+                    <Image
+                      source={{
+                        uri: gallon?.gallon_image,
+                      }}
+                      className=" w-[100%] h-[70%]  "
+                    />
+                    <View>
+                      <Text className="whitespace-nowrap text-center py-1 w-full font-bold text-gray-800 overflow-hidden">
+                        {gallon?.name}
+                      </Text>
+                      <Text className="text-center py-1 w-full font-semibold text-gray-500 text-[14px]">
+                        {gallon?.liter} liter(s)
+                      </Text>
+                    </View>
+                  </Pressable>
                 </TouchableOpacity>
               ))}
             </View>
@@ -80,6 +113,10 @@ const ChooseGallonModal = ({ setIsShow, isShow }) => {
         </View>
       </ScrollView>
     </Modal>
+  ) : (
+    <View className="flex-1 items-center justify-center">
+      <ActivityIndicator size={60} color="#2389DA" />
+    </View>
   );
 };
 
