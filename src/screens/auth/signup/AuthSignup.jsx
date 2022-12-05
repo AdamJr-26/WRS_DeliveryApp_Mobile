@@ -22,7 +22,7 @@ import { useAuth } from "../../../hooks/auth";
 import * as Yup from "yup";
 
 import AppButton from "../../../components/general/AppButton";
-import UserExistsNoVerifiedModal from "../../../components/auth/UserExistsNoVerifiedModal";
+import PromptModal from "../../../components/general/modal/PromptModal";
 import ErrorMessageModal from "../../../components/general/modal/ErrorMessageModal";
 const AuthSignup = ({ navigation }) => {
   // modal
@@ -121,7 +121,11 @@ const AuthSignup = ({ navigation }) => {
       }) => (
         <View className={Platform.OS === "android" ? "pt-6 " : "pt-0"}>
           {/* modalssss----------------------------------------------- */}
-          <UserExistsNoVerifiedModal
+          <PromptModal
+            confirmText="Login"
+            confirmHandler={() => {
+              navigation.navigate("Login");
+            }}
             message="Account already exists"
             toggleModal={toggleModal}
             isModalVisible={isModalVisible}

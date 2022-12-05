@@ -11,16 +11,16 @@ import {
   Modal,
 } from "react-native";
 import React, { useState, useEffect, useReducer, useRef } from "react";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import MatComIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import useSWR, { useSWRConfig } from "swr";
-import SimpleIcons from "react-native-vector-icons/SimpleLineIcons";
-import heroes from "../../../assets/hero";
 import { SafeAreaView } from "react-native-safe-area-context";
 import gallons from "../../../assets/gallon";
 import ChooseVehicleModal from "../../components/new-delivery/ChooseVehicleModal";
 import ChooseGallonModal from "../../components/new-delivery/ChooseGallonModal";
+import { apiPost } from "../../services/api/axios.method";
+import ErrorMessageModal from "../../components/general/modal/ErrorMessageModal";
 
+import PromptModal from "../../components/general/modal/PromptModal";
 const ActionNewDelivery = ({ navigation }) => {
   const [selectVehicleModal, setSelectVehicleModal] = useState(false);
   const [selectGallonModal, setSelectGallonModal] = useState(false);
@@ -58,8 +58,16 @@ const ActionNewDelivery = ({ navigation }) => {
           state?.splice(gallonIndex, 1);
         }
         return state;
+      case "reset":
+        if (action?.data instanceof Array) {
+          state = action?.data;
+          return state;
+        } else {
+          return state;
+        }
+
       default:
-        throw new Error("invalid command");
+        alert("Oops. Invalid command, please try again.");
     }
   };
 
@@ -71,16 +79,13 @@ const ActionNewDelivery = ({ navigation }) => {
   console.log("selectedGallonsselectedGallons", selectedGallons);
 
   // FORM
-  const initialValue = {
-    gallon_id: "",
-    total: "",
-  };
+
   const [form, setForm] = useState([]);
   useEffect(() => {
     function createForm() {
       const f = [];
       for (let i = 0; i < selectedGallons?.length; i++) {
-        f.push({ id: i, gallon_id: "", total: "" });
+        f.push({ gallon: "", total: "" });
       }
       setForm(f);
     }
@@ -89,15 +94,83 @@ const ActionNewDelivery = ({ navigation }) => {
 
   const handleFormInputsChange = (value, index, id) => {
     const data = [...form];
-    data[index]["gallon_id"] = id;
+    data[index]["gallon"] = id;
     data[index]["total"] = value;
     console.log("idid", id);
     setForm(data);
   };
-  // create form that list of object that has gallon_id and total
+  // create form that list of object that has gallon and total
   // put name in text input and get id by name.
   // to get total or value of an text input? hmm?
   console.log("[FORM]", form);
+
+  // RESET
+  const handleReset = () => {
+    setSelectedVehicle();
+    dispatchSelectedGallons({ type: "reset", data: [] });
+    setForm([]);
+  };
+
+  // PROMPT MODAL
+  const [isShownPrompt, setIsShownPrompt] = useState(false);
+  const togglePrompt = () => {
+    setIsShownPrompt(!isShownPrompt);
+  };
+
+  // ERROR MODAL
+  const [isErrorModalVisible, setIsErrorModalVisible] = React.useState(false);
+  const [errorMessage, setErrorMessage] = useState("Something went wrong.");
+  const toggleErrorModal = () => {
+    setIsErrorModalVisible(!isErrorModalVisible);
+  };
+
+  // SUBMIT
+  const handleSubmit = async () => {
+    const payload = {
+      vehicle_id: selectedVehicle?._id,
+      items: form,
+    };
+    var isAllFieldSupplied = true;
+    // check if all items keys has supplied value.
+    for (let i = 0; i < form.length; i++) {
+      for (key in form[i]) {
+        if (form[i][key].length && payload?.vehicle_id) {
+          isAllFieldSupplied = true;
+        } else {
+          isAllFieldSupplied = false;
+          break;
+        }
+      }
+    }
+    if (isAllFieldSupplied) {
+      const res = await apiPost({
+        url: "/api/delivery",
+        payload: payload,
+      });
+      console.log("postData", res);
+      const status = res?.error?.response?.status;
+      if (res.data && !res?.error) {
+        // reset
+        // annother alert that success
+        togglePrompt();
+        handleReset();
+      } else if (status === 409) {
+        setErrorMessage(
+          "You cannot create another delivery while you have an ongoing delivery."
+        );
+        toggleErrorModal();
+      } else {
+        setErrorMessage(
+          "Sorry, something went wrong. If this message keeps showing, please try to restart the app."
+        );
+        toggleErrorModal();
+      }
+    } else {
+      setErrorMessage("All fields are required.");
+      toggleErrorModal();
+    }
+  };
+
   return (
     <SafeAreaView className="m-1 bg-gray-50 p-2 flex-1 ">
       <ScrollView>
@@ -113,7 +186,20 @@ const ActionNewDelivery = ({ navigation }) => {
           selectedGallons={selectedGallons}
           dispatchSelectedGallons={dispatchSelectedGallons}
         />
-
+        <ErrorMessageModal
+          message={errorMessage}
+          toggleModal={toggleErrorModal}
+          isModalVisible={isErrorModalVisible}
+          animationOutTiming={100}
+        />
+        <PromptModal
+          confirmText="Yes"
+          confirmHandler={handleSubmit}
+          message="Do you want to proceed?"
+          toggleModal={togglePrompt}
+          isModalVisible={isShownPrompt}
+          animationOutTiming={200}
+        />
         {/* gallons  */}
         <View className="flex-row items-center justify-around w-full ">
           <View className=" h-[140px] w-[100px]">
@@ -240,15 +326,25 @@ const ActionNewDelivery = ({ navigation }) => {
         )}
       </ScrollView>
       <View className="flex-row justify-between ">
-        <TouchableOpacity className="w-[49%] py-3 flex-row bg-gray-50 border-[1px] border-gray-200 justify-center items-center rounded-xl">
+        <TouchableOpacity
+          onPress={handleReset}
+          className="w-[49%] py-3 flex-row bg-gray-50 border-[1px] border-gray-200 justify-center items-center rounded-xl"
+        >
           <Pressable>
             <Text className="text-center text-red-500">Reset</Text>
           </Pressable>
         </TouchableOpacity>
-        <TouchableOpacity className="w-[49%] py-3 bg-[#2389DA] flex-row justify-center items-center rounded-xl">
-          <Pressable>
+        <TouchableOpacity
+          onPress={() => {
+            if (form.length && selectedVehicle) {
+              togglePrompt();
+            }
+          }}
+          className="w-[49%] py-3 bg-[#2389DA] flex-row justify-center items-center rounded-xl"
+        >
+          
             <Text className="text-center text-gray-50">Create</Text>
-          </Pressable>
+        
         </TouchableOpacity>
       </View>
     </SafeAreaView>

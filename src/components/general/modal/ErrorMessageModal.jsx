@@ -16,7 +16,12 @@ import {
 import React from "react";
 import Modal from "react-native-modal";
 
-const ErrorMessageModal = ({ message, toggleModal, isModalVisible }) => {
+const ErrorMessageModal = ({
+  message,
+  toggleModal,
+  isModalVisible,
+
+}) => {
   return (
     <Modal
       isVisible={isModalVisible}
@@ -25,7 +30,7 @@ const ErrorMessageModal = ({ message, toggleModal, isModalVisible }) => {
         <Text className="text-center">{message}</Text>
         <View className="flex-row gap-x-3 justify-around w-full p-2">
           <TouchableOpacity onPress={toggleModal}>
-            <Text className="text-blue-600">Ok</Text>
+            <Text className="text-blue-600 font-bold">OK</Text>
           </TouchableOpacity>
         </View>
       </View>

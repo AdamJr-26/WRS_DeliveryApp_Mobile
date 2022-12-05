@@ -17,7 +17,7 @@ import useFetch from "../../hooks/api/swr/useFetch";
 
 const ChooseVehicleModal = ({ setIsShow, isShow, setSelectedVehicle }) => {
   const { data, error } = useFetch({
-    url: "/api/vehicles",
+    url: "/api/vehicles/available",
   });
   const vehicles = data?.data;
 
@@ -35,15 +35,15 @@ const ChooseVehicleModal = ({ setIsShow, isShow, setSelectedVehicle }) => {
         horizontal={true}
         showsVerticalScrollIndicator={false}
       >
-        <View className="flex-1 flex-col justify-between ">
+        <View className="flex-1 flex-col justify-between w-full">
           <View className=" h-auto flex-1">
             <Pressable
               className="h-full"
               onPress={() => setIsShow(!isShow)}
             ></Pressable>
           </View>
-          <View className=" bg-white h-200 p-5 flex gap-y-2">
-            <Text className="font-bold text-gray-700 text-[24px]">
+          <View className=" bg-white h-200 p-5 flex gap-y-2 w-full">
+            <Text className="font-bold text-gray-700 text-[24px] w-full">
               Choose Vehicle
             </Text>
             <View className="flex-row gap-x-5">

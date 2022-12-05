@@ -18,6 +18,8 @@ import {
 import { DragSortableView } from "react-native-drag-sort";
 import { orders } from "../../services/utils/dummyData";
 import RenderSortTableView from "../../components/deliveries/RenderSortTableView";
+import useFetch from "../../hooks/api/swr/useFetch";
+
 const Delivery = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -27,7 +29,6 @@ const Delivery = () => {
   }, []);
   const getVW = Dimensions.get("screen").width;
   const getVH = Dimensions.get("screen").height;
-
 
   return (
     <View className={Platform.OS === "android" ? "pt-5" : "pt-0"}>
