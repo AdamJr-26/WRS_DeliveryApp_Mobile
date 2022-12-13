@@ -14,7 +14,7 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import AuthEmailTextInput from "../../../components/auth/AuthEmailTextInput";
@@ -31,6 +31,7 @@ const Login = ({ navigation }) => {
   const windowWidth = Dimensions.get("screen").width;
   const windowHeight = Dimensions.get("screen").height;
   const { login } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const loginValidationSchema = Yup.object().shape({
     gmail: Yup.string()
       .email("Please enter valid gmail")
@@ -61,16 +62,18 @@ const Login = ({ navigation }) => {
             validationSchema={loginValidationSchema}
             initialValues={{ gmail: "", password: "" }}
             onSubmit={async (values) => {
-              console.log("logging in");
+              setIsSubmitting(true);
               const { success, error } = await login(values);
               if (success && !error) {
+                console.log("logging in");
                 // navigation.navigate("Home");
               } else {
-                const errorData = error?.response?.data
+                const errorData = error?.response?.data;
                 console.log(errorData);
-                Alert.alert(errorData?.errors?.login_personel?.fullError)
+                Alert.alert(errorData?.errors?.login_personel?.fullError);
                 // display modal that login failed
               }
+              setIsSubmitting(false);
             }}
           >
             {({
@@ -95,7 +98,7 @@ const Login = ({ navigation }) => {
                   </TouchableWithoutFeedback>
                   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <AuthPasswordTextInput
-                    placeholder="Password"
+                      placeholder="Password"
                       values={values.password}
                       onChangeText={handleChange("password")}
                       onBlur={handleBlur("password")}
@@ -117,6 +120,7 @@ const Login = ({ navigation }) => {
                   disabled={!isValid}
                   onPress={handleSubmit}
                   text="Login"
+                  isLoading={isSubmitting}
                 />
               </>
             )}

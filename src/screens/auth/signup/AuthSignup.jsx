@@ -12,8 +12,9 @@ import {
   ScrollView,
   TextInput,
   Button,
+  ActivityIndicator,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppTextInput from "../../../components/general/AppTextInput";
 import { Formik } from "formik";
 import AuthEmailTextInput from "../../../components/auth/AuthEmailTextInput";
@@ -24,13 +25,25 @@ import * as Yup from "yup";
 import AppButton from "../../../components/general/AppButton";
 import PromptModal from "../../../components/general/modal/PromptModal";
 import ErrorMessageModal from "../../../components/general/modal/ErrorMessageModal";
+
 const AuthSignup = ({ navigation }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // modal
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+  // error modal
   const [isErrorModalVisible, setIsErrorModalVisible] = React.useState(false);
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
+
+  // not verified account
+  const [verifyEmail, setVerifyEmail] = useState();
+  const [verifyModal, setVerifyModal] = useState(false);
+  const toggleNotVerifiedModal = () => {
+    setVerifyModal(!verifyModal);
+  };
+
   const toggleErrorModal = () => {
     setIsErrorModalVisible(!isErrorModalVisible);
   };
@@ -45,10 +58,10 @@ const AuthSignup = ({ navigation }) => {
   const { signUp } = useAuth();
 
   const signupValidation = Yup.object().shape({
-    wrs_id: Yup.string(),
     gmail: Yup.string()
       .email("Please enter valid gmail")
-      .required("Gmail Address is Required"),
+      .required("Gmail Address is Required")
+      .lowercase(),
     nickname: Yup.string(),
     firstname: Yup.string().required("Firstname is required"),
     lastname: Yup.string(),
@@ -72,26 +85,28 @@ const AuthSignup = ({ navigation }) => {
       validationSchema={signupValidation}
       initialValues={{
         wrs_id: "",
-        gmail: "adam@gmail.com ",
+        gmail: "",
         nickname: "",
-        firstname: "adam",
+        firstname: "",
         lastname: "",
         contact_number: "",
-        age: "19",
-        gender: "male",
+        age: "",
+        gender: "",
         address: "",
-        password: "adam123",
-        confirm_password: "adam123",
+        password: "",
+        confirm_password: "",
       }}
       onSubmit={async (values) => {
+        setIsSubmitting(true);
         const { res, error } = await signUp(values);
         if (res?.data.code === 200 && !error) {
           const { isExist, success, verified, gmail } = res.data.data;
           // data": {"isExist": true, "success": false, "verified": false}
-          if (isExist && !verified && !success) {
-            // if the user is existing but not yet verified then redirect to verification page/otp.
-            // pop up modal tell that the account is already exist but not yet verified. ask if forgot password or continue to verify.
-            toggleModal();
+          if (isExist && !verified && !success && gmail) {
+            // toggleNotVerifiedModal(gmail)
+            setVerifyEmail(gmail);
+            setIsSubmitting(false);
+            toggleNotVerifiedModal();
             console.log(
               "existing but not verified yet and asking if continue or forgot password"
             );
@@ -99,15 +114,19 @@ const AuthSignup = ({ navigation }) => {
             // if the register success and user not existing.
             console.log("navigating to enter otp");
             navigation.navigate("Verify Signup", { email: gmail });
+            setIsSubmitting(false);
           } else if (!success && isExist && verified) {
             // if verified
             toggleModal();
+            setIsSubmitting(false);
           } else {
             toggleErrorModal();
+            setIsSubmitting(false);
           }
         } else {
           toggleErrorModal();
           console.log(res);
+          setIsSubmitting(false);
         }
       }}
     >
@@ -129,6 +148,20 @@ const AuthSignup = ({ navigation }) => {
             message="Account already exists"
             toggleModal={toggleModal}
             isModalVisible={isModalVisible}
+            animationOutTiming={200}
+          />
+          <PromptModal
+            confirmText="Verify"
+            confirmHandler={() => {
+              console.log("verifyEmail", verifyEmail);
+              navigation.navigate("Verify Signup", {
+                email: verifyEmail,
+                sendOnRender: true,
+              });
+            }}
+            message="This email is already exist, but not verified yet. do you want to verify now?"
+            toggleModal={toggleNotVerifiedModal}
+            isModalVisible={verifyModal}
             animationOutTiming={200}
           />
           <ErrorMessageModal
@@ -154,18 +187,8 @@ const AuthSignup = ({ navigation }) => {
               Sign up
             </Text>
             <View className="p-2 flex-1 flex-col bg-white rounded-xl">
-              <View className="my-5">
-                <AppTextInput
-                  values={values.wrs_id}
-                  label="WRS ID"
-                  placeholder="ex. Jhsk01"
-                  onChangeText={handleChange("wrs_id")}
-                  onBlur={handleBlur("wrs_id")}
-                  errors={errors.wrs_id}
-                />
-              </View>
               <AuthEmailTextInput
-                values={values.gmail}
+                values={values.gmail.toLowerCase()}
                 label="Email"
                 placeholder="sample@gmail.com"
                 onChangeText={handleChange("gmail")}
@@ -259,6 +282,7 @@ const AuthSignup = ({ navigation }) => {
               disabled={!isValid}
               onPress={handleSubmit}
               text="Sign Up"
+              isLoading={isSubmitting}
             />
             <View>
               <Text className="text-center text-gray-500  mt-3 ">

@@ -225,7 +225,7 @@ const ActionNewDelivery = ({ navigation }) => {
           <View className=" h-[140px] w-[100px]">
             <TouchableOpacity
               onPress={() => {
-                mutate("/api/gallons");
+                mutate("/api/gallons/availables");
                 setSelectGallonModal(!selectGallonModal);
               }}
               className="items-center justify-center border-[1px] border-gray-200 overflow-hidden shadow-xl shadow-gray-200 bg-white h-[100px] w-[100px] rounded-xl"

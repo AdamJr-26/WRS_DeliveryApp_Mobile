@@ -6,12 +6,17 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import heroes from "../../../assets/hero";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { apiPut } from "../../services/api/axios.put";
+import { useAuth } from "../../hooks/auth";
+import { useSWRConfig } from "swr";
+
 const Apply = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -19,7 +24,9 @@ const Apply = ({ navigation }) => {
     });
   }, []);
   const windowHeight = Dimensions.get("screen").height;
-
+  const { logout } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { mutate } = useSWRConfig();
   return (
     <View className={Platform.OS === "android" ? "pt-5 flex-1" : "pt-0"}>
       <ScrollView
@@ -46,16 +53,25 @@ const Apply = ({ navigation }) => {
                 .max(16, "Max apply id is 16 characters/letters"),
             })}
             onSubmit={async (values) => {
+              setIsSubmitting(true);
               const { data, error } = await apiPut({
                 url: "/api/personel/apply-id",
                 payload: values,
               });
-              console.log("data", data);
+
               if (data && !error) {
-                navigation.replace("Get Started");
-                
+                // mutate
+                setIsSubmitting(false);
+                mutate("/api/delivery-personel/profile");
+                navigation.replace("Get Started", {
+                  data,
+                });
+              } else if (error?.response?.data?.code === 409) {
+                Alert.alert("Sorry we cannot find that apply ID");
+                setIsSubmitting(false);
               } else {
                 console.log("error", error);
+                setIsSubmitting(false);
               }
             }}
           >
@@ -92,14 +108,14 @@ const Apply = ({ navigation }) => {
                   </Text>
                   <View className="p-3">
                     <Text className="font-regular text-gray-500 text-[14px] mb-3">
-                      1. To get started you must contain apply id.
+                      1. To get started you must contain apply ID.
                     </Text>
                     <Text className="font-regular text-gray-500 text-[14px] mb-3">
-                      2. To have your apply id, contact your water refilling
-                      station admin to create one your appy id.
+                      2. To obtain your apply ID, contact the administrator of
+                      your water refilling station. 
                     </Text>
                     <Text className="font-regular text-gray-500 text-[14px] mb-3">
-                      3. Put your id from above input field and click apply
+                      3. Put your ID in the above input field and click Apply.
                     </Text>
                   </View>
                 </View>
@@ -108,7 +124,7 @@ const Apply = ({ navigation }) => {
                   className="h-[60px] rounded-xl bg-[#2389DA] flex items-center justify-center"
                 >
                   <Text className=" text-center font-medium text-white">
-                    Apply
+                    {isSubmitting ? <ActivityIndicator /> : "Apply"}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -118,7 +134,7 @@ const Apply = ({ navigation }) => {
             <Text className="text-center text-gray-500">
               If you want to use other account, plase log out first.
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={logout}>
               <Text className="font-bold text-[#2389DA] text-center">
                 Log out
               </Text>

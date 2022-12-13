@@ -10,24 +10,49 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  TextInput,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppTextInput from "../../../components/general/AppTextInput";
 import AppButton from "../../../components/general/AppButton";
 import { useAuth } from "../../../hooks/auth";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import ErrorMessageModal from "../../../components/general/modal/ErrorMessageModal";
+import heroes from "../../../../assets/hero";
+import { apiPost } from "../../../services/api/axios.method";
 
 const EnterOTP = ({ route, navigation }) => {
-  const { email } = route.params;
-  console.log(email);
+  const { email, sendOnRender } = route.params;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // send vefify otp.
   const { verifyPersonel } = useAuth();
   const [isErrorModalVisible, setIsErrorModalVisible] = React.useState(false);
   const toggleErrorModal = () => {
     setIsErrorModalVisible(!isErrorModalVisible);
   };
-
+  const windowHeight = Dimensions.get("screen").height;
+  // resend
+  const [isResending, setIsResending] = useState(false);
+  const resend = () => {
+    setIsResending(true);
+    const { data, error } = apiPost({
+      url: "/auth/resend-otp",
+      payload: { gmail: email },
+    });
+    if (data && !error) {
+      setIsResending(false);
+    } else {
+      setIsResending(false);
+    }
+  };
+  useEffect(() => {
+    if (sendOnRender) {
+      resend();
+    }
+  }, []);
   return (
     <View className="flex-col flex-1 justify-between w-full bg-white p-2 ml-[-2px]">
       <Formik
@@ -38,16 +63,21 @@ const EnterOTP = ({ route, navigation }) => {
           otp: Yup.string().max(16, "OTP must not exceed 16 letters"),
         })}
         onSubmit={async (values) => {
+          setIsSubmitting(true);
           const { res, error } = await verifyPersonel({
-            otp: values.otp,
+            otp: values?.otp,
             gmail: email,
           });
           const data = res?.data;
-          if (data.code === 201 && !error) {
+          if (data?.code === 201 && !error) {
             // display modal taht verification was success and
             //redirecting to login with "ok" button
+            setIsSubmitting(false);
             navigation.navigate("Login");
+            Alert.alert("Your account has been verified successfully.");
           } else {
+            setIsSubmitting(false);
+            Alert.alert("Failed to verify.");
             // display modal that verification is failed and resend again.
           }
         }}
@@ -69,29 +99,59 @@ const EnterOTP = ({ route, navigation }) => {
               animationOutTiming={200}
             />
             {/* =============================================== */}
-            <View className="flex-col gap-y-5 ">
-              <View className="justify-center h-[150px]">
-                <Text className="text-center text-[16px] text-gray-600 font-medium mb-5">
-                  Code has sent to your email {email}
-                </Text>
-                <AppTextInput
-                  placeholder="OTP"
-                  label="Enter OTP"
-                  values={values.otp}
-                  onChangeText={handleChange("otp")}
-                  onBlur={handleBlur("otp")}
-                  errors={errors.otp}
-                />
-              </View>
-              <View className="flex-row gap-2 my-5">
-                <Text>Didn't receive the code?</Text>
-                <TouchableOpacity>
-                  <Text className="font-bold text-[#2389DA]">
-                    Request Again
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View className="flex-col gap-y-5 ">
+                <View className="justify-center ">
+                  <View>
+                    <View
+                      style={{
+                        height: windowHeight / 4,
+                        width: windowHeight / 4,
+                        overflow: "hidden",
+                      }}
+                      className="bg-gray-200 self-center"
+                    >
+                      <Image
+                        source={heroes.verify}
+                        className="h-full w-full "
+                      />
+                    </View>
+                  </View>
+
+                  <Text className="p-2 font-semibold text-[14px] mb-5">
+                    Hello, {email} we've sent you a one time password. Please
+                    check your mail.
                   </Text>
-                </TouchableOpacity>
+
+                  <View className="bg-gray-100 m-1 p-5 rounded-xl flex-col gap-y-3">
+                    <Text className="text-[20px] font-bold text-center">
+                      Verify Email
+                    </Text>
+                    <TextInput
+                      className="bg-white h-[60px] font-bold rounded-xl border-[#2389DA] border-[2px] text-center"
+                      placeholder="r4ND0MstR"
+                      values={values.otp}
+                      onChangeText={handleChange("otp")}
+                      onBlur={handleBlur("otp")}
+                      errors={errors.otp}
+                    />
+                    {errors && (
+                      <Text className="text-red-500 font-400 text-[10px] ">
+                        {errors.otp}
+                      </Text>
+                    )}
+                  </View>
+                </View>
+                <View className="flex-row gap-1">
+                  <Text>Didn't receive the code?</Text>
+                  <TouchableOpacity onPress={resend}>
+                    <Text className="font-bold text-[#2389DA]">
+                      {isResending ? "sending..." : "resend"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
+            </ScrollView>
             <View className="h-[50px] items-center justify-center">
               {/* <Text>loadding screen when trying to resent request</Text> */}
             </View>

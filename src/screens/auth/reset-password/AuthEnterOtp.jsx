@@ -10,12 +10,15 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppTextInput from "../../../components/general/AppTextInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { axios } from "../../../services/api/axios";
+import { apiPost } from "../../../services/api/axios.method";
+
 const AuthEnterOtp = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
@@ -25,6 +28,8 @@ const AuthEnterOtp = ({ route, navigation }) => {
   const windowWidth = Dimensions.get("screen").width;
   const windowHeight = Dimensions.get("screen").height;
   const { gmail } = route.params;
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     <View className={Platform.OS === "android" ? "pt-5 " : "pt-0"}>
       <ScrollView showsVerticalScrollIndicator={false} className="p-2">
@@ -53,22 +58,27 @@ const AuthEnterOtp = ({ route, navigation }) => {
             otp: Yup.string().required("OTP is Required"),
           })}
           onSubmit={async (values) => {
-            try {
-              const res = await axios.post("/auth/verify-top/personel", {
+            setIsSubmitting(true);
+            const { data, error } = await apiPost({
+              url: "/auth/verify-top/personel",
+              payload: {
                 gmail: gmail,
-                otp: values.otp,
+                otp: values?.otp,
+              },
+            });
+            console.log("data", data);
+            if (data?.data?.gmail && data?.data?.token) {
+              setIsSubmitting(false);
+              navigation.navigate("new password", {
+                otp: data?.data?.token,
+                gmail: data?.data?.gmail,
               });
-              const data = res.data.data;
-              console.log("res.data", data.token);
-              if (data.gmail && data.token) {
-                navigation.navigate("new password", {
-                  otp: data.token,
-                  gmail: data.gmail,
-                });
-              }
-              
-            } catch (error) {
-              console.log("errror", error.response);
+            } else if (error?.response?.data?.code === 409) {
+              Alert.alert("Please enter a valid OTP");
+            } else {
+              setIsSubmitting(false);
+              Alert.alert("Something went wrong, please try again.");
+              console.log("[ERROR FORGOT PASSWORD.]", error);
             }
           }}
         >
@@ -97,7 +107,9 @@ const AuthEnterOtp = ({ route, navigation }) => {
                 className="mt-5 p-4 bg-[#2389DA] flex-row items-center justify-center rounded-2xl"
               >
                 <Pressable>
-                  <Text className="text-gray-50 font-bold">Submit</Text>
+                  <Text className="text-gray-50 font-bold">
+                    {isSubmitting ? <ActivityIndicator /> : "Submit"}
+                  </Text>
                 </Pressable>
               </TouchableOpacity>
             </>

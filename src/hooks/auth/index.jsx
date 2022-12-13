@@ -16,7 +16,7 @@ export const UserProvider = ({ children }) => {
       console.log("[REVALIDATE USER ] userToken",userToken)
       const res = await axiosAPI().get("/api/delivery-personel/profile");
       const data = res.data?.data;
-
+console.log("data",res.data)
       if (data) {
         setIsLoggedIn(true);
         setIsLoading(false);
@@ -27,7 +27,7 @@ export const UserProvider = ({ children }) => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.log("errrr", error)
+      console.log("errrr", JSON.stringify(error))
       await SecureStore.deleteItemAsync("userToken");
       setIsLoggedIn(null);
       setIsLoading(false);
@@ -46,8 +46,8 @@ export const UserProvider = ({ children }) => {
       const userToken = res.data?.data?.token
       await SecureStore.setItemAsync("userToken", userToken);
 
-      // update header: authorizaton
-      axiosAPI().defaults.headers.common['Authorization'] = userToken;
+      // // update header: authorizaton
+      // axiosAPI().defaults.headers.common['Authorization'] = userToken;
 
       // revalidate the user as much as possible ahha
       revalidateUser();

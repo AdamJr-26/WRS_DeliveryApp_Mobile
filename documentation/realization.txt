@@ -1,0 +1,6 @@
+
+
+bago mag change yung inventory sa borrowed,
+returned, paid na may kinalaman sa inventory dapat yung delivery
+ay naka balik na. para for example yung gallon  ay actual na
+nandun at pwede na irifill.

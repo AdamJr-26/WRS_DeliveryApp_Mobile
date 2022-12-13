@@ -1,0 +1,5 @@
+
+export-image-picker
+
+issue : Invariant Violation: requireNativeComponent: "RNCSafeAreaProvider" was not found in the UIManager.
+solution: update expo cli

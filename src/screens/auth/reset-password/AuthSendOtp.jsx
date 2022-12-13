@@ -10,12 +10,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AppTextInput from "../../../components/general/AppTextInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { axios } from "../../../services/api/axios";
+import { apiPost } from "../../../services/api/axios.method";
 import AuthEmailTextInput from "../../../components/auth/AuthEmailTextInput";
 // import AuthTextInput from "../../../components/auth/AuthTextInput";
 const AuthSendOtp = ({ navigation }) => {
@@ -26,7 +28,7 @@ const AuthSendOtp = ({ navigation }) => {
   }, []);
   const windowWidth = Dimensions.get("screen").width;
   const windowHeight = Dimensions.get("screen").height;
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     <View className={Platform.OS === "android" ? "pt-5 " : "pt-0"}>
       <ScrollView showsVerticalScrollIndicator={false} className="p-2">
@@ -57,14 +59,24 @@ const AuthSendOtp = ({ navigation }) => {
                 .required("Email Address is Required"),
             })}
             onSubmit={async (values) => {
-              try {
-                const res = await axios.post("/auth/send-otp/personel", values);
-                if(res.data){
-                  navigation.navigate("Enter OTP",{gmail: values.gmail})
-                }
-              } catch (error) {
-                console.log("errrrrrror", error);
+              setIsSubmitting(true)
+              const { data, error } = await apiPost({
+                url: "/auth/send-otp/personel",
+                payload: {
+                  gmail: values?.gmail,
+                },
+              });
+              if (data && !error) {
+                navigation.navigate("Enter OTP", { gmail: values.gmail });
+              } else if (error.response?.data?.code === 409) {
+                Alert.alert("We can't find a user with that email address.");
+              } else {
+                // erro
+                const statusCode = error.response?.data?.code;
+                Alert.alert("Something went wrong, please try again.");
+                console.log("statusCode", statusCode);
               }
+              setIsSubmitting(false)
             }}
           >
             {({
@@ -92,7 +104,9 @@ const AuthSendOtp = ({ navigation }) => {
                   className="mt-5 p-4 bg-[#2389DA] flex-row items-center justify-center rounded-2xl"
                 >
                   <Pressable>
-                    <Text className="text-gray-50 font-bold">Submit</Text>
+                    <Text className="text-gray-50 font-bold">
+                      {isSubmitting ? <ActivityIndicator /> : "Submit"}
+                    </Text>
                   </Pressable>
                 </TouchableOpacity>
               </>

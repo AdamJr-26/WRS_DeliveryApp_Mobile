@@ -18,8 +18,9 @@ import MatComIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AppTextInput from "../../../components/general/AppTextInput";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { axios } from "../../../services/api/axios";
+
 import AuthPasswordTextInput from "../../../components/auth/AuthPasswordTextInput";
+import { apiPost } from "../../../services/api/axios.method";
 
 const AuthNewPassword = ({ route, navigation }) => {
   useEffect(() => {
@@ -70,19 +71,19 @@ const AuthNewPassword = ({ route, navigation }) => {
               .required("Confirm password is required"),
           })}
           onSubmit={async (values) => {
-            try {
-              const res = await axios.post("/auth/new-password/personel", {
+            const { data, error } = await apiPost({
+              url: "/auth/new-password/personel",
+              payload: {
                 gmail: gmail,
                 token: otp,
                 new_password: values.new_password,
                 confirm_new_password: values.confirm_new_password,
-              });
-              console.log("res.data", res.data);
-              if (res.data) {
-                Alert.alert("Forgot Password Successfully");
-                navigation.navigate("Login");
-              }
-            } catch (error) {
+              },
+            });
+            if (data && !error) {
+              Alert.alert("Your password has been changed successfully.");
+              navigation.navigate("Login");
+            } else {
               console.log("errorrrr", error);
               Alert.alert("session Expired, please try again");
             }

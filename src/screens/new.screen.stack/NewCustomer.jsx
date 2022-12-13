@@ -4,103 +4,272 @@ import {
   ScrollView,
   Pressable,
   TouchableOpacity,
+  Image,
+  RefreshControl,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import AppTextInput from "../../components/general/AppTextInput";
-const ActionNewCustomer = () => {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [gender, setGender] = useState("");
+import { Formik } from "formik";
+import * as Yup from "yup";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import * as ImagePicker from "expo-image-picker";
+import { createCustomer } from "../../services/api/api.create.customer";
 
-  const [contactNumber, setContactNumber] = useState();
-  const [email, setEmail] = useState("");
 
-  const [province, setProvince] = useState("");
-  const [muniCity, setMuniCity] = useState("");
-  const [barangay, setBarangay] = useState("");
-  const [street, setStreet] = useState("");
+const ActionNewCustomer = ({navigation}) => {
 
+  // REFRESH
+  const [refreshing, setIsRefreshing] = useState(false);
+  const onRefresh =
+  useCallback(() => {
+    setIsRefreshing(true);
+  },
+  []);
+
+  // IMAGE PICK
+  const [image, setImage] = useState(null);
+  const [gender, setGender] = useState(null);
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
+      });
+      if (!result?.cancelled) {
+        const resImage = {
+          buffer: `image/jpg;base64;${result?.base64}`,
+          uri: result?.uri,
+          type: result?.type,
+          name: result?.fileName,
+          height: result?.height,
+        };
+        setImage(resImage);
+      } else {
+        setImage(null);
+      }
+    } catch (error) {
+      setImage(null);
+      console.log("error", error);
+    }
+  };
+
+  // FORMIK
+  const customerInitialValue = {
+    firstname: "",
+    lastname: "",
+    mobile_number: "",
+    province: "",
+    municipal_city: "",
+    barangay: "",
+    street: "",
+  };
+  const customerValidation = Yup.object().shape({
+    firstname: Yup.string()
+      .max(30, "Must not exceed 30 letters")
+      .required("Firstname is required"),
+    lastname: Yup.string().max(30, "Must not exceed 30 letters"),
+    mobile_number: Yup.string().max(
+      11,
+      "Invalid mobile number, please start with 09"
+    ),
+    province: Yup.string()
+      .max(30, "Must not exceed 30 letters")
+      .required("Province is required"),
+    municipal_city: Yup.string().max(30, "Must not exceed 30 letters"),
+    barangay: Yup.string()
+      .max(30, "Must not exceed 30 letters")
+      .required("Barangay is required"),
+    street: Yup.string().max(30, "Must not exceed 30 letters"),
+  });
   return (
-    <ScrollView showsVerticalScrollIndicator={false} className="m-2 p-2 rounded-xl shadow-lg shadow-gray-400 bg-white ">
-      <View className="flex-col p-2 ">
-        <Text className="font-bold text-gray-700">Name</Text>
-        <AppTextInput
-          label="Firstname *"
-          placeholder="Firstname"
-          value={firstname}
-          setValue={setFirstname}
-        />
-        <AppTextInput
-          label="Lastname"
-          placeholder="Lastname"
-          value={lastname}
-          setValue={setLastname}
-        />
-        <AppTextInput
-          label="Gender"
-          placeholder="Gender"
-          value={gender}
-          type=""
-          setValue={setGender}
-        />
-      </View>
-      <View className="p-2">
-        <Text className="font-bold text-gray-700">Contact Information</Text>
-        <AppTextInput
-          label="Number"
-          placeholder="09xxxxxxxxx"
-          value={contactNumber}
-          type="numeric"
-          setValue={setContactNumber}
-        />
-        <AppTextInput
-          label="Email"
-          placeholder="Add email"
-          value={email}
-          type=""
-          setValue={setEmail}
-        />
-      </View>
-      <View className="p-2">
-        <Text className="font-bold text-gray-700">Address</Text>
-        <AppTextInput
-          label="province"
-          placeholder="Province"
-          value={province}
-          type=""
-          setValue={setProvince}
-        />
-        <AppTextInput
-          label="Municipality / City"
-          placeholder="Municipality / City"
-          value={muniCity}
-          type=""
-          setValue={setMuniCity}
-        />
-        <AppTextInput
-          label="Barangay"
-          placeholder="Barangay"
-          value={barangay}
-          type=""
-          setValue={setBarangay}
-        />
-        <AppTextInput
-          label="Street, Building, House no."
-          placeholder="Street, Building, House no."
-          value={street}
-          type=""
-          setValue={setStreet}
-        />
-      </View>
-      <View className="flex-col items-center justify-center w-full">
-        <TouchableOpacity className="bg-blue-800 py-3 w-full  rounded-full">
-          <Text className="w-full text-center  font-semibold text-gray-50">
-            create
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <Text>{firstname}</Text>
-    </ScrollView>
+    <View className="flex-col flex-1 bg-white">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl= {
+          <RefreshControl refreshing = {refreshing} onRefresh={onRefresh} />
+        } 
+        className="p-2 rounded-xl shadow-lg shadow-gray-400 bg-white "
+
+      >
+        <Formik
+          initialValues={customerInitialValue}
+          validationSchema={customerValidation}
+          onSubmit={async (values,actions) => {
+            const body = {
+              ...values,
+              gender: gender,
+            };
+            const file = image;
+            const { data, error } = await createCustomer(file, body);
+            if (data && !error) {
+              console.log("data", data);
+              setImage(null)
+              setGender(null)
+              actions.resetForm({values: customerInitialValue})
+              navigation.navigate("Customers")
+              
+            }
+          }}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            isValid,
+          }) => (
+            <View className="mb-5">
+              <View className="items-center justify-center">
+                <Text>Pick an image</Text>
+                {image?.uri ? (
+                  <Pressable
+                    onPress={() => setImage(null)}
+                    className="absolute right-10 bg-[#2389DA] p-1 rounded-xl "
+                  >
+                    <Text className="text-white">Remove</Text>
+                  </Pressable>
+                ) : (
+                  ""
+                )}
+                <TouchableOpacity
+                  onPress={pickImage}
+                  className="mt-2 h-[100px] w-[100px] border-[2px] border-gray-100 items-center justify-center rounded-lg"
+                >
+                  {image ? (
+                    <Image
+                      source={{
+                        uri: image?.uri,
+                      }}
+                      className=" w-[100px] h-[100px] rounded-xl "
+                    />
+                  ) : (
+                    <Ionicons name="image" size={32} />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <View className="mt-5">
+                <View className="flex ">
+                  <Text className="tex-[16px] font-bold text-gray-600 text-center">
+                    Basic Info
+                  </Text>
+                  <View className="p-1">
+                    <AppTextInput
+                      label="Firstname"
+                      values={values.firstname}
+                      placeholder="Juan"
+                      onChangeText={handleChange("firstname")}
+                      onBlur={handleBlur("firstname")}
+                      errors={errors.firstname}
+                    />
+                    <AppTextInput
+                      label="Lastname"
+                      values={values.lastname}
+                      placeholder="Dela Cruz"
+                      onChangeText={handleChange("lastname")}
+                      onBlur={handleBlur("lastname")}
+                      errors={errors.lastname}
+                    />
+                    <AppTextInput
+                      label="Mobile number"
+                      values={values.mobile_number}
+                      placeholder="09xxxxxxxxx"
+                      onChangeText={handleChange("mobile_number")}
+                      keyboardType= "numeric"
+                      onBlur={handleBlur("mobile_number")}
+                      errors={errors.mobile_number}
+                    />
+                    <View>
+                      <Text className="mt-2 font-bold text-gray-600">
+                        Select gender
+                      </Text>
+                      <View className="flex-row mt-2 ">
+                        <Pressable
+                          onPress={() => setGender("Female")}
+                          className={
+                            gender === "Female"
+                              ? "border-[2px] border-blue-400 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                              : "border-[1px] border-gray-300 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                          }
+                        >
+                          <Text>Female</Text>
+                        </Pressable>
+                        <Pressable
+                          onPress={() => setGender("Male")}
+                          className={
+                            gender === "Male"
+                              ? " border-[2px] border-blue-400 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                              : "border-[1px] border-gray-300 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                          }
+                        >
+                          <Text>Male</Text>
+                        </Pressable>
+                      </View>
+                    </View>
+                    <View className="flex mt-5">
+                      <Text className="tex-[16px] font-bold text-gray-600 text-center">
+                        Address
+                      </Text>
+                      <AppTextInput
+                        label="Province"
+                        values={values.province}
+                        placeholder="Province"
+                        onChangeText={handleChange("province")}
+                        onBlur={handleBlur("province")}
+                        errors={errors.province}
+                      />
+                      <AppTextInput
+                        label="Municipality / City"
+                        values={values.municipal_city}
+                        placeholder="Municipality / City"
+                        onChangeText={handleChange("municipal_city")}
+                        onBlur={handleBlur("municipal_city")}
+                        errors={errors.municipal_city}
+                      />
+                      <AppTextInput
+                        label="Barangay"
+                        values={values.barangay}
+                        placeholder="Barangay"
+                        onChangeText={handleChange("barangay")}
+                        onBlur={handleBlur("barangay")}
+                        errors={errors.barangay}
+                      />
+                      <AppTextInput
+                        label="House no. street"
+                        values={values.street}
+                        placeholder="House no. street"
+                        onChangeText={handleChange("street")}
+                        onBlur={handleBlur("street")}
+                        errors={errors.street}
+                      />
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View className="flex-row items-center justify-between w-full mt-5">
+                <TouchableOpacity className="w-[49%] bg-gray-200 py-3 rounded-3xl">
+                  <Text className="w-full text-center  font-semibold text-gray-700">
+                    Reset
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  className="w-[49%] bg-[#2389DA] py-3 rounded-3xl"
+                >
+                  <Text className="w-full text-center  font-semibold text-gray-50">
+                    Create
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </Formik>
+      </ScrollView>
+    </View>
   );
 };
 
