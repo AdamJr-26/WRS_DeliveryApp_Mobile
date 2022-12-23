@@ -25,6 +25,7 @@ import * as Yup from "yup";
 import AppButton from "../../../components/general/AppButton";
 import PromptModal from "../../../components/general/modal/PromptModal";
 import ErrorMessageModal from "../../../components/general/modal/ErrorMessageModal";
+import DateTimePicker from "../../../components/general/DateTimePicker";
 
 const AuthSignup = ({ navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,7 +67,6 @@ const AuthSignup = ({ navigation }) => {
     firstname: Yup.string().required("Firstname is required"),
     lastname: Yup.string(),
     age: Yup.number(),
-    gender: Yup.string(),
     contact_number: Yup.number(),
     address: Yup.string(),
     password: Yup.string()
@@ -79,6 +79,9 @@ const AuthSignup = ({ navigation }) => {
       .max(16, "Password must not exceed 16 letters")
       .required("Confirm password is required"),
   });
+  // karugtong ng form
+  const [gender, setGender] = useState("");
+  const [birthday, setBirthday] = useState("");
 
   return (
     <Formik
@@ -91,14 +94,17 @@ const AuthSignup = ({ navigation }) => {
         lastname: "",
         contact_number: "",
         age: "",
-        gender: "",
         address: "",
         password: "",
         confirm_password: "",
       }}
       onSubmit={async (values) => {
         setIsSubmitting(true);
+        values["gender"] = gender;
+        values["birthday"] = Math.floor(new Date(birthday).valueOf() / 1000);
+        values?.gmail.toLowerCase()
         const { res, error } = await signUp(values);
+
         if (res?.data.code === 200 && !error) {
           const { isExist, success, verified, gmail } = res.data.data;
           // data": {"isExist": true, "success": false, "verified": false}
@@ -219,23 +225,41 @@ const AuthSignup = ({ navigation }) => {
                 onBlur={handleBlur("lastname")}
                 errors={errors.lastname}
               />
-              <AppTextInput
-                values={values.gender}
-                label="Gender"
-                placeholder="Select Gender"
-                onChangeText={handleChange("gender")}
-                onBlur={handleBlur("gender")}
-                errors={errors.gender}
-              />
-              <AppTextInput
-                values={values.age}
-                label="Age"
-                keyboardType="numeric"
-                placeholder=""
-                onChangeText={handleChange("age")}
-                onBlur={handleBlur("age")}
-                errors={errors.age}
-              />
+              <View>
+                <Text className="mt-2 font-bold text-gray-600">
+                  Select gender
+                </Text>
+                <View className="flex-row mt-2 ">
+                  <TouchableOpacity>
+                    <Pressable
+                      onPress={() => setGender("Female")}
+                      className={
+                        gender === "Female"
+                          ? "border-[2px] border-blue-400 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                          : "border-[1px] border-gray-300 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                      }
+                    >
+                      <Text>Female</Text>
+                    </Pressable>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Pressable
+                      onPress={() => setGender("Male")}
+                      className={
+                        gender === "Male"
+                          ? " border-[2px] border-blue-400 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                          : "border-[1px] border-gray-300 p-2 rounded-xl w-[100px] items-center justify-center ml-2"
+                      }
+                    >
+                      <Text>Male</Text>
+                    </Pressable>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View className="mt-2">
+                <Text className="font-semibold">Birthday</Text>
+                <DateTimePicker date={birthday} setDate={setBirthday} />
+              </View>
               <AppTextInput
                 values={values.firstname}
                 label="Contact Number"
@@ -278,12 +302,14 @@ const AuthSignup = ({ navigation }) => {
               and{" "}
               <Text className="font-bold text-[#2389DA]">Privacy Policy</Text>
             </Text>
-            <AppButton
-              disabled={!isValid}
-              onPress={handleSubmit}
-              text="Sign Up"
-              isLoading={isSubmitting}
-            />
+            <View className="m-2">
+              <AppButton
+                disabled={!isValid}
+                onPress={handleSubmit}
+                text="Sign Up"
+                isLoading={isSubmitting}
+              />
+            </View>
             <View>
               <Text className="text-center text-gray-500  mt-3 ">
                 Already have an account?{" "}

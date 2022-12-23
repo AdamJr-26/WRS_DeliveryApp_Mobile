@@ -15,16 +15,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import { createCustomer } from "../../services/api/api.create.customer";
 
-
-const ActionNewCustomer = ({navigation}) => {
-
+const ActionNewCustomer = ({ navigation }) => {
   // REFRESH
   const [refreshing, setIsRefreshing] = useState(false);
-  const onRefresh =
-  useCallback(() => {
+  const onRefresh = useCallback(() => {
     setIsRefreshing(true);
-  },
-  []);
+  }, []);
 
   // IMAGE PICK
   const [image, setImage] = useState(null);
@@ -89,29 +85,36 @@ const ActionNewCustomer = ({navigation}) => {
     <View className="flex-col flex-1 bg-white">
       <ScrollView
         showsVerticalScrollIndicator={false}
-        refreshControl= {
-          <RefreshControl refreshing = {refreshing} onRefresh={onRefresh} />
-        } 
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         className="p-2 rounded-xl shadow-lg shadow-gray-400 bg-white "
-
       >
         <Formik
           initialValues={customerInitialValue}
           validationSchema={customerValidation}
-          onSubmit={async (values,actions) => {
+          onSubmit={async (values, actions) => {
+            const address = {
+              province: values?.province,
+              municipal_city: values.municipal_city,
+              barangay: values.barangay,
+              street: values.street,
+            };
             const body = {
-              ...values,
-              gender: gender,
+              address,
+              firstname: values.firstname,
+              lastname: values.lastname,
+              mobile_number: values.mobile_number,
+              gender,
             };
             const file = image;
             const { data, error } = await createCustomer(file, body);
             if (data && !error) {
               console.log("data", data);
-              setImage(null)
-              setGender(null)
-              actions.resetForm({values: customerInitialValue})
-              navigation.navigate("Customers")
-              
+              setImage(null);
+              setGender(null);
+              actions.resetForm({ values: customerInitialValue });
+              navigation.navigate("Customers");
             }
           }}
         >
@@ -179,7 +182,7 @@ const ActionNewCustomer = ({navigation}) => {
                       values={values.mobile_number}
                       placeholder="09xxxxxxxxx"
                       onChangeText={handleChange("mobile_number")}
-                      keyboardType= "numeric"
+                      keyboardType="numeric"
                       onBlur={handleBlur("mobile_number")}
                       errors={errors.mobile_number}
                     />

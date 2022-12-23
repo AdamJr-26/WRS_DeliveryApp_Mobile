@@ -50,7 +50,6 @@ const ChooseGallonModal = ({
       }
     }
   };
-  console.log("gallonsgallons", gallons);
   return gallons && !gallonsError ? (
     <Modal
       animationType="slide"
@@ -70,7 +69,7 @@ const ChooseGallonModal = ({
         <View className=" bg-white h-200 p-5 flex gap-y-2">
           <View className="flex-row justify-between">
             <Text className="font-bold text-gray-700 text-[24px]">
-              Choose vehicle
+              Choose gallon
             </Text>
            
             <TouchableOpacity
@@ -80,7 +79,8 @@ const ChooseGallonModal = ({
               <Text className="font-bold text-white">Close</Text>
             </TouchableOpacity>
           </View>
-          <Text className="text-[12px] font-medium text-gray-600">Before selecting gallons, ensure that your chosen vehicle is already loaded. </Text>
+          {/* <Text className="text-[12px] font-medium text-gray-600">Before selecting gallons, ensure that your chosen vehicle is already loaded. </Text> */}
+
           <ScrollView
             className=""
             horizontal={true}

@@ -14,12 +14,14 @@ import React, { useState, useEffect } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MatComIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import useFetch from "../../hooks/api/swr/useFetch";
+import { useSWRConfig } from "swr";
 
 const ChooseVehicleModal = ({ setIsShow, isShow, setSelectedVehicle }) => {
   const { data, error } = useFetch({
     url: "/api/vehicles/available",
   });
   const vehicles = data?.data;
+  const { mutate } = useSWRConfig();
 
   return (
     <Modal
@@ -30,22 +32,31 @@ const ChooseVehicleModal = ({ setIsShow, isShow, setSelectedVehicle }) => {
         setIsShow(!isShow);
       }}
     >
-      <ScrollView
-        className=""
-        horizontal={true}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="flex-1 flex-col justify-between w-full">
-          <View className=" h-auto flex-1">
-            <Pressable
-              className="h-full"
-              onPress={() => setIsShow(!isShow)}
-            ></Pressable>
-          </View>
-          <View className=" bg-white h-200 p-5 flex gap-y-2 w-full">
-            <Text className="font-bold text-gray-700 text-[24px] w-full">
-              Choose Vehicle
+      <View className="flex-1 flex-col justify-between w-full">
+        <View className=" h-auto flex-1">
+          <Pressable
+            className="h-full"
+            onPress={() => setIsShow(!isShow)}
+          ></Pressable>
+        </View>
+        <View className=" bg-white h-200 p-5 flex gap-y-2">
+          <View className="flex-row justify-between">
+            <Text className="font-bold text-gray-700 text-[24px]">
+              Choose vehicle
             </Text>
+
+            <TouchableOpacity
+              onPress={() => setIsShow(!isShow)}
+              className="bg-gray-600 items-center justify-center px-7 rounded-full"
+            >
+              <Text className="font-bold text-white">Close</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView
+            className=""
+            horizontal={true}
+            showsVerticalScrollIndicator={false}
+          >
             <View className="flex-row gap-x-5">
               {vehicles?.map((vehicle) => (
                 <TouchableOpacity
@@ -71,9 +82,9 @@ const ChooseVehicleModal = ({ setIsShow, isShow, setSelectedVehicle }) => {
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </Modal>
   );
 };

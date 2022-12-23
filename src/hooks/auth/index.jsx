@@ -13,10 +13,10 @@ export const UserProvider = ({ children }) => {
   const revalidateUser = async () => {
     try {
       const userToken = await SecureStore.getItemAsync("userToken");
-      console.log("[REVALIDATE USER ] userToken",userToken)
+      console.log("[REVALIDATE USER ] userToken", userToken);
       const res = await axiosAPI().get("/api/delivery-personel/profile");
       const data = res.data?.data;
-console.log("data",res.data)
+      console.log("data", res.data);
       if (data) {
         setIsLoggedIn(true);
         setIsLoading(false);
@@ -27,7 +27,7 @@ console.log("data",res.data)
         setIsLoading(false);
       }
     } catch (error) {
-      console.log("errrr", JSON.stringify(error))
+      console.log("errrr", JSON.stringify(error));
       await SecureStore.deleteItemAsync("userToken");
       setIsLoggedIn(null);
       setIsLoading(false);
@@ -43,7 +43,7 @@ console.log("data",res.data)
       const res = await axiosAPI().post("/auth/login/personel", payload);
       // if success true
       // store in secure store the token
-      const userToken = res.data?.data?.token
+      const userToken = res.data?.data?.token;
       await SecureStore.setItemAsync("userToken", userToken);
 
       // // update header: authorizaton

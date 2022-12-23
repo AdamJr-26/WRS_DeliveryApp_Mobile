@@ -44,18 +44,15 @@ const Home = ({ navigation }) => {
   // REFRESH DELIVERY
   const { mutate } = useSWRConfig();
   const [refreshing, setIsRefreshing] = useState(false);
-  const onRefresh =
-    useCallback(() => {
-      setIsRefreshing(true);
-      mutate("/api/delivery/by-personel");
-      setIsRefreshing(false);
-    },
-    []);
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    mutate("/api/delivery/by-personel");
+    setIsRefreshing(false);
+  }, []);
   // PERSONEL DELIVERY
   const { data: mydelivery, error: mydeliveryError } = useFetch({
     url: "/api/delivery/by-personel",
   });
-  console.log("mydelivery", mydelivery?.data?.delivery_items[0]?.gallon);
   const vehicle = mydelivery?.data.vehicle;
   const delivery_items = mydelivery?.data?.delivery_items;
 
@@ -92,7 +89,10 @@ const Home = ({ navigation }) => {
           </View>
           {mydelivery && !mydeliveryError ? (
             <ScrollView>
-              <View className="flex  relative h-[400px] border-[1px] border-gray-300 p-[10px]  rounded-xl ">
+              <View className="flex relative  border-[1px] border-gray-300 p-[10px]  rounded-xl ">
+                <Text className="font-bold text-center py-5 text-[24px] text-gray-600">
+                  My Delivery
+                </Text>
                 <View className="flex-row w-full justify-between h-[100px] shadow-lg bg-gray-100 p-2 rounded-xl">
                   <View className="w-[40%] rounded-xl overflow-hidden border-[1px] border-blue-200 bg-gray-100">
                     <Image
@@ -115,13 +115,14 @@ const Home = ({ navigation }) => {
                 {/* ITEMSSS */}
                 <ScrollView
                   showsVerticalScrollIndicator={false}
+                  bounces={false}
                   className="flex bg-white"
                 >
                   <View className="mt-2 h-full">
                     {delivery_items?.map((item) => (
                       <View
                         key={item._id}
-                        className="flex-row mb-1 h-[70px] w-auto border-[1px] border-gray-100 p-1 overflow-hidden rounded-xl"
+                        className="bg-gray-100 flex-row mb-1 h-[70px] w-auto border-[1px] border-gray-300 p-1 overflow-hidden rounded-xl"
                       >
                         <View className="h-full w-[20%] bg-gray-100 rounded-md p-1">
                           <Image
@@ -147,17 +148,31 @@ const Home = ({ navigation }) => {
                   </View>
                 </ScrollView>
 
-                <View className="absolute bottom-0 left-[50%] p-2">
-                  <TouchableOpacity
-                  onPress={()=>navigation.navigate("Deliveries")}
-                   className="flex-row bg-blue-400 p-2 h-[50px] w-[50px] items-center justify-center rounded-full">
-                    <MatIcons
-                      name="truck-delivery-outline"
-                      size={24}
-                      color="white"
-                    />
-                  </TouchableOpacity>
-                </View>
+                {mydelivery?.data?.approved ? (
+                  <View className="absolute bottom-0 left-[45%] p-2 opacity-80">
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("Deliveries")}
+                      className="flex-row bg-blue-400 p-2 h-[50px] w-[50px] items-center justify-center rounded-full"
+                    >
+                      <MatIcons
+                        name="truck-delivery-outline"
+                        size={24}
+                        color="white"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View className="items-center justify-center fixed">
+                    <Text className="text-[12px] text-yellow-500 font-bold mb-2">
+                      pending
+                    </Text>
+                    <TouchableOpacity>
+                      <Text className="bg-red-600 font-bold  px-4 py-1 text-white font-semibold rounded-xl">
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             </ScrollView>
           ) : (
@@ -183,6 +198,11 @@ const Home = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           )}
+          <View>
+            <Text>
+              Other functions ex. create a report for gallon na natapon.
+            </Text>
+          </View>
         </ScrollView>
       </View>
     </DrawerLayoutAndroid>

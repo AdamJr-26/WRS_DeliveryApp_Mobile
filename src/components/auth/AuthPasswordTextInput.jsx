@@ -14,12 +14,12 @@ const AuthPasswordTextInput = ({ errors,placeholder, label, ...props }) => {
     <View className="flex-col gap-1 w-full">
       <Text className="font-bold text-gray-600">{label}</Text>
       <View
-        className="flex-row items-center content-between h-[50px] w-full border-[1px] border-gray-400 rounded-md
+        className=" bg-gray-50 flex-row items-center content-between h-[60px] w-full border-[1px] border-gray-300 rounded-md
         focus:border-[#2389DA] focus:border-[2px] p-2"
       >
         <TextInput
           placeholder={placeholder}
-          className="flex-1"
+          className="flex-1 "
           secureTextEntry={!show}
           {...props}
         />

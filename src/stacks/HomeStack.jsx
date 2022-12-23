@@ -3,7 +3,7 @@ import React, { useLayoutEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Deliveries from "../screens/home/Deliveries";
+import MyRoutes from "../screens/home/MyRoutes";
 import Customers from "../screens/home/Customers";
 import Home from "../screens/home/Home";
 import Schedules from "../screens/home/Schedules";
@@ -23,8 +23,8 @@ const HomeStack = () => {
             iconName = focused ? "home" : "home-outline"
             size = focused ? size + 5: size + 0
           }
-          else if(route.name === "Deliveries"){
-            iconName = focused ? "truck-delivery" : "truck-delivery-outline"
+          else if(route.name === "My Routes"){
+            iconName = focused ? "map-marker-radius" : "map-marker-radius-outline"
             size = focused ? size + 5: size + 0
           }
           else if(route.name === "New"){
@@ -48,7 +48,7 @@ const HomeStack = () => {
       
       })}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Deliveries" component={Deliveries} />
+      <Tab.Screen name="My Routes" component={MyRoutes} />
       <Tab.Screen name="New" component={NewStackNavigator} />
       <Tab.Screen name="Schedules" component={Schedules} />
       <Tab.Screen name="Customers" component={Customers} />

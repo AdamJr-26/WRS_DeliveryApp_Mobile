@@ -3,7 +3,7 @@ import React from "react";
 
 const AppButton = ({ isLoading, text, ...props }) => {
   return (
-    <TouchableOpacity {...props} className="h-[50px] bg-[#2389DA] rounded-xl flex items-center justify-center">
+    <TouchableOpacity {...props} className="h-[60px] bg-[#2389DA] rounded-xl flex items-center justify-center">
       {
         isLoading ? <ActivityIndicator /> :<Text className="text-white font-bold ">{text}</Text>
       }

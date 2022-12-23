@@ -50,7 +50,9 @@ const NewScreenOptions = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-          onPress={() => navigation.navigate("New Order")}
+          onPress={() => navigation.navigate("New Order",{
+            params: {schedule: []}
+          })}
             style={{ height: getVW / 3, width: getVW / 3 }}
             className="bg-white rounded-xl shadow-xl shadow-gray-600 flex-col items-center justify-center"
           >

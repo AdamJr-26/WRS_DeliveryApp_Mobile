@@ -9,8 +9,17 @@ import {
   Button,
   Pressable,
   Modal,
+  RefreshControl,
 } from "react-native";
-import React, { useState, useEffect, useReducer, useRef } from "react";
+
+import React, {
+  useLayoutEffect,
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useReducer,
+} from "react";
 import MatComIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import useSWR, { useSWRConfig } from "swr";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,12 +36,21 @@ const ActionNewDelivery = ({ navigation }) => {
   const getVH = Dimensions.get("window").height;
   const getVW = Dimensions.get("window").width;
   const { mutate } = useSWRConfig();
+  
   useEffect(() => {
     navigation.setOptions({
       tabBar: {
         visible: false,
       },
     });
+  }, []);
+
+  // REFRESH
+  const [refreshing, setIsRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    mutate("/api/vehicles/available");
+    setIsRefreshing(false);
   }, []);
 
   const selectedGallonsReducer = (state, action) => {
@@ -173,7 +191,12 @@ const ActionNewDelivery = ({ navigation }) => {
 
   return (
     <SafeAreaView className="m-1 bg-gray-50 p-2 flex-1 ">
-      <ScrollView>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {/* MODALS  */}
         <ChooseVehicleModal
           setIsShow={setSelectVehicleModal}
@@ -211,12 +234,6 @@ const ActionNewDelivery = ({ navigation }) => {
               className="items-center justify-center border-[1px] border-gray-200 overflow-hidden shadow-xl shadow-gray-200 bg-white h-[100px] w-[100px] rounded-xl"
             >
               <MatComIcon name="truck-outline" size={50} color="#2389DA" />
-              {/* <Image
-                source={{
-                  uri: "https://res.cloudinary.com/dy1od3qwx/image/upload/v1661686514/xfyoilmuhgvkd1qnznkg.png",
-                }}
-                className=" w-full h-full rounded-xl "
-              /> */}
             </TouchableOpacity>
             <Text className="text-center text-gray-600 text-[12px] mt-1 font-semibold">
               Select vehicle
@@ -245,6 +262,7 @@ const ActionNewDelivery = ({ navigation }) => {
             </Text>
           </View>
         </View>
+
         {selectedVehicle ? (
           <View className="flex-col p-2  h-[150px] shadow-lg shadow-gray-500 rounded-xl bg-white mx-2 overflow-hidden">
             <View>
@@ -278,6 +296,7 @@ const ActionNewDelivery = ({ navigation }) => {
             <View className="mt-2 flex-row items-center">
               <Text className="text-gray-700 font-bold">Selected gallons</Text>
             </View>
+            
             <View className="flex-col p-2 ">
               {selectedGallons?.map((gallon, i) => (
                 <View
@@ -342,9 +361,7 @@ const ActionNewDelivery = ({ navigation }) => {
           }}
           className="w-[49%] py-3 bg-[#2389DA] flex-row justify-center items-center rounded-xl"
         >
-          
-            <Text className="text-center text-gray-50">Create</Text>
-        
+          <Text className="text-center text-gray-50">Create</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

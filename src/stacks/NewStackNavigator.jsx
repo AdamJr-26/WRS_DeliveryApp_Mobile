@@ -5,7 +5,7 @@ import NewCustomer from "../screens/new.screen.stack/NewCustomer";
 import NewDelivery from "../screens/new.screen.stack/NewDelivery";
 import NewOrder from "../screens/new.screen.stack/NewOrder";
 import New from "../screens/home/New";
-import NewCreateSchedule from "../screens/new.screen.stack/NewCreateSchedule";
+import NewSchedule from "../screens/new.screen.stack/NewSchedule";
 
 import DeliverOrder from "../screens/deliveries.screen.stack/DeliverOrder";
 const MainStackNavigator = ({ navigation }) => {
@@ -21,7 +21,7 @@ const MainStackNavigator = ({ navigation }) => {
       <Stack.Screen name="New Customer" component={NewCustomer} />
       <Stack.Screen name="New Delivery" component={NewDelivery} />
       <Stack.Screen name="New Order" component={NewOrder} />
-      <Stack.Screen name="New Schedule" component={NewCreateSchedule} />
+      <Stack.Screen name="New Schedule" component={NewSchedule} />
       {/* this screen when you click delivery button in deliveries */}
       <Stack.Screen name="Deliver Order" component={DeliverOrder} />
     </Stack.Navigator>

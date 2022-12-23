@@ -6,7 +6,7 @@ const AppTextInput = ({ errors, label,placeholder, ...props }) => {
     <View className="flex-col gap-1">
       <Text className="font-bold text-gray-600">{label}</Text>
       <TextInput
-        className="w-[100%] h-[50px] border-[1px] border-gray-400 rounded-md p-2 focus:border-[#2389DA] focus:border-[2px]"
+        className="w-[100%] bg-gray-50 h-[60px] border-[1px] border-gray-300 rounded-md p-2 focus:border-[#2389DA] focus:border-[2px]"
         placeholder={placeholder}
         keyboardType="default"
         {...props}
