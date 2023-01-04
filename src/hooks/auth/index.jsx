@@ -16,7 +16,6 @@ export const UserProvider = ({ children }) => {
       console.log("[REVALIDATE USER ] userToken", userToken);
       const res = await axiosAPI().get("/api/delivery-personel/profile");
       const data = res.data?.data;
-      console.log("data", res.data);
       if (data) {
         setIsLoggedIn(true);
         setIsLoading(false);

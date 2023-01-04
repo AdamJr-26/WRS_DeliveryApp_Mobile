@@ -14,6 +14,7 @@ const RenderEmptyData = () => {
   const windowWidth = Dimensions.get("screen").width;
   const windowHeight = Dimensions.get("screen").height;
 
+  const navigation = useNavigation();
   return (
     <View className="bg-white flex-1 items-center justify-center">
       <View style={{ width: windowWidth / 1.5, height: windowWidth / 1.5 }}>
@@ -28,7 +29,15 @@ const RenderEmptyData = () => {
       <Text className="text-[12px] text-gray-500 font-semibold text-center">
         Create a schedule by tapping the button below.
       </Text>
-      <TouchableOpacity className="bg-[#2389DA] rounded-full px-5 py-3 mt-2">
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("New", {
+            screen: "New Schedule",
+            initial: false,
+          })
+        }
+        className="bg-[#2389DA] rounded-full px-5 py-3 mt-2"
+      >
         <Text className="items-center text-white font-semibold">
           Create Schedule
         </Text>

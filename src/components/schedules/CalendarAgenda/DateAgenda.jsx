@@ -8,25 +8,29 @@ import {
 import React, { useEffect, useState } from "react";
 import { Agenda } from "react-native-calendars";
 import RenderEmptyData from "./RenderEmptyData";
-import SchedulesRenderItem from "./SchedulesRenderItem";
+import RenderItem from "./RenderItem";
 import { apiGet } from "../../../services/api/axios.method";
 // main component
 const DateAgenda = ({ selected_place }) => {
   const [schedules, setSchedules] = useState({});
   const [date, setDate] = useState(new Date());
   const [isLoading, setIsloading] = useState(false);
-// 
+  //
   const getSchedules = async () => {
-    if(!selected_place || isLoading) return 
+    if (!selected_place || isLoading) return;
     setSchedules({});
     setIsloading(true);
     const { data, error } = await apiGet(
       `/api/schedule/${date}/${selected_place}`
     ); // add place to a
+
     if (data?.data?.length && !error) {
       const scheds = {};
       scheds[
-        `${date?.getFullYear()}-${date?.getMonth() + 1}-${date?.getDate()}`
+        `${date?.getFullYear()}-${String(date?.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(date?.getDate()).padStart(2, "0")}`
       ] = data?.data;
       setSchedules(scheds);
       setIsloading(false);
@@ -37,9 +41,12 @@ const DateAgenda = ({ selected_place }) => {
     }
     setIsloading(false);
   };
+  
   useEffect(() => {
     getSchedules();
   }, [date, selected_place]);
+
+  console.log("[SCHEDULES]", schedules);
   return (
     <Agenda
       // The list of items that have to be displayed in agenda. If you want to render item as empty date
@@ -68,7 +75,9 @@ const DateAgenda = ({ selected_place }) => {
           <RenderEmptyData />
         );
       }}
-      renderDay={(day, item) => <SchedulesRenderItem day={day} item={item} getSchedules={getSchedules} />}
+      renderDay={(day, item) => (
+        <RenderItem day={day} item={item} getSchedules={getSchedules} />
+      )}
       theme={{
         agendaDayTextColor: "#2389DA",
         agendaDayNumColor: "green",

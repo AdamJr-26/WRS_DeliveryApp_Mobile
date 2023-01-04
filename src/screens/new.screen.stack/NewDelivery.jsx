@@ -36,7 +36,7 @@ const ActionNewDelivery = ({ navigation }) => {
   const getVH = Dimensions.get("window").height;
   const getVW = Dimensions.get("window").width;
   const { mutate } = useSWRConfig();
-  
+
   useEffect(() => {
     navigation.setOptions({
       tabBar: {
@@ -59,13 +59,13 @@ const ActionNewDelivery = ({ navigation }) => {
         let isExists = false;
         for (let i = 0; i < state.length; i++) {
           for (const key in state[i]) {
-            if (key === "id" && state[i][key] === action.data.id) {
+            if (key === "_id" && state[i][key] === action.data._id) {
               isExists = true;
             }
           }
         }
         if (!isExists) {
-          return [action?.data, ...state];
+          return [...state, action?.data];
         }
       case "reduce":
         const gallonIndex = state?.findIndex(
@@ -296,7 +296,7 @@ const ActionNewDelivery = ({ navigation }) => {
             <View className="mt-2 flex-row items-center">
               <Text className="text-gray-700 font-bold">Selected gallons</Text>
             </View>
-            
+
             <View className="flex-col p-2 ">
               {selectedGallons?.map((gallon, i) => (
                 <View
@@ -315,7 +315,7 @@ const ActionNewDelivery = ({ navigation }) => {
                     </View>
                     <View className="flex-col justify-center ml-2">
                       <Text className="text-gray-700 font-semibold text-[19px]">
-                        {gallon?.gallon_name}
+                        {gallon?.name}
                       </Text>
                       <Text className="text-gray-500">
                         {gallon?.liter} Liter(s)
@@ -327,7 +327,7 @@ const ActionNewDelivery = ({ navigation }) => {
 
                     <TextInput
                       onChangeText={(value) =>
-                        handleFormInputsChange(value, i, gallon?.id)
+                        handleFormInputsChange(value, i, gallon?._id)
                       }
                       className="bg-gray-100 rounded-lg text-center py-2 text-[24px] w-[70px] h-full"
                       keyboardType="numeric"

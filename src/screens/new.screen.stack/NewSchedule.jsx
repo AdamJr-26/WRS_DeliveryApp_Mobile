@@ -16,7 +16,7 @@ import React, { useState, useEffect, useReducer, useCallback } from "react";
 import DateTimePicker from "../../components/general/DateTimePicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MatComIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import SearchCustomerModal from "../../components/new-schedule/SearchCustomerModal";
+import SearchCustomerModal from "../../components/general/SearchCustomerModal";
 import ChooseGallonModal from "../../components/new-delivery/ChooseGallonModal";
 import useSWR, { useSWRConfig } from "swr";
 import { apiGet, apiPost } from "../../services/api/axios.method";
@@ -62,13 +62,13 @@ const NewCreateSchedule = ({ navigation }) => {
         let isExists = false;
         for (let i = 0; i < state.length; i++) {
           for (const key in state[i]) {
-            if (key === "id" && state[i][key] === action?.data?.id) {
+            if (key === "_id" && state[i][key] === action?.data?._id) {
               isExists = true;
             }
           }
         }
         if (!isExists) {
-          return [action?.data, ...state];
+          return [...state, action?.data];
         }
       case "reduce":
         const gallonIndex = state?.findIndex(
@@ -108,9 +108,9 @@ const NewCreateSchedule = ({ navigation }) => {
     createForm();
   }, [selectedGallons]);
 
-  const handleFormInputsChange = (value, index, id) => {
+  const handleFormInputsChange = (value, index, _id) => {
     const data = [...form];
-    data[index]["gallon"] = id;
+    data[index]["gallon"] = _id;
     data[index]["total"] = value;
     setForm(data);
   };
@@ -238,7 +238,7 @@ const NewCreateSchedule = ({ navigation }) => {
                 className="h-[40px] items-center justify-center flex-row"
               >
                 <Ionicons name="search" size={24} />
-                <Text className="text-gray-600 ml-1">Searh</Text>
+                <Text className="text-gray-600 ml-2">Select a customer</Text>
               </TouchableOpacity>
             )}
           </TouchableOpacity>
@@ -281,7 +281,7 @@ const NewCreateSchedule = ({ navigation }) => {
                     </View>
                     <View className="flex-col justify-center ml-2">
                       <Text className="text-gray-700 font-semibold text-[19px]">
-                        {gallon?.gallon_name}
+                        {gallon?.name}
                       </Text>
                       <Text className="text-gray-500">
                         {gallon?.liter} Liter(s)
@@ -293,7 +293,7 @@ const NewCreateSchedule = ({ navigation }) => {
 
                     <TextInput
                       onChangeText={(value) =>
-                        handleFormInputsChange(value, i, gallon?.id)
+                        handleFormInputsChange(value, i, gallon?._id)
                       }
                       className="bg-gray-100 rounded-lg text-center py-2 text-[24px] w-[70px] h-full"
                       keyboardType="numeric"

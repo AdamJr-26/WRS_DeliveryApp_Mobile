@@ -31,13 +31,15 @@ const ChooseGallonModal = ({
   const gallon_data = gallons?.data;
 
   const addGallons = (gallon) => {
+    console.log("gallongallongallon",gallon)
     dispatchSelectedGallons({
       type: "add",
       data: {
-        id: gallon?._id,
-        gallon_name: gallon?.name,
+        _id: gallon?._id,
+        name: gallon?.name,
         liter: gallon?.liter,
         gallon_image: gallon?.gallon_image,
+        price: gallon?.price,
       },
     });
   };
@@ -71,7 +73,7 @@ const ChooseGallonModal = ({
             <Text className="font-bold text-gray-700 text-[24px]">
               Choose gallon
             </Text>
-           
+
             <TouchableOpacity
               onPress={() => setIsShow(!isShow)}
               className="bg-gray-600 items-center justify-center px-7 rounded-full"
@@ -96,8 +98,10 @@ const ChooseGallonModal = ({
                       : "h-[200px] relative border-[1px] border-gray-200 w-[150px] overflow-hidden rounded-xl bg-white shadow-2xl shadow-gray-500 py-2 "
                   }
                 >
-                  <Text className="p-2 bg-gray-200 absolute rounded-xl font-bold right-1 top-2 z-10 opacity-70">{gallon?.total}</Text>
-                  <Pressable 
+                  <Text className="p-2 bg-gray-200 absolute rounded-xl font-bold right-1 top-2 z-10 opacity-70">
+                    {gallon?.total}
+                  </Text>
+                  <Pressable
                     onPress={() => {
                       addGallons(gallon);
                     }}

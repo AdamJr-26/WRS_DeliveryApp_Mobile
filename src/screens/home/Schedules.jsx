@@ -84,6 +84,8 @@ const Schedules = () => {
     <View
       className={Platform.OS === "android" ? "flex-1 mt-6 bg-gray-100" : "pt-0"}
     >
+      {/* modal */}
+      
       <View className="flex-1 bg-white p-2 z-10">
         <Text className="text-center text-[21px] font-bold text-gray-600">
           Schedules
@@ -107,7 +109,7 @@ const Schedules = () => {
         <View className=" w-full flex-row mt-2 ">
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {places.map((place) => (
-              <Pressable key={place} onPress={() => setSelectedPlace(place)}>
+              <TouchableOpacity key={place} onPress={() => setSelectedPlace(place)}>
                 <Text
                   className="font-bold text-center px-3 py-[5px] ml-1 rounded-full border-[1px] border-[#2389DA]"
                   style={
@@ -118,7 +120,7 @@ const Schedules = () => {
                 >
                   {place}
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>

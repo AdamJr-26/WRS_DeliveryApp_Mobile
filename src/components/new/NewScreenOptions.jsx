@@ -50,7 +50,7 @@ const NewScreenOptions = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-          onPress={() => navigation.navigate("New Order",{
+          onPress={() => navigation.navigate("Deliver Order",{
             params: {schedule: []}
           })}
             style={{ height: getVW / 3, width: getVW / 3 }}
@@ -60,7 +60,7 @@ const NewScreenOptions = ({ navigation }) => {
               <MatcomIcons name="border-color" size={40} color="#2389DA" />
             </View>
             <Text className="font-bold text-gray-800 text-center mt-3">
-              New Order
+              Deliver order
             </Text>
           </TouchableOpacity>
           <TouchableOpacity

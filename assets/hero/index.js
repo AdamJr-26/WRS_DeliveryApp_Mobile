@@ -5,6 +5,7 @@ const heroes = {
   verify: require("./verify.png"),
   search: require("./search.png"),
   date_picker: require("./date_picker.png"),
-  void: require("./void.png")
+  void: require("./void.png"),
+  by_the_road: require("./bytheroad.png"),
 };
 export default heroes;

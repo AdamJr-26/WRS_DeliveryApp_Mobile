@@ -10,13 +10,16 @@ import {
   ActivityIndicator,
   ToastAndroid,
 } from "react-native";
-import { apiPut } from "../../../services/api/axios.method";
+import { apiDelete, apiPut } from "../../../services/api/axios.method";
+import PromptModal from "../../general/modal/PromptModal";
 
-const SchedulesRenderItem = ({ day, item, getSchedules }) => {
+const RenderItem = ({ day, item, getSchedules }) => {
   const items = item?.fromItems;
   const [isExpanded, setIsexpanded] = useState(false);
   const [isloading, setIsloading] = useState(false);
   // handle add to routes schedule
+  console.log("[item]", item);
+
   const addtoRoutes = async (id) => {
     setIsloading(true);
     const { data, error } = await apiPut({
@@ -36,8 +39,41 @@ const SchedulesRenderItem = ({ day, item, getSchedules }) => {
       ToastAndroid.show("Failed to add to your routes", ToastAndroid.LONG);
     }
   };
+  // HANDLE DELETE SCHEDULE;
+  const [isShownDeletePrompt, setIsShownDeletePrompt] = useState(false);
+  const toggleSubmitPrompt = () => {
+    setIsShownDeletePrompt(!isShownDeletePrompt);
+  };
+  const [isDeleting, setIsDeleting] = useState(false);
+  const deleteSchedule = async () => {
+    if (isDeleting) return;
+    setIsDeleting(true);
+    const { data, error } = await apiDelete({
+      url: `/api/schedule/${item?._id}`,
+    });
+    if (data && !error) {
+      setIsDeleting(false);
+      getSchedules();
+      setIsShownDeletePrompt(false);
+      ToastAndroid.show("A schedule has been deleted.", ToastAndroid.LONG);
+    } else {
+      setIsDeleting(false);
+      ToastAndroid.show(
+        "Attempting to delete a schedule failed. ",
+        ToastAndroid.LONG
+      );
+    }
+  };
   return (
     <View className="flex-col mt-2  w-full bg-white rounded-xl shadow-xl shadow-gray-400 ">
+      <PromptModal
+        confirmText="Yes"
+        confirmHandler={deleteSchedule}
+        message="Do you really want to delete this schedule?"
+        toggleModal={toggleSubmitPrompt}
+        isModalVisible={isShownDeletePrompt}
+        animationOutTiming={200}
+      />
       <TouchableOpacity
         onPress={() => setIsexpanded(!isExpanded)}
         className="bg-blue-100 flex-row px-2 h-[80px] items-center rounded-t-xl relative overflow-hidden "
@@ -99,11 +135,12 @@ const SchedulesRenderItem = ({ day, item, getSchedules }) => {
                 </View>
               ))}
             </View>
-            <View className="flex-row mt-2 w-full">
-              <TouchableOpacity className="bg-gray-100 rounded-full px-5 py-3 mt-2">
-                <Text className="text-red-800 font-semibold w-full text-center ">
-                  Delete
-                </Text>
+            <View className="flex-row mt-2 w-full justify-end">
+              <TouchableOpacity
+                onPress={() => setIsShownDeletePrompt(!isShownDeletePrompt)}
+                className=" rounded-full px-5 py-3 mt-2"
+              >
+                <Text className="text-red-700 w-full text-center ">Delete</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => addtoRoutes(item?._id)}
@@ -131,4 +168,4 @@ const SchedulesRenderItem = ({ day, item, getSchedules }) => {
     </View>
   );
 };
-export default SchedulesRenderItem;
+export default RenderItem;

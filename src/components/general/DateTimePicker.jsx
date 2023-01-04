@@ -27,7 +27,7 @@ const DateTimePicker = ({ date, setDate }) => {
   return (
     <TouchableOpacity
       onPress={showDatepicker}
-      className="w-[100%] flex-row items-center justify-around relative border-[1px] border-gray-200 h-[55px] rounded-md"
+      className="w-[100%] flex-row items-center justify-around relative border-[1px] bg-gray-100  border-gray-200 h-[55px] rounded-md"
     >
       <Text className="font-semibold text-gray-700 text-center w-full ">
         {date instanceof Date

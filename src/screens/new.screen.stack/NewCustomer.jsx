@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   RefreshControl,
+  ToastAndroid,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useCallback } from "react";
 import AppTextInput from "../../components/general/AppTextInput";
@@ -81,6 +83,8 @@ const ActionNewCustomer = ({ navigation }) => {
       .required("Barangay is required"),
     street: Yup.string().max(30, "Must not exceed 30 letters"),
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     <View className="flex-col flex-1 bg-white">
       <ScrollView
@@ -94,6 +98,7 @@ const ActionNewCustomer = ({ navigation }) => {
           initialValues={customerInitialValue}
           validationSchema={customerValidation}
           onSubmit={async (values, actions) => {
+            if (isSubmitting) return;
             const address = {
               province: values?.province,
               municipal_city: values.municipal_city,
@@ -108,13 +113,22 @@ const ActionNewCustomer = ({ navigation }) => {
               gender,
             };
             const file = image;
+            setIsSubmitting(true);
             const { data, error } = await createCustomer(file, body);
             if (data && !error) {
+              setIsSubmitting(false);
               console.log("data", data);
               setImage(null);
               setGender(null);
               actions.resetForm({ values: customerInitialValue });
               navigation.navigate("Customers");
+              ToastAndroid.show("Created a new customer", ToastAndroid.LONG);
+            } else {
+              setIsSubmitting(false);
+              ToastAndroid.show(
+                "Attempting to create a new customer failed",
+                ToastAndroid.LONG
+              );
             }
           }}
         >
@@ -263,9 +277,18 @@ const ActionNewCustomer = ({ navigation }) => {
                   onPress={handleSubmit}
                   className="w-[49%] bg-[#2389DA] py-3 rounded-3xl"
                 >
-                  <Text className="w-full text-center  font-semibold text-gray-50">
-                    Create
-                  </Text>
+                  {isSubmitting ? (
+                    <View className="flex-row items-center justify-center">
+                      <ActivityIndicator size={24} color="white" />
+                      <Text className="ml-2 text-center  font-semibold text-gray-50">
+                        Creating...
+                      </Text>
+                    </View>
+                  ) : (
+                    <Text className="w-full text-center  font-semibold text-gray-50">
+                      Create
+                    </Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </View>

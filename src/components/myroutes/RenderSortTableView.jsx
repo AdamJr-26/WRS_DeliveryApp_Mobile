@@ -4,11 +4,17 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 // import { TextInput } from 'react-native-gesture-handler';
 import { View, Text, TouchableOpacity, Image, Pressable } from "react-native";
 
-const RenderSortTableView = ({ schedule, index, marked_place }) => {
+const RenderSortTableView = ({
+  schedule,
+  index,
+  marked_place,
+  handleAssignedSchedule,
+}) => {
   const navigation = useNavigation();
   const customer = schedule?.customer;
+  console.log("schedule", schedule?._id);
   return (
-    <View className="flex-col mt-2 p-3  bg-white rounded-xl shadow-xl ">
+    <View className="flex-col mt-2 p-3 border-[1px] border-gray-200 bg-white rounded-xl shadow-xl ">
       <TouchableOpacity
         className={
           customer?.address?.barangay === marked_place?.place
@@ -59,21 +65,25 @@ const RenderSortTableView = ({ schedule, index, marked_place }) => {
             </View>
           ))}
         </View>
-        <View className="flex-row mt-2 w-full">
-          <Pressable className="bg-gray-200 px-4 py-2 rounded-full w-50">
-            <Text className="text-gray-800 font-semibold ">Remove</Text>
-          </Pressable>
-          <Pressable
+        <View className="flex-row mt-2 w-full items-center justify-end">
+          <TouchableOpacity
+            onPress={() => handleAssignedSchedule(schedule?._id)}
+            className="px-4 py-2 rounded-full w-50"
+          >
+            <Text className="text-red-800  ">Remove</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => {
               navigation.navigate("New", {
-                screen: "New Order",
+                screen: "Deliver Order",
+                initial: false,
                 params: { schedule: schedule },
               });
             }}
-            className="bg-[#2389DA] px-4 py-2 ml-2 rounded-full w-50"
+            className="bg-[#2389DA] px-8 py-2 ml-2 rounded-full w-50"
           >
             <Text className="text-gray-100 font-semibold ">Deliver</Text>
-          </Pressable>
+          </TouchableOpacity>
           {/* <Button className="rounded-xl " title="Remove" />
         <Button className="rounded-xl " title="Deliver" /> */}
         </View>

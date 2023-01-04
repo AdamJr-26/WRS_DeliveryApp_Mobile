@@ -180,7 +180,7 @@ const Customers = ({ navigation }) => {
                   onPress={() => {
                     navigation.navigate("New", {
                       screen: "New Schedule",
-                      params: { user: "Adam Marcaida Jr." },
+                      params: { schedule: [] },
                     });
                     setShowCustomerInfo(false);
                   }}

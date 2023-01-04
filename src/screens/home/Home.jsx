@@ -8,6 +8,7 @@ import {
   Pressable,
   DrawerLayoutAndroid,
   RefreshControl,
+  ToastAndroid,
 } from "react-native";
 import React, {
   useLayoutEffect,
@@ -23,6 +24,10 @@ import heroes from "../../../assets/hero";
 import DrawerLayout from "../../components/home/DrawerLayout";
 import useFetch from "../../hooks/api/swr/useFetch";
 import useSWR, { useSWRConfig } from "swr";
+import RecentDeliveries from "../../components/home/RecentDeliveries";
+import { apiPut } from "../../services/api/axios.method";
+import PromptModal from "../../components/general/modal/PromptModal";
+
 const Home = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -49,6 +54,7 @@ const Home = ({ navigation }) => {
     mutate("/api/delivery/by-personel");
     setIsRefreshing(false);
   }, []);
+
   // PERSONEL DELIVERY
   const { data: mydelivery, error: mydeliveryError } = useFetch({
     url: "/api/delivery/by-personel",
@@ -56,6 +62,28 @@ const Home = ({ navigation }) => {
   const vehicle = mydelivery?.data.vehicle;
   const delivery_items = mydelivery?.data?.delivery_items;
 
+  // HANDLE CANCEL OR DELETE DELIVERY
+  const [isShownSubmitPrompt, setIsShownSubmitPrompt] = useState(false);
+  const toggleSubmitPrompt = () => {
+    setIsShownSubmitPrompt(!isShownSubmitPrompt);
+  };
+  const handleCancelDelivery = async () => {
+    const delivery_id = mydelivery?.data?._id;
+    const { data, error } = await apiPut({
+      url: `/api/delivery/cancel/${delivery_id}`,
+    });
+    if (data && !error) {
+      mutate("/api/delivery/by-personel");
+      console.log("data", data);
+      setIsShownSubmitPrompt(!isShownSubmitPrompt);
+      const messsage = data?.fullMessage?.cancel_delivery?.message;
+      ToastAndroid.show("You just cancelled the delivery", ToastAndroid.LONG);
+    } else {
+      mutate("/api/delivery/by-personel");
+      setIsShownSubmitPrompt(!isShownSubmitPrompt);
+      ToastAndroid.show("Failed to cancel delivery.", ToastAndroid.LONG);
+    }
+  };
   return (
     <DrawerLayoutAndroid
       ref={drawer}
@@ -63,17 +91,24 @@ const Home = ({ navigation }) => {
       drawerPosition="left"
       renderNavigationView={DrawerLayout}
     >
-      <View
-        className={Platform.OS === "android" ? "pt-8  flex-1" : "pt-0 flex-1"}
-      >
+      <View className={Platform.OS === "android" ? "flex-1" : "pt-0 flex-1"}>
+        <PromptModal
+          confirmText="Yes"
+          confirmHandler={handleCancelDelivery}
+          message="Do you really want to cancel your delivery?"
+          toggleModal={toggleSubmitPrompt}
+          isModalVisible={isShownSubmitPrompt}
+          animationOutTiming={200}
+        />
         <ScrollView
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          className="flex gap-2 p-3 bg-white"
+          className="p-2
+           pt-8 w-full bg-white max-h-full "
         >
-          <View className="flex gap-y-2">
+          <View className="flex ">
             <Pressable onPress={() => drawer.current.openDrawer()}>
               <Ionicons name="menu-outline" size={32} color="gray" />
             </Pressable>
@@ -89,7 +124,7 @@ const Home = ({ navigation }) => {
           </View>
           {mydelivery && !mydeliveryError ? (
             <ScrollView>
-              <View className="flex relative  border-[1px] border-gray-300 p-[10px]  rounded-xl ">
+              <View className="flex relative bg-white border-[1px] border-gray-300 p-[10px]  rounded-xl ">
                 <Text className="font-bold text-center py-5 text-[24px] text-gray-600">
                   My Delivery
                 </Text>
@@ -149,25 +184,33 @@ const Home = ({ navigation }) => {
                 </ScrollView>
 
                 {mydelivery?.data?.approved ? (
-                  <View className="absolute bottom-0 left-[45%] p-2 opacity-80">
+                  <View className=" bottom-0 p-2 opacity-80">
                     <TouchableOpacity
-                      onPress={() => navigation.navigate("Deliveries")}
-                      className="flex-row bg-blue-400 p-2 h-[50px] w-[50px] items-center justify-center rounded-full"
+                      onPress={() => navigation.navigate("My Routes")}
+                      className="flex-row bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
                     >
                       <MatIcons
                         name="truck-delivery-outline"
                         size={24}
                         color="white"
                       />
+                      <Text className="text-white font-bold ml-2">
+                        Deliver now
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View className="items-center justify-center fixed">
+                  <View className="items-center justify-center fixed w-full">
                     <Text className="text-[12px] text-yellow-500 font-bold mb-2">
                       pending
                     </Text>
-                    <TouchableOpacity>
-                      <Text className="bg-red-600 font-bold  px-4 py-1 text-white font-semibold rounded-xl">
+                    <TouchableOpacity
+                      onPress={() =>
+                        setIsShownSubmitPrompt(!isShownSubmitPrompt)
+                      }
+                      className="flex-row w-full bg-[#FF605C] p-2 h-[50px]  items-center justify-center rounded-full"
+                    >
+                      <Text className="px-4 py-1 text-white font-semibold rounded-xl">
                         Cancel
                       </Text>
                     </TouchableOpacity>
@@ -176,8 +219,8 @@ const Home = ({ navigation }) => {
               </View>
             </ScrollView>
           ) : (
-            <View className="flex justify-center items-center relative h-[400px] border-[1px] border-gray-300 p-[10px]  rounded-xl ">
-              <Text className="absolute top-2 font-bold text-[24px] text-gray-700">
+            <View className="bg-white flex justify-around items-center relative h-[300px] border-[1px] border-gray-300 p-[10px]  rounded-xl ">
+              <Text className="top-2 font-bold text-[24px] text-gray-700">
                 No Delivery
               </Text>
               <Image
@@ -190,18 +233,28 @@ const Home = ({ navigation }) => {
                     screen: "New Delivery",
                   });
                 }}
-                className="absolute bottom-2 bg-[#2389DA] w-[80%] p-4 rounded-xl "
+                className="flex-row bg-[#2389DA] p-2 h-[50px] w-full mt-2 items-center justify-center rounded-full"
               >
                 <Text className="text-white text-center font-semibold ">
-                  Create Now
+                  Create Delivery
                 </Text>
               </TouchableOpacity>
             </View>
           )}
-          <View>
-            <Text>
-              Other functions ex. create a report for gallon na natapon.
+
+          <View className="rounded-t-xl mt-5 bg-white p-2 mb-10">
+            <Text className="text-[16px] text-gray-700 font-bold ">
+              Recent Deliveries
             </Text>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              className="mt-2"
+            >
+              {[1, 2, 4, 5, 5, 6].map((recent_delivery, i) => (
+                <RecentDeliveries key={i} />
+              ))}
+            </ScrollView>
           </View>
         </ScrollView>
       </View>
