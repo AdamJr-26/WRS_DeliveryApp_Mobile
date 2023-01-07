@@ -21,7 +21,8 @@ import ChooseGallonModal from "../../components/new-delivery/ChooseGallonModal";
 import useSWR, { useSWRConfig } from "swr";
 import { apiGet, apiPost } from "../../services/api/axios.method";
 
-const NewCreateSchedule = ({ navigation }) => {
+const NewCreateSchedule = ({ route, navigation }) => {
+  const { customer: customer_param } = route.params;
   const [date, setDate] = useState(null);
   const [customer, setCustomer] = useState(null);
   const [isOpenSearchCustomer, setIsOpenSearchCustomer] = useState(false);
@@ -30,6 +31,8 @@ const NewCreateSchedule = ({ navigation }) => {
   const [customerSchedule, setCustomerSchedule] = useState(null);
   // CHECK IF CUSTOMER ALREADY HAS SCHEDULE.
   useEffect(() => {
+    // set customer by navigating from customers infor "Customers" screen
+    setCustomer(customer_param);
     // fetch
     if (!customer?._id) return;
     async function checkIfCustomerHasSchedule() {

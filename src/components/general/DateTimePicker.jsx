@@ -23,6 +23,37 @@ const DateTimePicker = ({ date, setDate }) => {
   const showTimepicker = () => {
     showMode("time");
   };
+  const today = (date_string) => {
+    const weekdays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const date = new Date(date_string);
+    const current_date = `${
+      monthNames[date?.getMonth()]
+    }, ${date?.getDate()}, ${date?.getFullYear().toLocaleString()}`;
+    const day = weekdays[date?.getDay()];
+    return { string_date: current_date, day };
+  };
 
   return (
     <TouchableOpacity
@@ -31,9 +62,7 @@ const DateTimePicker = ({ date, setDate }) => {
     >
       <Text className="font-semibold text-gray-700 text-center w-full ">
         {date instanceof Date
-          ? `${date.getMonth() + 1}/ ${date.getDate().toLocaleString()}/${date
-              .getFullYear()
-              .toLocaleString()}`
+          ? today(date).string_date
           : "Select date"}
       </Text>
     </TouchableOpacity>

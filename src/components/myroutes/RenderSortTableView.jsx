@@ -32,11 +32,11 @@ const RenderSortTableView = ({
         </View>
         <View className="ml-2">
           <Text className="text-[19px] font-bold text-gray-700 ">
-            {customer.firstname || " "} {customer?.lastname || " "}
+            {customer?.firstname || " "} {customer?.lastname || " "}
           </Text>
           <Text className="text-[12px] font-semibold text-gray-600">
-            {customer.address.street}, {customer.address.barangay},{" "}
-            {customer.address.municipal_city}
+            {customer?.address?.street}, {customer?.address?.barangay},{" "}
+            {customer?.address?.municipal_city}
           </Text>
           {/* <Text className="text-[12px] font-semibold text-gray-600">{item.}</Text> */}
         </View>
@@ -51,7 +51,7 @@ const RenderSortTableView = ({
           <View className="p-2 bg-gray-200 rounded-full  ">
             <Ionicons name="call" size={16} />
           </View>
-          <Text className="font-bold ml-2">{customer.mobile_number} </Text>
+          <Text className="font-bold ml-2">{customer?.mobile_number} </Text>
         </View>
         <View className="flex-col">
           <Text className="font-bold mt-3">Orders</Text>

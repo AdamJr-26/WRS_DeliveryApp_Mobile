@@ -70,7 +70,7 @@ const RenderItems = ({
       <View className="flex-row">
         <View className="p-1 flex-grow justify-center items ">
           <Text className="text-center text-[12px] font-semibold text-gray-500 ">
-            Orders
+            Total Orders
           </Text>
           {/* <Text className="font-bold text-gray-800 text-[19px] items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300">
             {orders}
@@ -87,7 +87,7 @@ const RenderItems = ({
         </View>
         <View className="p-1 flex-grow justify-center items">
           <Text className="text-center text-[12px] font-semibold text-gray-500 ">
-            Credit
+            Will Credit
           </Text>
           <TextInput
             placeholder="0"

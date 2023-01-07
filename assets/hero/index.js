@@ -7,5 +7,6 @@ const heroes = {
   date_picker: require("./date_picker.png"),
   void: require("./void.png"),
   by_the_road: require("./bytheroad.png"),
+  people_search: require("./people_search.png"),
 };
 export default heroes;

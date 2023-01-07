@@ -36,6 +36,7 @@ const Routes = () => {
   const windowHeight = Dimensions.get("screen").height;
   // get schedule that assigned from a personel.
   const [isLoading, setIsloading] = useState(false);
+  
   const { mutate } = useSWRConfig();
   // refresh control
   const [refreshing, setIsRefreshing] = useState(false);
@@ -50,11 +51,12 @@ const Routes = () => {
     url: "/api/schedule-assigned/by-personel",
   });
 
+  console.log("schedulesschedules", schedules);
   // all places that in schedules
   const [places, setPlaces] = useState([]);
   function getAllPlaces() {
     for (let i = 0; i < schedules?.data?.length; i++) {
-      const place = schedules?.data[i].customer.address.barangay;
+      const place = schedules?.data[i]?.customer?.address?.barangay;
       const placeIndex = places?.findIndex((plc) => plc?.place === place);
       if (placeIndex < 0) {
         setPlaces([...places, { place: place, occured: 1 }]);
@@ -105,10 +107,12 @@ const Routes = () => {
         className="p-1 w-full bg-white max-h-full relative"
       >
         <View className="mt-2 mb-2">
-         <View className="flex-row items-center">
-          <MatIcons name="routes" size={24} />
-         <Text className="ml-2 font-bold text-gray-600 text-[28px]">Routes</Text>
-         </View>
+          <View className="flex-row items-center">
+            <MatIcons name="routes" size={24} />
+            <Text className="ml-2 font-bold text-gray-600 text-[28px]">
+              Routes
+            </Text>
+          </View>
           <Text className="text-gray-500 text-[16px]">
             It's time for delivery.
           </Text>

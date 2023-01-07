@@ -27,6 +27,8 @@ import useSWR, { useSWRConfig } from "swr";
 import RecentDeliveries from "../../components/home/RecentDeliveries";
 import { apiPut } from "../../services/api/axios.method";
 import PromptModal from "../../components/general/modal/PromptModal";
+import ReturnDelivery from "../../components/home/ReturnDelivery";
+import CustomerBalanceModal from "../../components/general/modal/CustomerBalanceModal";
 
 const Home = ({ navigation }) => {
   useLayoutEffect(() => {
@@ -43,7 +45,9 @@ const Home = ({ navigation }) => {
   // drawer
   const drawer = useRef(null);
   useEffect(() => {
-    drawer.current.closeDrawer();
+    return () => {
+      drawer.current.closeDrawer();
+    };
   }, []);
 
   // REFRESH DELIVERY
@@ -84,6 +88,8 @@ const Home = ({ navigation }) => {
       ToastAndroid.show("Failed to cancel delivery.", ToastAndroid.LONG);
     }
   };
+  const [showReturnModal, setShowReturnModal] = useState(false);
+
   return (
     <DrawerLayoutAndroid
       ref={drawer}
@@ -91,7 +97,15 @@ const Home = ({ navigation }) => {
       drawerPosition="left"
       renderNavigationView={DrawerLayout}
     >
-      <View className={Platform.OS === "android" ? "flex-1" : "pt-0 flex-1"}>
+      <View
+        className={Platform.OS === "android" ? "flex-1 h-full" : "pt-0 flex-1"}
+      >
+        <ReturnDelivery
+          isShow={showReturnModal}
+          setIsShow={setShowReturnModal}
+          delivery_id={mydelivery?.data?._id}
+        />
+
         <PromptModal
           confirmText="Yes"
           confirmHandler={handleCancelDelivery}
@@ -184,10 +198,18 @@ const Home = ({ navigation }) => {
                 </ScrollView>
 
                 {mydelivery?.data?.approved ? (
-                  <View className=" bottom-0 p-2 opacity-80">
+                  <View className=" bottom-0 flex-row p-2 items-center justify-center gap-x-1 opacity-80">
+                    <TouchableOpacity
+                      onPress={() => setShowReturnModal(!showReturnModal)}
+                      className="flex-row w-[49%]  p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"
+                    >
+                      <Text className="text-[#2389DA] bg-white font-bold text-center">
+                        Finish Delivery
+                      </Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => navigation.navigate("My Routes")}
-                      className="flex-row bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
+                      className="flex-row w-[49%] bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
                     >
                       <MatIcons
                         name="truck-delivery-outline"

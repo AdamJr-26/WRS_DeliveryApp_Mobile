@@ -50,9 +50,11 @@ const NewScreenOptions = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-          onPress={() => navigation.navigate("Deliver Order",{
-            params: {schedule: []}
-          })}
+            onPress={() =>
+              navigation.navigate("Deliver Order", {
+                params: { schedule: [] },
+              })
+            }
             style={{ height: getVW / 3, width: getVW / 3 }}
             className="bg-white rounded-xl shadow-xl shadow-gray-600 flex-col items-center justify-center"
           >
@@ -64,7 +66,13 @@ const NewScreenOptions = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-          onPress={() => navigation.navigate("New Schedule")}
+            onPress={() =>
+              navigation.navigate("New Schedule", {
+                params: {
+                  customer: [],
+                },
+              })
+            }
             style={{ height: getVW / 3, width: getVW / 3 }}
             className="bg-white rounded-xl shadow-xl shadow-gray-600 flex-col items-center justify-center"
           >
