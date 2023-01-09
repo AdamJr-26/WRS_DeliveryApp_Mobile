@@ -4,7 +4,6 @@ import handleError from "./handleError";
 export const apiPost = async ({ url, payload }) => {
   try {
     const res = await axiosAPI().post(url, payload);
-    console.log("res", res.data);
     await handleError(res.status);
     return { data: res?.data };
   } catch (error) {
@@ -26,7 +25,6 @@ export const apiPut = async ({ url, payload }) => {
     await handleError(res.status);
     return { data: res?.data };
   } catch (error) {
-    console.log("errorerrorerror", error);
     return { error };
   }
 };

@@ -25,15 +25,27 @@ const CustomerInfoModal = ({ isShow, setIsShow, customer }) => {
   const deviceWidth = Dimensions.get("window").width;
   const navigation = useNavigation();
 
-  const { data: customerBorrowed, error: customerBorrowedError } = useFetch({
+  const {
+    data: customerBorrowed,
+    error: customerBorrowedError,
+    mutate: mutateBorrowed,
+  } = useFetch({
     url: `/api/borrowed/total/gallon/${customer?._id}`,
   });
 
-  const { data: customerBalance, error: customerBalanceError } = useFetch({
+  const {
+    data: customerBalance,
+    error: customerBalanceError,
+    mutate: mutateBalance,
+  } = useFetch({
     url: `/api/credits/params/${customer?._id}`,
   });
 
-  const { data: customerSchedule, error: customerScheduleError } = useFetch({
+  const {
+    data: customerSchedule,
+    error: customerScheduleError,
+    mutate: mutateCustomerSchedule,
+  } = useFetch({
     url: `/api/schedule/customer/${customer?._id}`,
   });
 
@@ -75,6 +87,15 @@ const CustomerInfoModal = ({ isShow, setIsShow, customer }) => {
     const day = weekdays[date?.getDay()];
     return { string_date: sched_date, day };
   };
+  useEffect(() => {
+    function mutateAll() {
+      if (isShow) return;
+      mutateBorrowed();
+      mutateBalance();
+      mutateCustomerSchedule();
+    }
+    mutateAll();
+  }, [isShow]);
   return (
     <Modal
       animationType="slide"
