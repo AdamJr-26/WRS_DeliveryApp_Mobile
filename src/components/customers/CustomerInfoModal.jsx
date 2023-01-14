@@ -276,10 +276,10 @@ const CustomerInfoModal = ({ isShow, setIsShow, customer }) => {
                 </View>
               )}
             </View>
-            <ScrollView className="p-2">
+            {/* <ScrollView className="p-2">
               <Text className="font-bold text-gray-700">Note:</Text>
               <Text>Short description about sa customer</Text>
-            </ScrollView>
+            </ScrollView> */}
           </View>
         </View>
       </View>

@@ -118,7 +118,7 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
                 </Text>
               </View>
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
-                <Text className="font-bold text-[28px] text-[#2389DA]">25</Text>
+                <Text className="font-bold text-[28px] text-[#2389DA]">0</Text>
                 <Text className="font-semibold text-gray-500">
                   Undelivered Gallons
                 </Text>
@@ -127,7 +127,7 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
             <View className="flex-row  gap-x-2 items-center justify-around p-2">
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">
-                  {summary?.total_borrowed_gallon}
+                  {summary?.total_borrowed_gallon || 0}
                 </Text>
                 <Text className="font-semibold text-gray-500">
                   Borrowed Gallons
@@ -135,7 +135,7 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
               </View>
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">
-                  {summary?.total_returned_gallon}
+                  {summary?.total_returned_gallon || 0}
                 </Text>
                 <Text className="font-semibold text-gray-500">
                   Returned Gallons
@@ -145,7 +145,7 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
             <View className="flex-row  gap-x-2 items-center justify-around p-2">
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">
-                  {summary?.total_credited_gallon}
+                  {summary?.total_credited_gallon || 0 || 0}
                 </Text>
                 <Text className="font-semibold text-gray-500">
                   Credited Gallons
@@ -153,7 +153,7 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
               </View>
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">
-                  ₱ {summary?.total_of_all_debt_payment}
+                  ₱ {summary?.total_of_all_debt_payment || 0 || 0}
                 </Text>
                 <Text className="font-semibold text-gray-500">
                   Debt Payments
@@ -163,7 +163,7 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
             <View className="flex-row  gap-x-2 items-center justify-around p-2">
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">
-                  ₱ {summary?.total_of_all_order_to_pay}
+                  ₱ {summary?.total_of_all_order_to_pay || 0 || 0}
                 </Text>
                 <Text className="font-semibold text-gray-500">
                   Orders Payment
@@ -171,7 +171,7 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
               </View>
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">
-                  ₱ {summary?.total_of_all_payment}
+                  ₱ {summary?.total_of_all_payment || 0 || 0}
                 </Text>
                 <Text className="font-semibold text-gray-500">
                   Cash Received

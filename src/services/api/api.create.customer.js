@@ -13,8 +13,7 @@ export const createCustomer = async (file, body) => {
     });
     const data = res.data;
     return { data };
-  } catch (error) {
-    console.log("[api.create.custoemr]", error)
+  } catch (error) {    
     return { error };
   }
 };

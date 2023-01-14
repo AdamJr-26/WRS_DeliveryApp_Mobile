@@ -29,10 +29,14 @@ const NewCreateSchedule = ({ route, navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mutate } = useSWRConfig();
   const [customerSchedule, setCustomerSchedule] = useState(null);
+
+  useEffect(() => {
+    setCustomer(customer_param);
+  }, []);
   // CHECK IF CUSTOMER ALREADY HAS SCHEDULE.
   useEffect(() => {
     // set customer by navigating from customers infor "Customers" screen
-    setCustomer(customer_param);
+
     // fetch
     if (!customer?._id) return;
     async function checkIfCustomerHasSchedule() {
@@ -159,6 +163,7 @@ const NewCreateSchedule = ({ route, navigation }) => {
           setCustomer(null);
           setIsSubmitting(false);
           ToastAndroid.show("New schedule saved.", ToastAndroid.SHORT);
+          navigation.goBack();
         } else {
           ToastAndroid.show("New schedule did not save", ToastAndroid.SHORT);
           setIsSubmitting(false);

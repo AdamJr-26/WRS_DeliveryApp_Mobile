@@ -36,7 +36,7 @@ const Routes = () => {
   const windowHeight = Dimensions.get("screen").height;
   // get schedule that assigned from a personel.
   const [isLoading, setIsloading] = useState(false);
-  
+
   const { mutate } = useSWRConfig();
   // refresh control
   const [refreshing, setIsRefreshing] = useState(false);
@@ -119,49 +119,45 @@ const Routes = () => {
         </View>
 
         {schedules?.data.length && !isLoading ? (
-          <View className=" my-2 flex-row w-full h-[200px] border-[1px] border-gray-200 rounded-xl  bg-white shadow-lg shadow-gray-600">
-            <ScrollView
-              className="w-[65%]"
-              showsVerticalScrollIndicator={false}
-            >
-              <View className=" p-2 rounded-xl gap-y-1">
-                <Text className="font-bold">Places</Text>
-                <View className="gap-y-1 ">
-                  {places.map((place, i) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (place?.place === markedPlace?.place) {
-                          setmMarkplace(null);
-                        } else {
-                          setmMarkplace(place);
-                        }
-                      }}
-                      key={i}
+          <View className=" my-2 w-full  h-[100px] border-[1px] border-gray-200 rounded-xl  bg-white shadow-lg shadow-gray-600">
+            <View className="flex-1   justify-center">
+              <Text className="font-bold p-2">Places</Text>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                horizontal={true}
+              >
+                {places.map((place, i) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (place?.place === markedPlace?.place) {
+                        setmMarkplace(null);
+                      } else {
+                        setmMarkplace(place);
+                      }
+                    }}
+                    key={i}
+                    className={
+                      place === markedPlace
+                        ? "border[1px] ml-1 border-gray-400  h-[40px] flex-row bg-[#2389DA] px-4  items-center rounded-full"
+                        : "border[1px] ml-1 border-gray-600  h-[40px] flex-row bg-gray-200 px-4  items-center rounded-full"
+                    }
+                  >
+                    <Text
                       className={
                         place === markedPlace
-                          ? "border[1px] border-gray-400 flex-row bg-gray-600 p-5 justify-between rounded-xl"
-                          : "border[1px] border-gray-600 flex-row bg-gray-200 p-5 justify-between rounded-xl"
+                          ? "text-gray-200 font-semibold"
+                          : "text-gray-800 font-semibold"
                       }
                     >
-                      <Text
-                        className={
-                          place === markedPlace
-                            ? "text-gray-200 font-semibold"
-                            : "text-gray-800 font-semibold"
-                        }
-                      >
-                        {place?.place}
-                      </Text>
-                      {/* <Text className="font-bold text-white text-[16px]">
-                          5
-                        </Text> */}
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            </ScrollView>
-            <View className="w-[35%] p-2  justify-between rounded-xl">
-              <View className="bg-gray-600 h-[49%] w-full rounded-xl justify-around p-2 border-[1px] border-gray-200 ">
+                      {place?.place}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+
+            {/* <View className="w-full flex-row p-2 h-[120px] justify-between rounded-xl">
+              <View className="bg-gray-600 h-full w-[49%] rounded-xl justify-around p-2 border-[1px] border-gray-200 ">
                 <Text className="text-center font-bold text-white tracking-widest ">
                   Status
                 </Text>
@@ -182,7 +178,7 @@ const Routes = () => {
                   </Text>
                 </View>
               </View>
-              <TouchableOpacity className="h-[49%] w-full rounded-xl justify-around items-center p-3 border-[1px] border-gray-200 ">
+              <TouchableOpacity className="h-full w-[49%] rounded-xl justify-around items-center p-3 border-[1px] border-gray-200 ">
                 <View className="">
                   <FontAwesome name="send" size={32} color="#2389DA" />
                 </View>
@@ -190,7 +186,7 @@ const Routes = () => {
                   Message
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         ) : (
           ""
@@ -198,7 +194,13 @@ const Routes = () => {
 
         {schedules?.data?.length ? (
           <View className=" p-1 w-full h-full  rounded-lg bg-gray-100 shadow-lg shadow-gray-600">
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <View className="p-2 bg-white rounded-lg">
+              <Text className="text-gray-500 font-semibold">
+                Ang mga schedules na iyong napili ay magsisilbi bilang iyong
+                ruta.
+              </Text>
+            </View>
+            <View>
               {schedules?.data?.map((schedule, i) => (
                 <RenderSortTableView
                   marked_place={markedPlace}
@@ -207,7 +209,7 @@ const Routes = () => {
                   handleAssignedSchedule={handleAssignedSchedule}
                 />
               ))}
-            </ScrollView>
+            </View>
           </View>
         ) : (
           <View className=" p-1 w-full flex-1  justify-center items-center  rounded-lg bg-white shadow-lg shadow-gray-600">

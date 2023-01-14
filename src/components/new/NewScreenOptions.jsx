@@ -5,9 +5,15 @@ import MatcomIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MatIcons from "react-native-vector-icons/MaterialIcons";
 const getVW = Dimensions.get("screen").width;
 const getVH = Dimensions.get("screen").height;
+
+
+// NOT USE
+// NOT USE
+// NOT USED
+
 const NewScreenOptions = ({ navigation }) => {
   return (
-    <View>
+    <View className="bg-white">
       <View>
         <Text></Text>
       </View>

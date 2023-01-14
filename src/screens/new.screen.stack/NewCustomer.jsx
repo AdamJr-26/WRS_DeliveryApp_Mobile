@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import { createCustomer } from "../../services/api/api.create.customer";
+import { Buffer } from "buffer";
 
 const ActionNewCustomer = ({ navigation }) => {
   // REFRESH
@@ -27,6 +28,7 @@ const ActionNewCustomer = ({ navigation }) => {
   // IMAGE PICK
   const [image, setImage] = useState(null);
   const [gender, setGender] = useState(null);
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     try {
@@ -38,12 +40,14 @@ const ActionNewCustomer = ({ navigation }) => {
         base64: true,
       });
       if (!result?.cancelled) {
+        // console.log("[resImage]", result);
         const resImage = {
-          buffer: `image/jpg;base64;${result?.base64}`,
-          uri: result?.uri,
-          type: result?.type,
-          name: result?.fileName,
-          height: result?.height,
+          buffer: Buffer.from(result?.base64, "base64"),
+          uri: result.uri,
+          type: result.type,
+          originalname: result?.uri,
+          height: result.height,
+          mimetype: result?.type,
         };
         setImage(resImage);
       } else {
@@ -54,7 +58,7 @@ const ActionNewCustomer = ({ navigation }) => {
       console.log("error", error);
     }
   };
-
+  console.log("image", image?.uri);
   // FORMIK
   const customerInitialValue = {
     firstname: "",
@@ -123,6 +127,7 @@ const ActionNewCustomer = ({ navigation }) => {
               actions.resetForm({ values: customerInitialValue });
               navigation.navigate("Customers");
               ToastAndroid.show("Created a new customer", ToastAndroid.LONG);
+              navigation.goBack();
             } else {
               setIsSubmitting(false);
               ToastAndroid.show(

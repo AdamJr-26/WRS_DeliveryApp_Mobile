@@ -22,6 +22,7 @@ const BeforeSubmit = ({
   orderToPay,
   customerBalance,
   isSubmitting,
+  customer,
 }) => {
   // get all totals
   const [total, setTotal] = useState();
@@ -37,11 +38,11 @@ const BeforeSubmit = ({
         payable: "",
       };
       for (let i = 0; i < form.length; i++) {
-        t.returned = Number(t.returned) + Number(form[i].return);
-        t.borrowed = Number(t.borrowed) + Number(form[i].borrow);
-        t.credited = Number(t.credited) + Number(form[i].credit);
-        t.free = Number(t.free) + Number(form[i].free);
-        t.total_orders = Number(t.total_orders) + Number(form[i].orders);
+        t.returned = Math.floor(Number(t.returned) + Number(form[i].return));
+        t.borrowed = Math.floor(Number(t.borrowed) + Number(form[i].borrow));
+        t.credited = Math.floor(Number(t.credited) + Number(form[i].credit));
+        t.free = Math.floor(Number(t.free) + Number(form[i].free));
+        t.total_orders = Math.floor(Number(t.total_orders) + Number(form[i].orders));
         setTotal(t);
       }
     }
@@ -72,16 +73,16 @@ const BeforeSubmit = ({
             <View className="w-[70px] h-[70px] rounded-full bg-gray-100 border-[1px] border-gray-300">
               <Image
                 source={{
-                  uri: "https://res.cloudinary.com/dy1od3qwx/image/upload/v1661686514/xfyoilmuhgvkd1qnznkg.png",
+                  uri: customer?.display_photo,
                 }}
                 className="w-full h-full rounded-full"
               />
             </View>
-            <Text className="text-[19px] font-semibold text-gray-100">
-              Adam Marcaida
+            <Text className="text-[24px] font-semibold text-gray-50">
+              {customer?.firstname || ""} {customer?.lastname || ""}
             </Text>
             <Text className="text-[14px] text-gray-100 tracking-[1px]">
-              0915455215
+              {customer?.mobile_number || ""}
             </Text>
           </View>
           <View className="w-full ">
@@ -198,7 +199,9 @@ const BeforeSubmit = ({
               {isSubmitting ? (
                 <>
                   <ActivityIndicator size={34} color="white" />
-                  <Text className="text-white font-semibold">Submitting...</Text>
+                  <Text className="text-white font-semibold">
+                    Submitting...
+                  </Text>
                 </>
               ) : (
                 <Text className="ml-2 text-white font-semibold">Submit</Text>

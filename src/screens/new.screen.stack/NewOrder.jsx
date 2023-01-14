@@ -22,6 +22,7 @@ import SearchCustomerModal from "../../components/general/SearchCustomerModal";
 import { useSWRConfig } from "swr";
 import CustomerBalanceModal from "../../components/general/modal/CustomerBalanceModal";
 import CustomerBorrowedModal from "../../components/general/modal/CustomerBorrowedModal";
+
 const NewOrder = ({ route, navigation }) => {
   const { mutate } = useSWRConfig();
 
@@ -35,7 +36,7 @@ const NewOrder = ({ route, navigation }) => {
 
   console.log("sched_paramssched_params", sched_params);
 
-  // // add customer to the state from navigation.
+  // add customer to the state from navigation.
   useEffect(() => {
     setCustomer(sched_params?.customer);
   }, []);
@@ -115,6 +116,9 @@ const NewOrder = ({ route, navigation }) => {
   // cleaning the object of form and also adding total to the gallon object.
   const [items, dispatchItems] = useReducer(itemsReducer, []);
   useEffect(() => {
+    // Instead of using a for loop, use the map method to iterate over
+    // the schedule.items array. This will make the code more readable
+    // and may improve performance.
     function AddAllOrderedItems() {
       for (let i = 0; i < schedule?.items?.length; i++) {
         schedule.items[i].gallon["total"] = schedule.items[i].total;
@@ -134,6 +138,7 @@ const NewOrder = ({ route, navigation }) => {
   // select gallon
   const [showGallonModal, setShowGallonModal] = useState(false);
   // console.log("selected scheules", selectedDiscount);
+
   // HANDLE FORM
   const [form, setForm] = useState([]);
   useEffect(() => {
@@ -144,7 +149,7 @@ const NewOrder = ({ route, navigation }) => {
           regular_price: items[i]?.price,
           gallon: items[i]?._id,
           credit: 0,
-          orders: items[i].total,
+          orders: items[i].total || 0,
           free: 0,
           borrow: 0,
           return: 0,
@@ -155,15 +160,16 @@ const NewOrder = ({ route, navigation }) => {
     }
     createForm();
   }, [items]);
+
   const handleFormInputsChange = (value, index, _id, field) => {
     const data = [...form];
     data[index]["gallon"] = _id;
-    if (field === "credit") data[index]["credit"] = value;
-    if (field === "orders") data[index]["orders"] = value;
-    if (field === "free") data[index]["free"] = value;
-    if (field === "borrow") data[index]["borrow"] = value;
-    if (field === "return") data[index]["return"] = value;
-    if (field === "price") data[index]["price"] = value;
+    if (field === "credit") data[index]["credit"] = Math.floor(value);
+    if (field === "orders") data[index]["orders"] = Math.floor(value);
+    if (field === "free") data[index]["free"] = Math.floor(value);
+    if (field === "borrow") data[index]["borrow"] = Math.floor(value);
+    if (field === "return") data[index]["return"] = Math.floor(value);
+    if (field === "price") data[index]["price"] = Math.floor(value);
     setForm(data);
   };
 
@@ -200,14 +206,13 @@ const NewOrder = ({ route, navigation }) => {
       type: "reset",
       data: [],
     });
-    setSchedule(null);
   };
 
   const [submitError, setSubmitError] = useState();
-
+  console.log("form.orders", form);
   const handleSubmit = async () => {
     // HANDLE SUBMIT - with schedule
-    if (isSubmitting) return;
+    if (isSubmitting && !form.orders) return;
 
     setIsSubmitting(true);
     const payload = {
@@ -228,7 +233,7 @@ const NewOrder = ({ route, navigation }) => {
       mutate("/api/schedule-assigned/by-personel");
       handleClear();
       setIsSubmitting(false);
-
+      navigation.goBack();
       // if there has schedule attach.
       if (schedule?._id) {
         setRescheduleModal(true);
@@ -280,6 +285,7 @@ const NewOrder = ({ route, navigation }) => {
         orderToPay={orderToPay}
         customerBalance={customerBalance?.data[0]?.total_debt || 0}
         isSubmitting={isSubmitting}
+        customer={customer}
       />
       <Reschedule
         isShow={rescheduleModal}
@@ -310,7 +316,7 @@ const NewOrder = ({ route, navigation }) => {
                 <View className="w-[70px] h-[70px] rounded-full bg-gray-100 border-[1px] border-gray-300">
                   <Image
                     source={{
-                      uri: "https://res.cloudinary.com/dy1od3qwx/image/upload/v1661686514/xfyoilmuhgvkd1qnznkg.png",
+                      uri: customer?.display_photo,
                     }}
                     className="w-full h-full rounded-full"
                   />

@@ -34,18 +34,17 @@ const ReturnGallonModal = ({ isShow, setIsShow, borrow, get_borrowed }) => {
       },
     });
     if (data && !error) {
-      setIsSubmitting(false);
-      setIsShow(!isShow);
+      setIsShow(false);
       ToastAndroid.show("Return gallon successfully", ToastAndroid.LONG);
       get_borrowed();
+      setIsSubmitting(false);
     } else {
+      setIsSubmitting(false);
       get_borrowed();
       ToastAndroid.show(
         "Return gallon failed, please try again.",
         ToastAndroid.LONG
       );
-
-      setIsSubmitting(false);
     }
   }
   return (
@@ -92,7 +91,7 @@ const ReturnGallonModal = ({ isShow, setIsShow, borrow, get_borrowed }) => {
         </View>
         <View className="p-2 mt-2 flex-row items-center justify-between">
           <TouchableOpacity
-            onPress={() => setIsShow(!isShow)}
+            onPress={() => setIsShow(false)}
             className="flex-row w-[49%] border-[1px] border-[#2389DA]  p-2 h-[50px]  items-center justify-center rounded-full"
           >
             <Text className="text-[#2389DA] font-bold ml-2">Close</Text>
@@ -101,7 +100,11 @@ const ReturnGallonModal = ({ isShow, setIsShow, borrow, get_borrowed }) => {
             onPress={() => handleReturnGallon()}
             className="flex-row w-[49%] bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
           >
-            <Text className="text-white font-bold ml-2">Submit</Text>
+            {isSubmitting ? (
+              <ActivityIndicator size={34} color="white" />
+            ) : (
+              <Text className="text-white font-bold ml-2">Submit</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>

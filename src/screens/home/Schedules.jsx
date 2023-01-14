@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MatIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { TextInput } from 'react-native-gesture-handler';
 import {
   View,
@@ -19,6 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import DateAgenda from "../../components/schedules/CalendarAgenda/DateAgenda";
 
 import { apiGet } from "../../services/api/axios.method";
+import UnattendedSchedules from "../../components/schedules/UnattendedSchedules";
 
 const Schedules = () => {
   const navigation = useNavigation();
@@ -30,6 +32,7 @@ const Schedules = () => {
   const [places, setPlaces] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
 
+  
   const today = () => {
     const weekdays = [
       "Monday",
@@ -80,12 +83,20 @@ const Schedules = () => {
       setSelectedPlace(places[0]);
     }
   }, [places]);
+
+  // unattended schedules modal
+  const [isShowUnattendedSchedules, setIsShowUnattendedSchedules] =
+    useState(false);
+
   return (
     <View
       className={Platform.OS === "android" ? "flex-1 mt-6 bg-gray-100" : "pt-0"}
     >
       {/* modal */}
-      
+      <UnattendedSchedules
+        isShow={isShowUnattendedSchedules}
+        setIsShow={setIsShowUnattendedSchedules}
+      />
       <View className="flex-1 bg-white p-2 z-10">
         <Text className="text-center text-[21px] font-bold text-gray-600">
           Schedules
@@ -97,11 +108,14 @@ const Schedules = () => {
               <Text>{today().string_date}</Text>
             </View>
           </View>
-          <View>
-            <TouchableOpacity className="">
-              <Text>
-                <Ionicons name="search" size={32} />
-              </Text>
+          <View className="flex-row">
+            <TouchableOpacity
+              onPress={() =>
+                setIsShowUnattendedSchedules(!isShowUnattendedSchedules)
+              }
+              className=""
+            >
+              <MatIcons name="calendar-arrow-left" size={32} />
             </TouchableOpacity>
           </View>
         </View>
@@ -109,7 +123,10 @@ const Schedules = () => {
         <View className=" w-full flex-row mt-2 ">
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {places.map((place) => (
-              <TouchableOpacity key={place} onPress={() => setSelectedPlace(place)}>
+              <TouchableOpacity
+                key={place}
+                onPress={() => setSelectedPlace(place)}
+              >
                 <Text
                   className="font-bold text-center px-3 py-[5px] ml-1 rounded-full border-[1px] border-[#2389DA]"
                   style={

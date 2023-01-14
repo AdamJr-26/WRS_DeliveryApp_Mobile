@@ -30,11 +30,11 @@ const RenderSortTableView = ({
             className=" w-full h-full rounded-full "
           />
         </View>
-        <View className="ml-2">
+        <View className="ml-2  ">
           <Text className="text-[19px] font-bold text-gray-700 ">
             {customer?.firstname || " "} {customer?.lastname || " "}
           </Text>
-          <Text className="text-[12px] font-semibold text-gray-600">
+          <Text className="text-[12px] break-words font-semibold text-gray-600">
             {customer?.address?.street}, {customer?.address?.barangay},{" "}
             {customer?.address?.municipal_city}
           </Text>

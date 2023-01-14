@@ -10,11 +10,15 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily:{
+      fontFamily: {
         // display: ["Montserrat"]
-      }
+      },
+      animation: {
+        spin: {
+          animation: "spin 500ms linear infinite",
+        },
+      },
     },
-
   },
   plugins: [],
 };

@@ -172,6 +172,7 @@ const ActionNewDelivery = ({ navigation }) => {
         // annother alert that success
         togglePrompt();
         handleReset();
+        navigation.goBack();
       } else if (status === 409) {
         setErrorMessage(
           "You cannot create another delivery while you have an ongoing delivery."
@@ -269,7 +270,7 @@ const ActionNewDelivery = ({ navigation }) => {
               <Text className="text-gray-700 font-bold">Selected Vehicle</Text>
             </View>
             <View className="flex-row justify-between overflow-hidden rounded-md">
-              <View className="w-[50%] bg-gray-100 rounded-xl overlfow-hidden justify-center items-center">
+              <View className="w-[40%] bg-gray-100 rounded-xl overlfow-hidden justify-center items-center">
                 <Image
                   source={{
                     uri: selectedVehicle?.vehicle_image,
@@ -277,18 +278,28 @@ const ActionNewDelivery = ({ navigation }) => {
                   className=" w-[80%] h-[80%] object-cover "
                 />
               </View>
-              <View className="w-[50%] p-2 items-center justify-center">
-                <Text className="font-bold text-gray-600 text-[16px] text-center">
-                  {selectedVehicle?.vehicle_id.toUpperCase()}
-                </Text>
-                <Text className="font-semibold text-gray-500">
-                  {selectedVehicle?.vehicle_name}
-                </Text>
+              <View className="w-[60%] p-2  justify-center">
+                <View className="flex-row">
+                  <Text className="text-gray-500">Plate no.</Text>
+                  <Text className="ml-1 font-bold text-[16px]">
+                    {selectedVehicle?.vehicle_id.toUpperCase()}
+                  </Text>
+                </View>
+                <View className="flex-row">
+                  <Text className="text-gray-500">Name: </Text>
+                  <Text className="ml-1 font-bold text-[16px]">
+                    {selectedVehicle?.vehicle_name}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
         ) : (
-          <Text className="text-gray-700 font-bold">No selected vehicle</Text>
+          <View className="mt-2 items-center justify-center flex-row h-[100px] rounded-xl bg-gray-100">
+            <Text className="text-gray-700 font-bold">
+              No selected vehicles
+            </Text>
+          </View>
         )}
 
         {selectedGallons?.length ? (
@@ -339,31 +350,55 @@ const ActionNewDelivery = ({ navigation }) => {
             </View>
           </View>
         ) : (
-          <View className="mt-2 flex-row items-center">
+          <View className="mt-2 items-center justify-center flex-row h-[100px] rounded-xl bg-gray-100">
             <Text className="text-gray-700 font-bold">No selected gallons</Text>
           </View>
         )}
       </ScrollView>
-      <View className="flex-row justify-between ">
-        <TouchableOpacity
-          onPress={handleReset}
-          className="w-[49%] py-3 flex-row bg-gray-50 border-[1px] border-gray-200 justify-center items-center rounded-xl"
-        >
-          <Pressable>
-            <Text className="text-center text-red-500">Reset</Text>
-          </Pressable>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (form.length && selectedVehicle) {
-              togglePrompt();
-            }
-          }}
-          className="w-[49%] py-3 bg-[#2389DA] flex-row justify-center items-center rounded-xl"
-        >
-          <Text className="text-center text-gray-50">Create</Text>
-        </TouchableOpacity>
-      </View>
+      {selectedGallons?.length || selectedVehicle?.length ? (
+        <View className=" bottom-0 mt-4 flex-row p-2 items-center justify-center gap-x-1 opacity-80">
+          <TouchableOpacity
+            onPress={handleReset}
+            className="flex-row w-[49%]  bg-white p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"
+          >
+            <Text className="text-[#2389DA] bg-white font-bold text-center">
+              Reset
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (form.length && selectedVehicle) {
+                togglePrompt();
+              }
+            }}
+            className="flex-row w-[49%] bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
+          >
+            <Text className="text-white font-bold ml-2">Create</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        // <View className="flex-row justify-between ">
+        //   <TouchableOpacity
+        //     onPress={handleReset}
+        //     className="w-[49%] py-3 flex-row bg-gray-50 border-[1px] border-gray-200 justify-center items-center rounded-xl"
+        //   >
+        //     <Pressable>
+        //       <Text className="text-center text-red-500">Reset</Text>
+        //     </Pressable>
+        //   </TouchableOpacity>
+        //   <TouchableOpacity
+        //     onPress={() => {
+        //       if (form.length && selectedVehicle) {
+        //         togglePrompt();
+        //       }
+        //     }}
+        //     className="w-[49%] py-3 bg-[#2389DA] flex-row justify-center items-center rounded-xl"
+        //   >
+        //     <Text className="text-center text-gray-50">Create</Text>
+        //   </TouchableOpacity>
+        // </View>
+        ""
+      )}
     </SafeAreaView>
   );
 };

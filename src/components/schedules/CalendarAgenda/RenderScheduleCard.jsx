@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { apiDelete, apiPut } from "../../../services/api/axios.method";
 import PromptModal from "../../general/modal/PromptModal";
-
+import transformDate from "../../../services/utils/date.toString";
 const RenderItem = ({ day, item, getSchedules }) => {
   const items = item?.fromItems;
   const [isExpanded, setIsexpanded] = useState(false);
@@ -32,7 +32,7 @@ const RenderItem = ({ day, item, getSchedules }) => {
         "Added to your routes, now refreshing to get latest.",
         ToastAndroid.LONG
       );
-      getSchedules();
+      getSchedules(); // to get updated the schedules list.
       setIsloading(false);
     } else {
       setIsloading(false);
@@ -64,6 +64,9 @@ const RenderItem = ({ day, item, getSchedules }) => {
       );
     }
   };
+
+  // process date to readable.
+
   return (
     <View className="flex-col mt-2  w-full bg-white rounded-xl shadow-xl shadow-gray-400 ">
       <PromptModal
@@ -124,7 +127,12 @@ const RenderItem = ({ day, item, getSchedules }) => {
               </Text>
             </View>
             <View className="flex-col ">
-              <Text className="font-bold mt-3">Orders</Text>
+              <View className="flex-row mt-3 justify-between items-center">
+                <Text className="font-bold ">Orders</Text>
+                <Text className="font-bold ">
+                  {transformDate(item?.schedule?.utc_date).string_date}
+                </Text>
+              </View>
               {items?.map((item) => (
                 <View
                   key={item?._id}

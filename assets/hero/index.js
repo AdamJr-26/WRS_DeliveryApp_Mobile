@@ -8,5 +8,6 @@ const heroes = {
   void: require("./void.png"),
   by_the_road: require("./bytheroad.png"),
   people_search: require("./people_search.png"),
+  up_to_date : require('./up_to_date.png'),
 };
 export default heroes;

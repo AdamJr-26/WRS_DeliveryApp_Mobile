@@ -31,7 +31,7 @@ const ChooseGallonModal = ({
   const gallon_data = gallons?.data;
 
   const addGallons = (gallon) => {
-    console.log("gallongallongallon",gallon)
+    console.log("gallongallongallon", gallon);
     dispatchSelectedGallons({
       type: "add",
       data: {
@@ -129,7 +129,7 @@ const ChooseGallonModal = ({
       </View>
     </Modal>
   ) : (
-    <View className="flex-1 items-center justify-center">
+    <View className="h-[50px] w-[50px] flex-1 items-center justify-center absolute top-[50%] left-[45%] p-2 bg-white shadow-lg shadow-gray-200">
       <ActivityIndicator size={60} color="#2389DA" />
     </View>
   );

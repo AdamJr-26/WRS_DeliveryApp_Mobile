@@ -34,6 +34,9 @@ const RenderEmptyData = () => {
           navigation.navigate("New", {
             screen: "New Schedule",
             initial: false,
+            params: {
+              customer: null,
+            },
           })
         }
         className="bg-[#2389DA] rounded-full px-5 py-3 mt-2"

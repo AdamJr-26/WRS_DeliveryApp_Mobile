@@ -30,6 +30,7 @@ const PayCreditByGallon = ({ isShow, setIsShow, credit, get_balance }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async () => {
     if (isSubmitting || !totalGallonToPay || !totalAmountToPay) return;
+    console.log("isSubmitting", isSubmitting);
     setIsSubmitting(true);
     const { data, error } = await apiPut({
       url: `api/credits/pay/${credit?._id}`,
@@ -40,7 +41,7 @@ const PayCreditByGallon = ({ isShow, setIsShow, credit, get_balance }) => {
     });
     if (data && !error) {
       setIsSubmitting(false);
-      setIsShow(!isShow);
+      setIsShow(false);
       ToastAndroid.show("Pay credit successfully", ToastAndroid.LONG);
       get_balance(); //re-fecth credit
     } else {
@@ -54,6 +55,7 @@ const PayCreditByGallon = ({ isShow, setIsShow, credit, get_balance }) => {
     setTotalGallonToPay(value);
     setTotalAmountToPay(value * credit?.price);
   }
+
   return (
     <Modal
       isVisible={isShow}

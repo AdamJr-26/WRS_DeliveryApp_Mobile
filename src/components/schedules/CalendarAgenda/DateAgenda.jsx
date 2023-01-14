@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Agenda } from "react-native-calendars";
 import RenderEmptyData from "./RenderEmptyData";
-import RenderItem from "./RenderItem";
+import RenderScheduleCard from "./RenderScheduleCard";
 import { apiGet } from "../../../services/api/axios.method";
 // main component
 const DateAgenda = ({ selected_place }) => {
@@ -76,7 +76,7 @@ const DateAgenda = ({ selected_place }) => {
         );
       }}
       renderDay={(day, item) => (
-        <RenderItem day={day} item={item} getSchedules={getSchedules} />
+        <RenderScheduleCard day={day} item={item} getSchedules={getSchedules} />
       )}
       theme={{
         agendaDayTextColor: "#2389DA",

@@ -28,6 +28,23 @@ export const apiPut = async ({ url, payload }) => {
     return { error };
   }
 };
+export const apiPutWithFile = async ({ url, payload }) => {
+  try {
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(payload?.body));
+    formData.append("image", JSON.stringify(payload?.file));
+    const res = await axiosAPI().put(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const data = res.data;
+    return { data };
+  } catch (error) {
+    console.log("[error]", error)
+    return { error };
+  }
+};
 
 export const apiDelete = async ({ url }) => {
   try {
