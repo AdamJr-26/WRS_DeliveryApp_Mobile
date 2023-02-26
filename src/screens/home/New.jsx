@@ -15,6 +15,7 @@ const getVW = Dimensions.get("screen").width;
 const getVH = Dimensions.get("screen").height;
 
 import { ScrollView } from "react-native-gesture-handler";
+import OthersWrapper from "../../components/new/OthersWrapper";
 
 const New = ({ navigation }) => {
   // const navigation = useNavigation();
@@ -62,7 +63,7 @@ const New = ({ navigation }) => {
                 },
                 {
                   iconName: "border-color",
-                  label: "Purchase",
+                  label: "Deliver order",
                   route: "Deliver Order",
                   params: {
                     schedule: [],
@@ -98,27 +99,7 @@ const New = ({ navigation }) => {
               ))}
             </ScrollView>
           </View>
-          <View className="bg-white p-2 mt-2 rounded-xl">
-            <View className="flex-row items-center">
-              <Text className="font-bold text-gray-600 text-[16px] mr-2">
-                Others
-              </Text>
-              <View className="p-1 border-[1px] border-gray-300 rounded-full h-[20px] w-[20px] items-center justify-center">
-                <MatcomIcons name="information-variant" size={10} />
-              </View>
-            </View>
-            <TouchableOpacity className="flex-row items-center justify-between px-2 py-4">
-              <View className="flex-row items-center">
-                <View className="items-center justify-center bg-gray-100 p-3 rounded-xl">
-                  <MatcomIcons name="cash-minus" size={19} color="gray" />
-                </View>
-                <Text className="ml-4 font-bold ">New expense</Text>
-              </View>
-              <View className="items-center justify-center">
-                <Ionicons name="chevron-forward-outline" size={24} />
-              </View>
-            </TouchableOpacity>
-          </View>
+          <OthersWrapper />
         </View>
       </ScrollView>
     </View>

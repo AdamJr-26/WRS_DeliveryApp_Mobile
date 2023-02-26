@@ -1,5 +1,5 @@
 import { View, Text, Image, TextInput } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 
 const RenderItems = ({
   item,
@@ -30,6 +30,23 @@ const RenderItems = ({
     }
     getTotalFree();
   }, [form[index]?.orders, selectedDiscount]);
+
+  // useCallback(() => {
+  //   const buy = selectedDiscount?.get_free?.buy;
+  //   const orders = form[index]?.orders;
+  //   const get = selectedDiscount?.get_free?.get;
+  //   if (selectedDiscount && orders) {
+  //     console.log("buy >= orders", orders);
+  //     let totalOccured = 0;
+  //     for (let i = 1; i <= orders; i++) {
+  //       if (i % buy === 0) {
+  //         totalOccured = totalOccured + 1;
+  //         // call handle change to update free field
+  //       }
+  //     }
+  //     handleFormInputsChange(get * totalOccured, index, item?._id, "free");
+  //   }
+  // }, [form[index]?.orders, selectedDiscount]);
 
   return (
     <View className="mt-2 py-2 border-[1px] border-gray-300 rounded-xl ">
@@ -148,4 +165,4 @@ const RenderItems = ({
   );
 };
 
-export default RenderItems;
+export default React.memo(RenderItems);

@@ -9,5 +9,6 @@ const heroes = {
   by_the_road: require("./bytheroad.png"),
   people_search: require("./people_search.png"),
   up_to_date : require('./up_to_date.png'),
+  neptune_logo: require("./neptune_logo.png")
 };
 export default heroes;

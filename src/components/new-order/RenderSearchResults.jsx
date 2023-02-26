@@ -24,4 +24,4 @@ const RenderSearchResults = ({ name, address, imageLink }) => {
   );
 };
 
-export default RenderSearchResults;
+export default React.memo(RenderSearchResults);

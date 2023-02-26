@@ -287,4 +287,4 @@ const CustomerInfoModal = ({ isShow, setIsShow, customer }) => {
   );
 };
 
-export default CustomerInfoModal;
+export default React.memo(CustomerInfoModal);

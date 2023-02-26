@@ -176,4 +176,4 @@ const RenderItem = ({ day, item, getSchedules }) => {
     </View>
   );
 };
-export default RenderItem;
+export default React.memo(RenderItem);

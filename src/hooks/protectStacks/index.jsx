@@ -12,6 +12,10 @@ const ProtectRoutes = () => {
   if (isLoading && !isLoggedIn) {
     return (
       <View className="flex-1 items-center justify-center">
+        <View className="items-center justify-center">
+          <Text className="text-[24px] font-bold text-[#2389DA] text-center">NEPTUNE</Text>
+          <Text className="text-[16px] font-semibold text-gray-600 text-center mt-2">Water Refilling Station Management System</Text>
+        </View>
         <ActivityIndicator size={60} color="#2389DA" />
       </View>
     );

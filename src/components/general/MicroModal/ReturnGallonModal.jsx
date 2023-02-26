@@ -24,6 +24,7 @@ const ReturnGallonModal = ({ isShow, setIsShow, borrow, get_borrowed }) => {
 
   //   handle submition of return
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
   async function handleReturnGallon() {
     if (isSubmitting || !gallonToReturn) return;
     setIsSubmitting(true);

@@ -17,6 +17,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import * as ImagePicker from "expo-image-picker";
 import { createCustomer } from "../../services/api/api.create.customer";
 import { Buffer } from "buffer";
+import AuthEmailTextInput from "../../components/auth/AuthEmailTextInput";
 
 const ActionNewCustomer = ({ navigation }) => {
   // REFRESH
@@ -64,6 +65,7 @@ const ActionNewCustomer = ({ navigation }) => {
     firstname: "",
     lastname: "",
     mobile_number: "",
+    gmail: "",
     province: "",
     municipal_city: "",
     barangay: "",
@@ -78,6 +80,7 @@ const ActionNewCustomer = ({ navigation }) => {
       11,
       "Invalid mobile number, please start with 09"
     ),
+    gmail: Yup.string().email(),
     province: Yup.string()
       .max(30, "Must not exceed 30 letters")
       .required("Province is required"),
@@ -115,6 +118,7 @@ const ActionNewCustomer = ({ navigation }) => {
               lastname: values.lastname,
               mobile_number: values.mobile_number,
               gender,
+              gmail: values.gmail,
             };
             const file = image;
             setIsSubmitting(true);
@@ -205,6 +209,15 @@ const ActionNewCustomer = ({ navigation }) => {
                       onBlur={handleBlur("mobile_number")}
                       errors={errors.mobile_number}
                     />
+                    <AuthEmailTextInput
+                      values={values.gmail.toLowerCase()}
+                      label="Email Address"
+                      placeholder="sample@gmail.com"
+                      onChangeText={handleChange("gmail")}
+                      onBlur={handleBlur("gmail")}
+                      errors={errors.gmail}
+                    />
+
                     <View>
                       <Text className="mt-2 font-bold text-gray-600">
                         Select gender

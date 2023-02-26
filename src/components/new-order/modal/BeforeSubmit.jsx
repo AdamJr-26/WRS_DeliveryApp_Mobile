@@ -10,7 +10,7 @@ import {
   TextInput,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const BeforeSubmit = ({
@@ -27,26 +27,25 @@ const BeforeSubmit = ({
   // get all totals
   const [total, setTotal] = useState();
   useEffect(() => {
-    function calTotal() {
-      const t = {
-        total_orders: "",
-        returned: "",
-        credited: "",
-        ordered: "",
-        borrowed: "",
-        free: "",
-        payable: "",
-      };
-      for (let i = 0; i < form.length; i++) {
-        t.returned = Math.floor(Number(t.returned) + Number(form[i].return));
-        t.borrowed = Math.floor(Number(t.borrowed) + Number(form[i].borrow));
-        t.credited = Math.floor(Number(t.credited) + Number(form[i].credit));
-        t.free = Math.floor(Number(t.free) + Number(form[i].free));
-        t.total_orders = Math.floor(Number(t.total_orders) + Number(form[i].orders));
-        setTotal(t);
-      }
+    const t = {
+      total_orders: "",
+      returned: "",
+      credited: "",
+      ordered: "",
+      borrowed: "",
+      free: "",
+      payable: "",
+    };
+    for (let i = 0; i < form.length; i++) {
+      t.returned = Math.floor(Number(t.returned) + Number(form[i].return));
+      t.borrowed = Math.floor(Number(t.borrowed) + Number(form[i].borrow));
+      t.credited = Math.floor(Number(t.credited) + Number(form[i].credit));
+      t.free = Math.floor(Number(t.free) + Number(form[i].free));
+      t.total_orders = Math.floor(
+        Number(t.total_orders) + Number(form[i].orders)
+      );
+      setTotal(t);
     }
-    calTotal();
   }, [form]);
 
   return (
@@ -214,4 +213,4 @@ const BeforeSubmit = ({
   );
 };
 
-export default BeforeSubmit;
+export default React.memo(BeforeSubmit);

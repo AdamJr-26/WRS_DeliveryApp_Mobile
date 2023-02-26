@@ -24,7 +24,7 @@ import useFetch from "../../hooks/api/swr/useFetch";
 import { apiGet, apiPut } from "../../services/api/axios.method";
 import { useSWRConfig } from "swr";
 // fetch schedule that aassiged from this personel
-
+import transformDate from "../../services/utils/date.toString";
 const Routes = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -156,37 +156,6 @@ const Routes = () => {
               </ScrollView>
             </View>
 
-            {/* <View className="w-full flex-row p-2 h-[120px] justify-between rounded-xl">
-              <View className="bg-gray-600 h-full w-[49%] rounded-xl justify-around p-2 border-[1px] border-gray-200 ">
-                <Text className="text-center font-bold text-white tracking-widest ">
-                  Status
-                </Text>
-                <View className="flex-row justify-between items-center">
-                  <Text className="text-[11px] font-semibold text-gray-50 ">
-                    Delivered
-                  </Text>
-                  <Text className="text-[19px] text-gray-50 font-bold text-center">
-                    5
-                  </Text>
-                </View>
-                <View className="flex-row justify-between items-center">
-                  <Text className="text-[11px] font-semibold text-gray-50 ">
-                    Ongoing
-                  </Text>
-                  <Text className="text-[19px] text-gray-50 font-bold text-center">
-                    25
-                  </Text>
-                </View>
-              </View>
-              <TouchableOpacity className="h-full w-[49%] rounded-xl justify-around items-center p-3 border-[1px] border-gray-200 ">
-                <View className="">
-                  <FontAwesome name="send" size={32} color="#2389DA" />
-                </View>
-                <Text className="text-gray-600 font-semibold text-[14px]">
-                  Message
-                </Text>
-              </TouchableOpacity>
-            </View> */}
           </View>
         ) : (
           ""

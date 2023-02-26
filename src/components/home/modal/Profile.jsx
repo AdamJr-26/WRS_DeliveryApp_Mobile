@@ -199,4 +199,4 @@ const Profile = ({ isShow, setIsShow, revalidateUser }) => {
   );
 };
 
-export default Profile;
+export default React.memo(Profile);

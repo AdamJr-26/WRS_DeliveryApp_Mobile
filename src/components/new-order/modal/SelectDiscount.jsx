@@ -79,4 +79,4 @@ const SelectDiscount = ({ setIsShow, isShow, selectCustomer }) => {
   );
 };
 
-export default SelectDiscount;
+export default React.memo(SelectDiscount);

@@ -1,8 +1,20 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MatcomIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 // import { TextInput } from 'react-native-gesture-handler';
-import { View, Text, TouchableOpacity, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
+import transformDate from "../../services/utils/date.toString";
+import { apiGet } from "../../services/api/axios.method";
 
 const RenderSortTableView = ({
   schedule,
@@ -12,7 +24,24 @@ const RenderSortTableView = ({
 }) => {
   const navigation = useNavigation();
   const customer = schedule?.customer;
-  console.log("schedule", schedule?._id);
+  const [isSending, setIsSending] = useState(false);
+  const sendEmail = async (schedule) => {
+    if (schedule?.notified && !isSending) {
+      ToastAndroid.show("This customer already notified.", ToastAndroid.SHORT);
+    } else {
+      setIsSending(true);
+      const { data, error } = await apiGet(
+        `/api/send/delivery-notification/${schedule?._id}`
+      );
+      if (data && !error) {
+        setIsSending(false);
+        ToastAndroid.show("Send email successfully", ToastAndroid.SHORT);
+      } else {
+        setIsSending(false);
+        ToastAndroid.show("Failed to send email.", ToastAndroid.SHORT);
+      }
+    }
+  };
   return (
     <View className="flex-col mt-2 p-3 border-[1px] border-gray-200 bg-white rounded-xl shadow-xl ">
       <TouchableOpacity
@@ -54,7 +83,12 @@ const RenderSortTableView = ({
           <Text className="font-bold ml-2">{customer?.mobile_number} </Text>
         </View>
         <View className="flex-col">
-          <Text className="font-bold mt-3">Orders</Text>
+          <View className="flex-row mt-3 justify-between items-center">
+            <Text className="font-bold ">Orders</Text>
+            <Text className="font-bold ">
+              {transformDate(schedule?.schedule?.utc_date).string_date}
+            </Text>
+          </View>
           {schedule?.items?.map((item, i) => (
             <View
               key={i}
@@ -67,7 +101,29 @@ const RenderSortTableView = ({
         </View>
         <View className="flex-row mt-2 w-full items-center justify-end">
           <TouchableOpacity
-            onPress={() => handleAssignedSchedule(schedule?._id)}
+            onPress={() => sendEmail(schedule)}
+            className="flex-row items-center gap-[2px]"
+          >
+            {isSending ? (
+              <ActivityIndicator size={24} color="#2389DA" />
+            ) : (
+              <MatcomIcons
+                name="gmail"
+                color={schedule?.notified ? "gray" : "#2389DA"}
+                size={24}
+              />
+            )}
+            <Text
+              className="font-bold"
+              style={
+                schedule?.notified ? { color: "gray" } : { color: "#2389DA" }
+              }
+            >
+              Send
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleAssignedSchedule(schedule)}
             className="px-4 py-2 rounded-full w-50"
           >
             <Text className="text-red-800  ">Remove</Text>
@@ -92,4 +148,4 @@ const RenderSortTableView = ({
   );
 };
 
-export default RenderSortTableView;
+export default React.memo(RenderSortTableView);

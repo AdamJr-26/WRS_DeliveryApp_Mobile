@@ -17,7 +17,7 @@ import React, { useState, useEffect } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const WrsInfo = ({ isShow, setIsShow, wrs_info }) => {
-  console.log("wrs_info", wrs_info);
+  console.log("wrs_info_rendering..", wrs_info);
   return (
     <Modal
       animationType="slide"
@@ -74,4 +74,4 @@ const WrsInfo = ({ isShow, setIsShow, wrs_info }) => {
   );
 };
 
-export default WrsInfo;
+export default React.memo(WrsInfo);

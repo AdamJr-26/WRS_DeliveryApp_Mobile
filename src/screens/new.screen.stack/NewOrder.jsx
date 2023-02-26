@@ -22,6 +22,7 @@ import SearchCustomerModal from "../../components/general/SearchCustomerModal";
 import { useSWRConfig } from "swr";
 import CustomerBalanceModal from "../../components/general/modal/CustomerBalanceModal";
 import CustomerBorrowedModal from "../../components/general/modal/CustomerBorrowedModal";
+import { useCallback } from "react";
 
 const NewOrder = ({ route, navigation }) => {
   const { mutate } = useSWRConfig();
@@ -187,6 +188,7 @@ const NewOrder = ({ route, navigation }) => {
   // GET PAYMENT FROM TEXTINPUT
   const [payment, setPayment] = useState(0);
   const [orderToPay, setOrderToPay] = useState(0);
+
   const handleNext = () => {
     setBeforeSubmitModal(!beforeSubmitModal);
     // get the total to pay
@@ -200,6 +202,7 @@ const NewOrder = ({ route, navigation }) => {
     }
     setOrderToPay(total_to_pay);
   };
+
   // HANDLE CLEAR
   const handleClear = () => {
     dispatchItems({
@@ -233,10 +236,11 @@ const NewOrder = ({ route, navigation }) => {
       mutate("/api/schedule-assigned/by-personel");
       handleClear();
       setIsSubmitting(false);
-      navigation.goBack();
+
       // if there has schedule attach.
       if (schedule?._id) {
         setRescheduleModal(true);
+        // navigation.goBack();
       }
     } else {
       const submit_error = error?.response?.data;
@@ -297,6 +301,7 @@ const NewOrder = ({ route, navigation }) => {
         isShow={isOpenSearchcustomer}
         setIsShow={setIsOpenSearchcustomer}
         selectCustomer={setCustomer}
+       
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="border-[1px] justify-between border-gray-300 p-1 max-h-[300px] h-[250px] w-full flex-row rounded-xl">
@@ -414,17 +419,19 @@ const NewOrder = ({ route, navigation }) => {
             ))}
           </View>
           {items.length ? (
-            <View className="bg-white rounded-xl px-3 py-2 mt-2 flex-row justify-between p-1">
+            <View className=" bottom-0 mt-4 flex-row p-2 items-center justify-center gap-x-1 opacity-80">
               <TouchableOpacity
                 onPress={handleClear}
-                className="h-[55px] border-[1px] border-gray-200 w-[49%] rounded-xl items-center justify-center"
+                className="flex-row w-[49%]  bg-white p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"
               >
-                <Text className="font-bold ">Clear</Text>
+                <Text className="text-[#2389DA] bg-white font-bold text-center">
+                  Clear
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 disabled={isSubmitting}
                 onPress={handleNext}
-                className="h-[55px] border-[1px] bg-[#2389DA] border-gray-200 w-[49%] rounded-xl items-center justify-center"
+                className="flex-row w-[49%] bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
               >
                 {isSubmitting ? (
                   <ActivityIndicator size={16} color="white" />

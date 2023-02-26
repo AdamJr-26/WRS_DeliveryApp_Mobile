@@ -32,7 +32,6 @@ const Schedules = () => {
   const [places, setPlaces] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
 
-  
   const today = () => {
     const weekdays = [
       "Monday",

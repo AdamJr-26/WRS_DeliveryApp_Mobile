@@ -40,7 +40,6 @@ const CustomerBalanceModal = ({ isShow, setIsShow, customer }) => {
     getBalance();
   }, [customer, isShow]);
 
-
   // pay credit by gallon
   const [isShowPayCredit, setIsShowPayCredit] = useState(false);
   const [selectCredit, setSelectCredit] = useState();
@@ -161,4 +160,4 @@ const CustomerBalanceModal = ({ isShow, setIsShow, customer }) => {
   );
 };
 
-export default CustomerBalanceModal;
+export default React.memo(CustomerBalanceModal);

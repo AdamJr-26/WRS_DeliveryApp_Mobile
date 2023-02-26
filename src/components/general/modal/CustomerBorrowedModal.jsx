@@ -18,7 +18,6 @@ import ReturnGallonModal from "../MicroModal/ReturnGallonModal";
 const CustomerBorrowedModal = ({ isShow, setIsShow, customer }) => {
   const [borrowed, setBorrowed] = useState();
 
-
   async function getBorrowed() {
     if (!customer || !isShow) return;
     const { data, error } = await apiGet(
@@ -139,4 +138,4 @@ const CustomerBorrowedModal = ({ isShow, setIsShow, customer }) => {
   );
 };
 
-export default CustomerBorrowedModal;
+export default React.memo(CustomerBorrowedModal);

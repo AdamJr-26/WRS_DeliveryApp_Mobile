@@ -14,7 +14,9 @@ const HomeStack = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
+    <Tab.Navigator 
+    tabBar={(props) => <MyTabBar {...props} 
+    />}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="My Routes" component={MyRoutes} />
       <Tab.Screen name="New" component={NewStackNavigator} />

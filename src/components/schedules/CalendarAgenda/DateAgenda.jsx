@@ -41,7 +41,7 @@ const DateAgenda = ({ selected_place }) => {
     }
     setIsloading(false);
   };
-  
+
   useEffect(() => {
     getSchedules();
   }, [date, selected_place]);
@@ -90,4 +90,4 @@ const DateAgenda = ({ selected_place }) => {
   );
 };
 
-export default DateAgenda;
+export default React.memo(DateAgenda);

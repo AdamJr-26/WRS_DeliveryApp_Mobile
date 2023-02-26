@@ -291,8 +291,7 @@ const Home = ({ navigation }) => {
             Recent Deliveries
           </Text>
           <Text className="text-[12px] text-gray-500">
-            Note: Ang payment received ay kabuohang bayad lamang ng iyong
-            transacion kaugnay sa iyong delivery.
+          You have completed lists of previous deliveries
           </Text>
 
           {recentDeliveries?.data?.length && !errorRecentDeliveries ? (

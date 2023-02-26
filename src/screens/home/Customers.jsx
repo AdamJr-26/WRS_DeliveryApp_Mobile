@@ -56,15 +56,19 @@ const Customers = ({ navigation }) => {
     getAllBarangay();
   }, []);
 
-  console.log("searchText, selectedPlace", searchText, selectedPlace);
-  const { data: customers, error: customersError } = useFetch({
-    url: `/api/search/customers/${searchText}/${selectedPlace}`,
+  console.log("searchText, selectedPlace", searchText);
+  const {
+    data: customers,
+    error: customersError,
+    mutate: mutateSearch,
+    isValidating,
+  } = useFetch({
+    url: `/api/search/customers/${searchText}`,
   });
+  
   useEffect(() => {
-    mutate(`/api/search/customers/${searchText}`);
+    mutateSearch();
   }, [searchText]);
-
-  console.log("customerscustomers", customers);
 
   return (
     <View

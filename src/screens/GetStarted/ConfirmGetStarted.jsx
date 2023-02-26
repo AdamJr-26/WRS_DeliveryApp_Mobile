@@ -39,7 +39,9 @@ const ConfirmGetStarted = ({ route, navigation }) => {
           <View className="flex justify-between h-full ">
             <View className="flex-1 h-full bg-white py-10">
               <Text className="text-[24px] font-bold text-gray-600">
-                <Text className="font-bold text-green-700">Congratulation</Text>
+                <Text className="font-bold text-green-700">
+                  Congratulations
+                </Text>
                 , you are now applied to:
               </Text>
               <View className="mt-5">
@@ -55,7 +57,10 @@ const ConfirmGetStarted = ({ route, navigation }) => {
                 }}
                 className="bg-gray-200 self-center rounded-full border-[1px] border-gray-200"
               >
-                <Image source={admin?.data?.wrs_image} className="h-full w-full " />
+                <Image
+                  source={admin?.data?.wrs_image}
+                  className="h-full w-full "
+                />
               </View>
               <Text className="font-bold text-[24px] text-center">
                 {admin?.data?.wrs_name}

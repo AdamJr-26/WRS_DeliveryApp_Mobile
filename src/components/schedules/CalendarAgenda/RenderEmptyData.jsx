@@ -49,4 +49,4 @@ const RenderEmptyData = () => {
   );
 };
 
-export default RenderEmptyData;
+export default React.memo(RenderEmptyData);

@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import DateTimePicker from "../../general/DateTimePicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MatIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { apiPost } from "../../../services/api/axios.method";
+import { apiDelete, apiPost } from "../../../services/api/axios.method";
 import { useNavigation } from "@react-navigation/native";
 const Reschedule = ({ setIsShow, isShow, schedule_id, form }) => {
   const navigation = useNavigation();
@@ -42,11 +42,25 @@ const Reschedule = ({ setIsShow, isShow, schedule_id, form }) => {
         "Create a new schedule successfully.",
         ToastAndroid.CENTER
       );
-      navigation.navigate("My Routes");
+      navigation.goBack();
       setIsSubmitting(false);
     } else {
       ToastAndroid.show("Cannot create a new schedule.", ToastAndroid.CENTER);
       setIsSubmitting(false);
+    }
+  };
+  const cancelReschedule = async () => {
+    const { data, error } = await apiDelete({
+      url: `/api/schedule/${schedule_id}`,
+    });
+    if (data && !error) {
+      navigation.goBack();
+    } else {
+      ToastAndroid.show(
+        "Cannot delete delivered schedule.",
+        ToastAndroid.SHORT
+      );
+      navigation.goBack();
     }
   };
   return (
@@ -64,7 +78,7 @@ const Reschedule = ({ setIsShow, isShow, schedule_id, form }) => {
               <Ionicons name="checkmark-circle" size={64} color="#2389DA" />
             </View>
             <Text className="text-[24px] font-bold text-gray-600">
-              Transaction successful
+              Transaction Successful
             </Text>
           </View>
 
@@ -74,21 +88,25 @@ const Reschedule = ({ setIsShow, isShow, schedule_id, form }) => {
           <View className="mt-2">
             <DateTimePicker setDate={setDate} date={date} />
           </View>
-          <View className="mt-4 flex-row">
+          <View className=" bottom-0 mt-4 flex-row p-2 items-center justify-center gap-x-1 opacity-80">
             <TouchableOpacity
-              onPress={() => navigation.navigate("My Routes")}
-              className="h-[55px] border-[1px] border-gray-200 w-[49%] rounded-xl items-center justify-center"
+              onPress={() => cancelReschedule()}
+              className="flex-row w-[49%]  bg-white p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"
             >
-              <Text className="font-bold ">Go to Routes</Text>
+              <Text className="text-[#2389DA] bg-white font-bold text-center">
+                Cancel
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handleReSchedule()}
-              className="h-[55px] flex-row w-[49%]  border-[1px] bg-[#2389DA] border-gray-200  rounded-xl items-center justify-center"
+              className="flex-row w-[49%] bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
             >
               {isSubmitting ? (
                 <>
-                  <ActivityIndicator size={34} color="white" />
-                  <Text className="ml-2 text-white font-semibold">Rescheduling...</Text>
+                  <ActivityIndicator size={24} color="white" />
+                  <Text className="ml-2 text-white font-semibold">
+                    Rescheduling...
+                  </Text>
                 </>
               ) : (
                 <Text className="text-white font-semibold">Reschedule</Text>
@@ -101,4 +119,4 @@ const Reschedule = ({ setIsShow, isShow, schedule_id, form }) => {
   );
 };
 
-export default Reschedule;
+export default React.memo(Reschedule);

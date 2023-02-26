@@ -1,7 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
 function MyTabBar({ state, descriptors, navigation }) {
-  console.log("descriptors", JSON.stringify(descriptors));
+  //   console.log("descriptors", JSON.stringify(descriptors));
   return (
     <View
       key={state.key}
@@ -115,4 +116,4 @@ function MyTabBar({ state, descriptors, navigation }) {
     </View>
   );
 }
-export default MyTabBar;
+export default React.memo(MyTabBar);

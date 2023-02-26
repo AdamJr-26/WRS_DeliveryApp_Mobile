@@ -180,8 +180,9 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
             </View>
             <View className="mt-2 p-2">
               <Text className="font-semibold text-gray-500">
-                This is all your progress so far in this delivery. Note that
-                this is only from a delivery order. (edit this)
+                This shows all the progress you've made in this delivery, but
+                please keep in mind that it only includes information from one
+                delivery order
               </Text>
             </View>
           </View>

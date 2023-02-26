@@ -61,8 +61,8 @@ const AuthSignup = ({ navigation }) => {
   const signupValidation = Yup.object().shape({
     gmail: Yup.string()
       .email("Please enter valid gmail")
-      .required("Gmail Address is Required")
-      .lowercase(),
+      .lowercase()
+      .required("Gmail Address is Required"),
     nickname: Yup.string(),
     firstname: Yup.string().required("Firstname is required"),
     lastname: Yup.string(),
@@ -102,7 +102,7 @@ const AuthSignup = ({ navigation }) => {
         setIsSubmitting(true);
         values["gender"] = gender;
         values["birthday"] = Math.floor(new Date(birthday).valueOf() / 1000);
-        values?.gmail.toLowerCase()
+        values?.gmail.toLowerCase();
         const { res, error } = await signUp(values);
 
         if (res?.data.code === 200 && !error) {
@@ -271,8 +271,8 @@ const AuthSignup = ({ navigation }) => {
               />
               <AppTextInput
                 values={values.address}
-                label="Adresss"
-                placeholder="Adresss"
+                label="Addresss"
+                placeholder="Addresss"
                 onChangeText={handleChange("address")}
                 onBlur={handleBlur("address")}
                 errors={errors.address}

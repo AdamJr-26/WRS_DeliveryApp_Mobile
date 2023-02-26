@@ -5,7 +5,7 @@ const AppButton = ({ isLoading, text, ...props }) => {
   return (
     <TouchableOpacity
       {...props}
-      className="h-[60px] bg-[#2389DA] rounded-xl flex items-center justify-center"
+      className="flex-row  bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
     >
       {isLoading ? (
         <ActivityIndicator size={34} color="white" />
