@@ -24,6 +24,7 @@ const ConfirmGetStarted = ({ route, navigation }) => {
   const { revalidateUser, logout } = useAuth();
   const { data } = route.params;
   const { data: admin, error } = useFetch({ url: "/api/admin/basic-info" });
+  
   console.log("adminadminadmin", admin);
   return (
     <View className={Platform.OS === "android" ? "pt-5 flex-1 " : "pt-0"}>

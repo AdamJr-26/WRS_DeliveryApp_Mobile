@@ -4,7 +4,7 @@
     "slug": "delivery-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/neptune_logo.png",
     "userInterfaceStyle": "light",
     "plugins": [
       [
@@ -26,16 +26,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "android": {
+      "package": "relatedtoanyneptuneapp.deliveryapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "05b80fd2-9bd3-42d5-9f75-7418e9e57c47"
+      }
     }
   }
 }
