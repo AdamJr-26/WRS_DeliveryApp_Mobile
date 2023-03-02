@@ -22,6 +22,9 @@ import DateAgenda from "../../components/schedules/CalendarAgenda/DateAgenda";
 import { apiGet } from "../../services/api/axios.method";
 import UnattendedSchedules from "../../components/schedules/UnattendedSchedules";
 
+// rreact-navigation/native
+import { useIsFocused } from '@react-navigation/native';
+
 const Schedules = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -29,7 +32,7 @@ const Schedules = () => {
       headerShown: false,
     });
   }, []);
-  const [places, setPlaces] = useState([]);
+ 
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   const today = () => {
@@ -65,17 +68,22 @@ const Schedules = () => {
   };
 
   // get list of barangay
-  useEffect(() => {
-    async function getAllBarangay() {
-      const { data, error } = await apiGet("/api/customer/distinct/places");
-      if (data?.data && !error) {
-        setPlaces(data?.data);
-      } else {
-        setPlaces([]);
-      }
+  const isFocused = useIsFocused();
+  const [places, setPlaces] = useState([]);
+  async function getAllBarangay() {
+    const { data, error } = await apiGet("/api/customer/distinct/places");
+    if (data?.data && !error) {
+      setPlaces(data?.data);
+    } else {
+      setPlaces([]);
     }
-    getAllBarangay();
-  }, []);
+  }
+  useEffect(() => {
+    if(isFocused){
+      getAllBarangay();
+    }
+    
+  }, [isFocused]);
   // kapag wala pa naselect na place automatic mag set sa unang place mula rsa places array
   useEffect(() => {
     if (!selectedPlace) {
@@ -89,7 +97,7 @@ const Schedules = () => {
 
   return (
     <View
-      className={Platform.OS === "android" ? "flex-1 mt-6 bg-gray-100" : "pt-0"}
+      className={Platform.OS === "android" ? "flex-1 mt-0 bg-gray-100" : "pt-0"}
     >
       {/* modal */}
       <UnattendedSchedules

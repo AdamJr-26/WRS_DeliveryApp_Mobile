@@ -89,7 +89,8 @@ const Routes = () => {
     }
   };
   return (
-    <View className={Platform.OS === "android" ? "pt-5 flex-1" : "pt-0"}>
+    <View className={Platform.OS === "android" ? "pt-0 flex-1" : "pt-0"}>
+    
       {!schedules && !error ? (
         <View className="absolute items-center justify-center bg-opacity-20 right-0 top-0 left-0 bottom-0 h-full w-full z-10">
           <View className="p-2 bg-white rounded-full shadow-md items-center justify-center shadow-gray-400">

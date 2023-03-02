@@ -29,7 +29,7 @@ const New = ({ navigation }) => {
   return (
     <View
       className={
-        Platform.OS === "android" ? "pt-5 flex-1 h-full bg-slate-50" : "pt-0"
+        Platform.OS === "android" ? "pt-0 flex-1 h-full bg-slate-50" : "pt-0"
       }
     >
       <ScrollView>

@@ -36,7 +36,8 @@
       },
       "permissions": [
         "android.permission.RECORD_AUDIO"
-      ]
+      ], 
+      "supportsTablet": false
     },
     "web": {
       "favicon": "./assets/favicon.png"

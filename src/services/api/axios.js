@@ -3,7 +3,7 @@ import * as SecureStore from "expo-secure-store";
 
 const axiosAPI = () => {
   const axiosInstance = Axios.create({
-    baseURL: "http://192.168.68.105:4000",
+    baseURL: "https://wrss-backend.onrender.com",
     headers: {
       "Content-Type": "application/json",
     },

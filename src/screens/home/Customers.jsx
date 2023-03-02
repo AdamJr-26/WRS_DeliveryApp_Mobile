@@ -72,7 +72,7 @@ const Customers = ({ navigation }) => {
 
   return (
     <View
-      className={Platform.OS === "android" ? "pt-5 flex-1 bg-white " : "pt-0"}
+      className={Platform.OS === "android" ? "pt-0 flex-1 bg-white " : "pt-0"}
     >
       {/* MODAL */}
       <CustomerInfoModal

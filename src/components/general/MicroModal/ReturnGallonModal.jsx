@@ -29,7 +29,7 @@ const ReturnGallonModal = ({ isShow, setIsShow, borrow, get_borrowed }) => {
     if (isSubmitting || !gallonToReturn) return;
     setIsSubmitting(true);
     const { data, error } = await apiPut({
-      url: `/api/borrow/return/${borrow?._id}`,
+      url: `/api/borrow/return/${borrow?._id}/${borrow?.gallon?._id}`,
       payload: {
         gallonToReturn,
       },

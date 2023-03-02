@@ -30,6 +30,8 @@ import PromptModal from "../../components/general/modal/PromptModal";
 import ReturnDelivery from "../../components/home/ReturnDelivery";
 import CustomerBalanceModal from "../../components/general/modal/CustomerBalanceModal";
 import Profile from "../../components/home/modal/Profile";
+import CustomStatusBar from "../../components/general/CustomStatusBar";
+
 
 const Home = ({ navigation }) => {
   useLayoutEffect(() => {
@@ -98,6 +100,7 @@ const Home = ({ navigation }) => {
     <View
       className={Platform.OS === "android" ? "flex-1 h-full" : "pt-0 flex-1"}
     >
+      <CustomStatusBar />
       <ReturnDelivery
         isShow={showReturnModal}
         setIsShow={setShowReturnModal}
@@ -124,7 +127,7 @@ const Home = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         className="p-2
-           pt-8 w-full bg-white max-h-full "
+           pt-2 w-full bg-white max-h-full "
       >
         <View className="flex ">
           <View className="flex-row justify-between items-center">

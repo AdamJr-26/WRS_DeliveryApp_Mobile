@@ -1,7 +1,6 @@
-import { View, Text, Button } from "react-native";
+
 import React, { useLayoutEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import MyRoutes from "../screens/home/MyRoutes";
 import Customers from "../screens/home/Customers";
