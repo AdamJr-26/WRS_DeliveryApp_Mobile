@@ -9,8 +9,9 @@ import {
   TextInput,
   ActivityIndicator,
   ToastAndroid,
+  Animated,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Modal from "react-native-modal";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -46,6 +47,8 @@ const NewExpenseModal = ({ isShow, setIsShow }) => {
       );
     }
   };
+
+
   return (
     <Modal
       isVisible={isShow}

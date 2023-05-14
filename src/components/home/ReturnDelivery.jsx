@@ -118,11 +118,19 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
                 </Text>
               </View>
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
+                <Text className="font-bold text-[28px] text-[#2389DA]">
+                  ₱ {summary?.total_of_all_payment || 0 || 0}
+                </Text>
+                <Text className="font-semibold text-gray-500">
+                  Cash Received
+                </Text>
+              </View>
+              {/* <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">0</Text>
                 <Text className="font-semibold text-gray-500">
                   Undelivered Gallons
                 </Text>
-              </View>
+              </View> */}
             </View>
             <View className="flex-row  gap-x-2 items-center justify-around p-2">
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
@@ -160,21 +168,13 @@ const ReturnDelivery = ({ isShow, setIsShow, delivery_id }) => {
                 </Text>
               </View>
             </View>
-            <View className="flex-row  gap-x-2 items-center justify-around p-2">
+            <View className="flex-row  gap-x-2 items-center p-2">
               <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
                 <Text className="font-bold text-[28px] text-[#2389DA]">
                   ₱ {summary?.total_of_all_order_to_pay || 0 || 0}
                 </Text>
                 <Text className="font-semibold text-gray-500">
                   Orders Payment
-                </Text>
-              </View>
-              <View className="rounded-lg border-[1px] border-gray-200 p-4 w-[48%] shadow-lg shadow-gray-500 bg-white">
-                <Text className="font-bold text-[28px] text-[#2389DA]">
-                  ₱ {summary?.total_of_all_payment || 0 || 0}
-                </Text>
-                <Text className="font-semibold text-gray-500">
-                  Cash Received
                 </Text>
               </View>
             </View>

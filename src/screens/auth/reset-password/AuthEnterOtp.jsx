@@ -31,7 +31,7 @@ const AuthEnterOtp = ({ route, navigation }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   return (
-    <View className={Platform.OS === "android" ? "pt-5 " : "pt-0"}>
+    <View className={Platform.OS === "android" ? "pt-0 " : "pt-0"}>
       <ScrollView showsVerticalScrollIndicator={false} className="p-2">
         <View
           style={{

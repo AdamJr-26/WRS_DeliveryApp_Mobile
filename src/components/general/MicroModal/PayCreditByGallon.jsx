@@ -15,17 +15,21 @@ import Modal from "react-native-modal";
 import { apiPut } from "../../../services/api/axios.method";
 import { useSWRConfig } from "swr";
 const PayCreditByGallon = ({ isShow, setIsShow, credit, get_balance }) => {
-  console.log("[gallon]", credit);
+
   const [form, setForm] = useState();
   const [totalGallonToPay, setTotalGallonToPay] = useState(0);
   const [totalAmountToPay, setTotalAmountToPay] = useState(0);
+  const [selectedGallon, setSelectedGallon] = useState(null);
   const { mutate } = useSWRConfig();
 
   useEffect(() => {
-    setTotalGallonToPay(credit?.total);
-    setTotalAmountToPay(credit?.price * credit?.total);
+    if (credit) {
+      setTotalGallonToPay(credit?.total);
+      setTotalAmountToPay(credit?.price * credit?.total);
+      setSelectedGallon(credit?.gallon?._id);
+    }
   }, [credit]);
-
+  console.log("[selectedGallon]", selectedGallon);
   //   handle submit
   const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async () => {
@@ -37,8 +41,10 @@ const PayCreditByGallon = ({ isShow, setIsShow, credit, get_balance }) => {
       payload: {
         totalGallonToPay,
         totalAmountToPay,
+        gallon_id: selectedGallon, // gallon id
       },
     });
+
     if (data && !error) {
       setIsSubmitting(false);
       setIsShow(false);
@@ -104,6 +110,7 @@ const PayCreditByGallon = ({ isShow, setIsShow, credit, get_balance }) => {
               Amount To Pay ₱{" "}
             </Text>
             <TextInput
+              editable={false}
               value={`${totalAmountToPay}`}
               className="w-[100%] text-center font-bold mt-2 text-[16px] bg-gray-50 h-[60px] border-[1px] border-gray-300 rounded-md p-2 focus:border-[#2389DA] focus:border-[2px]"
               keyboardType="numeric"

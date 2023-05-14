@@ -15,7 +15,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import useFetch from "../../../hooks/api/swr/useFetch";
 import { apiGet } from "../../../services/api/axios.method";
 import ReturnGallonModal from "../MicroModal/ReturnGallonModal";
-const CustomerBorrowedModal = ({ isShow, setIsShow, customer }) => {
+const CustomerBorrowedModal = ({
+  isShow,
+  setIsShow,
+  customer,
+  mutateBorrowed,
+}) => {
   const [borrowed, setBorrowed] = useState();
 
   async function getBorrowed() {
@@ -32,6 +37,9 @@ const CustomerBorrowedModal = ({ isShow, setIsShow, customer }) => {
   }
   useEffect(() => {
     getBorrowed();
+    if (mutateBorrowed) {
+      mutateBorrowed();
+    }
   }, [customer, isShow]);
 
   // return gallon modal
@@ -123,7 +131,7 @@ const CustomerBorrowedModal = ({ isShow, setIsShow, customer }) => {
                           {borrow?.total}
                         </Text>
                         <Text className="font-semibold text-[12px] text-gray-500">
-                          Count
+                          Quantity
                         </Text>
                       </View>
                     </View>

@@ -94,7 +94,7 @@ const Reschedule = ({ setIsShow, isShow, schedule_id, form }) => {
               className="flex-row w-[49%]  bg-white p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"
             >
               <Text className="text-[#2389DA] bg-white font-bold text-center">
-                Cancel
+                Done
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

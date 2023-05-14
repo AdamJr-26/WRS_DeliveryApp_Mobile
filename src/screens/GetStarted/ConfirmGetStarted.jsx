@@ -13,6 +13,7 @@ import MatIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import heroes from "../../../assets/hero";
 import { useAuth } from "../../hooks/auth/index";
 import useFetch from "../../hooks/api/swr/useFetch";
+import CustomStatusBar from "../../components/general/CustomStatusBar";
 
 const ConfirmGetStarted = ({ route, navigation }) => {
   useLayoutEffect(() => {
@@ -24,17 +25,19 @@ const ConfirmGetStarted = ({ route, navigation }) => {
   const { revalidateUser, logout } = useAuth();
   const { data } = route.params;
   const { data: admin, error } = useFetch({ url: "/api/admin/basic-info" });
-  
-  console.log("adminadminadmin", admin);
+
+console.log("error",error)
   return (
     <View className={Platform.OS === "android" ? "pt-5 flex-1 " : "pt-0"}>
+      <CustomStatusBar />
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="p-3 w-full bg-white"
       >
         {!admin ? (
-          <View className="h-[100%] w-[100%] items-center justify-center">
-            <ActivityIndicator />
+          <View className="h-[100%] w-[100%] flex items-center justify-center">
+            <ActivityIndicator size={32}  />
+            <Text>Please wait...</Text>
           </View>
         ) : (
           <View className="flex justify-between h-full ">
@@ -76,7 +79,7 @@ const ConfirmGetStarted = ({ route, navigation }) => {
                 className="h-[60px] rounded-xl bg-[#2389DA] flex items-center justify-center"
               >
                 <Text className=" text-center font-medium text-white">
-                  Get Started
+                  Enter
                 </Text>
               </TouchableOpacity>
             </View>

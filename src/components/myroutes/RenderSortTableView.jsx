@@ -43,7 +43,7 @@ const RenderSortTableView = ({
     }
   };
   return (
-    <View className="flex-col mt-2 p-3 border-[1px] border-gray-200 bg-white rounded-xl shadow-xl ">
+    <View className="flex-col mt-0 p-3 border-[1px] border-gray-200 bg-white rounded-xl shadow-xl ">
       <TouchableOpacity
         className={
           customer?.address?.barangay === marked_place?.place

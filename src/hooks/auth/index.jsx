@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
   const revalidateUser = async () => {
     try {
       const userToken = await SecureStore.getItemAsync("userToken");
-      console.log("[REVALIDATE USER ] userToken", userToken);
+      console.log("[REVALIDATE USER ] userToken", userToken.split(" "));
       const res = await axiosAPI().get("/api/delivery-personel/profile");
       const data = res.data?.data;
       if (data) {

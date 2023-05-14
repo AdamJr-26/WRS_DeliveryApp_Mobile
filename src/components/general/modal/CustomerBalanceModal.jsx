@@ -15,7 +15,13 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import useFetch from "../../../hooks/api/swr/useFetch";
 import { apiGet } from "../../../services/api/axios.method";
 import PayCreditByGallon from "../MicroModal/PayCreditByGallon";
-const CustomerBalanceModal = ({ isShow, setIsShow, customer }) => {
+
+const CustomerBalanceModal = ({
+  isShow,
+  setIsShow,
+  customer,
+  mutateBalance,
+}) => {
   const [totalBalance, setTotalBalance] = useState();
   const [balance, setBalance] = useState();
 
@@ -38,6 +44,9 @@ const CustomerBalanceModal = ({ isShow, setIsShow, customer }) => {
   }
   useEffect(() => {
     getBalance();
+    if (mutateBalance()) {
+      mutateBalance();
+    }
   }, [customer, isShow]);
 
   // pay credit by gallon
@@ -123,13 +132,13 @@ const CustomerBalanceModal = ({ isShow, setIsShow, customer }) => {
                         </Text>
                       </View>
                     </View>
-                    <View className="flex-row">
+                    <View className="flex flex-row ">
                       <View className="ml-4">
                         <Text className="text-[#2389DA] font-bold text-[24px] text-center">
                           {credit?.total}
                         </Text>
                         <Text className="font-semibold text-[12px] text-gray-500">
-                          Count
+                          Quantity
                         </Text>
                       </View>
                       <View className="ml-4">

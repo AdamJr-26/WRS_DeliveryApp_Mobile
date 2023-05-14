@@ -19,6 +19,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { apiPost } from "../../../services/api/axios.method";
 import AuthEmailTextInput from "../../../components/auth/AuthEmailTextInput";
+import CustomStatusBar from "../../../components/general/CustomStatusBar";
 // import AuthTextInput from "../../../components/auth/AuthTextInput";
 const AuthSendOtp = ({ navigation }) => {
   useEffect(() => {
@@ -30,7 +31,8 @@ const AuthSendOtp = ({ navigation }) => {
   const windowHeight = Dimensions.get("screen").height;
   const [isSubmitting, setIsSubmitting] = useState(false);
   return (
-    <View className={Platform.OS === "android" ? "pt-5 " : "pt-0"}>
+    <View className={Platform.OS === "android" ? "pt-0 " : "pt-0"}>
+      <CustomStatusBar />
       <ScrollView showsVerticalScrollIndicator={false} className="p-2">
         <View
           style={{

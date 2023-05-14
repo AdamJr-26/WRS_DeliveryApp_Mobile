@@ -86,8 +86,8 @@ const RenderItems = ({
       {/* order detail */}
       <View className="flex-row">
         <View className="p-1 flex-grow justify-center items ">
-          <Text className="text-center text-[12px] font-semibold text-gray-500 ">
-            Total Orders
+          <Text className="text-center text-[10px] font-semibold text-gray-500 ">
+            Total Order
           </Text>
           {/* <Text className="font-bold text-gray-800 text-[19px] items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300">
             {orders}
@@ -103,8 +103,8 @@ const RenderItems = ({
           />
         </View>
         <View className="p-1 flex-grow justify-center items">
-          <Text className="text-center text-[12px] font-semibold text-gray-500 ">
-            Will Credit
+          <Text className="text-center text-[10px] font-semibold text-gray-500 ">
+            To credit
           </Text>
           <TextInput
             placeholder="0"
@@ -117,7 +117,7 @@ const RenderItems = ({
           />
         </View>
         <View className="p-1 flex-grow justify-center items">
-          <Text className="text-center text-[12px] font-semibold text-gray-500 ">
+          <Text className="text-center text-[10px] font-semibold text-gray-500 ">
             Free
           </Text>
           <TextInput
@@ -132,8 +132,8 @@ const RenderItems = ({
         </View>
 
         <View className="p-1 flex-grow justify-center items">
-          <Text className="text-center text-[12px] font-semibold text-gray-500 ">
-            Borrow GLN
+          <Text className="text-center text-[10px] font-semibold text-gray-500 ">
+            Borrow gallon
           </Text>
           <TextInput
             placeholder="0"
@@ -146,8 +146,8 @@ const RenderItems = ({
           />
         </View>
         <View className="p-1 flex-grow justify-center items">
-          <Text className="text-center text-[12px] font-semibold text-gray-500 ">
-            Return GLN
+          <Text className="text-center text-[10px] font-semibold text-gray-500 ">
+            Return gallon
           </Text>
           <TextInput
             placeholder="0"
@@ -160,6 +160,7 @@ const RenderItems = ({
           />
         </View>
       </View>
+
       {/*  */}
     </View>
   );

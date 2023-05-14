@@ -17,12 +17,19 @@ import useFetch from "../../hooks/api/swr/useFetch";
 import { useSWRConfig } from "swr";
 
 const ChooseVehicleModal = ({ setIsShow, isShow, setSelectedVehicle }) => {
-  const { data, error } = useFetch({
+  const {
+    data,
+    error,
+    mutate: mutateVehicle,
+  } = useFetch({
     url: "/api/vehicles/available",
   });
   const vehicles = data?.data;
   const { mutate } = useSWRConfig();
-
+  
+  useEffect(() => {
+    mutateVehicle();
+  }, [isShow]);
   return (
     <Modal
       animationType="slide"

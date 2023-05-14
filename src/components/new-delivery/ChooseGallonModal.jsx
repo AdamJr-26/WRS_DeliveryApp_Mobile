@@ -24,10 +24,17 @@ const ChooseGallonModal = ({
   selectedGallons,
   dispatchSelectedGallons,
 }) => {
-  const { data: gallons, error: gallonsError } = useFetch({
+  const {
+    data: gallons,
+    error: gallonsError,
+    mutate: mutateGallon,
+  } = useFetch({
     url: "/api/gallons/availables",
   });
-  const { mutate } = useSWRConfig();
+
+  useEffect(() => {
+    mutateGallon();
+  }, [isShow]);
   const gallon_data = gallons?.data;
 
   const addGallons = (gallon) => {
@@ -87,6 +94,7 @@ const ChooseGallonModal = ({
             className=""
             horizontal={true}
             showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
           >
             <View className="flex-row gap-x-5">
               {gallon_data?.map((gallon) => (
@@ -94,13 +102,13 @@ const ChooseGallonModal = ({
                   key={gallon?._id}
                   className={
                     checkIfExisting(selectedGallons, gallon)
-                      ? "h-[200px] relative border-[3px] border-blue-500 w-[150px] overflow-hidden rounded-xl bg-white shadow-2xl shadow-gray-500 py-2 "
-                      : "h-[200px] relative border-[1px] border-gray-200 w-[150px] overflow-hidden rounded-xl bg-white shadow-2xl shadow-gray-500 py-2 "
+                      ? "h-[200px] relative border-[3px] border-blue-500 w-[150px] overflow-hidden rounded-xl bg-white shadow-xl shadow-gray-500 py-2 "
+                      : "h-[200px] relative border-[1px] border-gray-200 w-[150px] overflow-hidden rounded-xl bg-white shadow-xl shadow-gray-500 py-2 "
                   }
                 >
-                  <Text className="p-2 bg-gray-200 absolute rounded-xl font-bold right-1 top-2 z-10 opacity-70">
+                  {/* <Text className="p-2 bg-gray-200 absolute rounded-xl font-bold right-1 top-2 z-10 opacity-70">
                     {gallon?.total}
-                  </Text>
+                  </Text> */}
                   <Pressable
                     onPress={() => {
                       addGallons(gallon);

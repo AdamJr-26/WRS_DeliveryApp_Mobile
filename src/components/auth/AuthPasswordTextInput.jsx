@@ -3,7 +3,7 @@ import React from "react";
 import { TextInput } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const AuthPasswordTextInput = ({ errors,placeholder, label, ...props }) => {
+const AuthPasswordTextInput = ({ errors, placeholder, label, ...props }) => {
   const [show, setShow] = React.useState(true);
   React.useEffect(() => {
     if (show) {
@@ -18,6 +18,7 @@ const AuthPasswordTextInput = ({ errors,placeholder, label, ...props }) => {
         focus:border-[#2389DA] focus:border-[2px] p-2"
       >
         <TextInput
+          autoCapitalize="none"
           placeholder={placeholder}
           className="flex-1 "
           secureTextEntry={!show}

@@ -7,13 +7,20 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import useFetch from "../../../hooks/api/swr/useFetch";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const SelectDiscount = ({ setIsShow, isShow, selectCustomer }) => {
-  const { data, error } = useFetch({ url: "/api/discounts/get-free" });
+  const {
+    data,
+    error,
+    mutate: mutateDiscount,
+  } = useFetch({ url: "/api/discounts/get-free" });
   const windowHeight = Dimensions.get("screen").height;
+  useEffect(() => {
+    mutateDiscount();
+  }, [isShow]);
   return (
     <Modal
       animationType="slide"

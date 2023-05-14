@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import { apiPut } from "../../services/api/axios.put";
 import { useAuth } from "../../hooks/auth";
 import { useSWRConfig } from "swr";
+import CustomStatusBar from "../../components/general/CustomStatusBar";
 
 const Apply = ({ navigation }) => {
   useLayoutEffect(() => {
@@ -29,6 +30,7 @@ const Apply = ({ navigation }) => {
   const { mutate } = useSWRConfig();
   return (
     <View className={Platform.OS === "android" ? "pt-5 flex-1" : "pt-0"}>
+      <CustomStatusBar />
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="p-3 w-full bg-white"
@@ -132,7 +134,7 @@ const Apply = ({ navigation }) => {
           </Formik>
           <View className="p-y-5 mt-5 ">
             <Text className="text-center text-gray-500">
-              If you want to use other account, plase log out first.
+              If you want to use other account, please log out first.
             </Text>
             <TouchableOpacity onPress={logout}>
               <Text className="font-bold text-[#2389DA] text-center">

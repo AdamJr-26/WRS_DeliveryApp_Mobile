@@ -112,14 +112,15 @@ const Profile = ({ isShow, setIsShow, revalidateUser }) => {
               {user?.nickname}
             </Text>
           ) : (
-            <TouchableOpacity>
-              <Text className="text-[12px] font-semibold text-gray-400">
-                Set Nickname
-              </Text>
-            </TouchableOpacity>
+            ""
+            // <TouchableOpacity>
+            //   <Text className="text-[12px] font-semibold text-gray-400">
+            //     Set Nickname
+            //   </Text>
+            // </TouchableOpacity>
           )}
         </View>
-        <View className="mt-2 border-t-[1px] border-t-gray-200 flex-row items-center h-[70px] justify-around">
+        {/* <View className="mt-2 border-t-[1px] border-t-gray-200 flex-row items-center h-[70px] justify-around">
           <View className="items-center">
             <Text className="font-bold text-[16px] text-gray-700">1545</Text>
             <Text className="text-[12px] text-gray-500 ">Placeholder</Text>
@@ -137,10 +138,10 @@ const Profile = ({ isShow, setIsShow, revalidateUser }) => {
             </View>
             <Text className="text-[12px] text-gray-500 ">Rating</Text>
           </View>
-        </View>
+        </View> */}
         <View className="p-2 bg-white rounded-xl mt-4">
           <View>
-            <TouchableOpacity className="flex-row items-center justify-between px-2 py-4">
+            {/* <TouchableOpacity className="flex-row items-center justify-between px-2 py-4">
               <View className="flex-row items-center">
                 <View className="items-center justify-center bg-gray-100 p-3 rounded-xl">
                   <Ionicons name="settings" size={19} color="gray" />
@@ -150,7 +151,7 @@ const Profile = ({ isShow, setIsShow, revalidateUser }) => {
               <View className="items-center justify-center">
                 <Ionicons name="chevron-forward-outline" size={24} />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => setShowWrsinfo(!showWrsinfo)}
               className="flex-row items-center justify-between px-2 py-4"
@@ -167,7 +168,7 @@ const Profile = ({ isShow, setIsShow, revalidateUser }) => {
             </TouchableOpacity>
           </View>
           <View className="mt-5 border-t-[1px] border-t-gray-200">
-            <TouchableOpacity className="flex-row items-center justify-between px-2 py-4">
+            {/* <TouchableOpacity className="flex-row items-center justify-between px-2 py-4">
               <View className="flex-row items-center">
                 <View className="items-center justify-center bg-gray-100 p-3 rounded-xl">
                   <AntDes name="team" size={19} color="gray" />
@@ -177,7 +178,7 @@ const Profile = ({ isShow, setIsShow, revalidateUser }) => {
               <View className="items-center justify-center">
                 <Ionicons name="chevron-forward-outline" size={24} />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={logout}
               className="flex-row items-center justify-between px-2 py-4"

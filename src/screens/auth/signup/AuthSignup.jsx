@@ -26,6 +26,7 @@ import AppButton from "../../../components/general/AppButton";
 import PromptModal from "../../../components/general/modal/PromptModal";
 import ErrorMessageModal from "../../../components/general/modal/ErrorMessageModal";
 import DateTimePicker from "../../../components/general/DateTimePicker";
+import CustomStatusBar from "../../../components/general/CustomStatusBar";
 
 const AuthSignup = ({ navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -144,7 +145,8 @@ const AuthSignup = ({ navigation }) => {
         errors,
         isValid,
       }) => (
-        <View className={Platform.OS === "android" ? "pt-6 " : "pt-0"}>
+        <View className={Platform.OS === "android" ? "pt-0 " : "pt-0"}>
+          <CustomStatusBar />
           {/* modalssss----------------------------------------------- */}
           <PromptModal
             confirmText="Login"
@@ -182,7 +184,7 @@ const AuthSignup = ({ navigation }) => {
               style={{
                 height: windowHeight / 3,
               }}
-              className="w-full rounded-xl overflow-hidden p-2"
+              className="w-full rounded-xl overflow-hidden  p-2"
             >
               <Image
                 source={require("../../../../assets/hero/signup.png")}
@@ -295,7 +297,7 @@ const AuthSignup = ({ navigation }) => {
               />
             </View>
             <Text className="mt-5 p-2 text-gray-500 font-regular text-[13px] ">
-              By signing up, you're agree to our{" "}
+              By signing up, you agree to our{" "}
               <Text className="font-bold text-[#2389DA]">
                 Terms and Conditions
               </Text>{" "}
@@ -311,7 +313,7 @@ const AuthSignup = ({ navigation }) => {
               />
             </View>
             <View>
-              <Text className="text-center text-gray-500  mt-3 ">
+              <Text className="text-center text-gray-500  mt-2">
                 Already have an account?{" "}
                 <Text
                   className="font-bold  text-[#2389DA]"

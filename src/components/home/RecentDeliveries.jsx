@@ -16,7 +16,7 @@ const RecentDeliveries = ({ data }) => {
           {data?.total_orders + data?.total_free || 0}
         </Text>
         <Text className="absolute bottom-2 right-0 text-[#2389DA] text-[12px] font-semibold p-1 bg-white rounded-full">
-          Deliverd gallons
+          Delivered gallons
         </Text>
       </View>
       <View className="flex-row items-center ">

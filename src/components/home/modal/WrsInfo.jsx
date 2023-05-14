@@ -41,18 +41,18 @@ const WrsInfo = ({ isShow, setIsShow, wrs_info }) => {
           </TouchableOpacity>
         </View>
 
-        <View className="flex-row bg-white p-2  rounded-2xl items-center ">
+        <View className="flex-col  bg-white p-2  rounded-2xl items-center ">
           <View className=" w-[100px] h-[100px] bg-gray-200 items-center justify-ceter rounded-full border-[2px] border-gray-200 overflow-hidden">
             <Image
               source={{ uri: wrs_info?.display_photo }}
               className="h-full w-full  "
             />
           </View>
-          <View className="ml-2">
+          <View className="ml-2 flex w-full items-center">
             <Text className="text-[24px] font-bold text-gray-700">
               {wrs_info?.wrs_name}
             </Text>
-            <Text className="font-semibold text-[16px] text-gray-600">
+            <Text className="font-semibold text-[16px] text-gray-600 text-[12px] text-center ">
               {`${wrs_info?.address?.street_building || ""} ${
                 wrs_info?.address?.barangay || ""
               } ${wrs_info?.address?.city || ""} ${
@@ -61,13 +61,13 @@ const WrsInfo = ({ isShow, setIsShow, wrs_info }) => {
             </Text>
           </View>
         </View>
-        <View className="p-2 rounded-xl bg-white flex-row gap-x-2">
-          <TouchableOpacity className="bg-gray-200 rounded-lg items-center p-3">
+        <View className="p-2 rounded-xl bg-white flex-row gap-x-2 flex items-center justify-center">
+          {/* <TouchableOpacity className="bg-gray-200 rounded-lg items-center p-3">
             <Text className="font-semibold text-gray-700">Switch WRS</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-[#2389DA]  rounded-lg items-center p-3">
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity className="bg-[#2389DA]  rounded-lg items-center p-3">
             <Text className="font-semibold text-white">Notify</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </Modal>

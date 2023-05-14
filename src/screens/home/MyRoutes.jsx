@@ -74,9 +74,9 @@ const Routes = () => {
   // get status of delivery
 
   // REMOVE ASSIGEND SCHEDULE
-  const handleAssignedSchedule = async (id) => {
+  const handleAssignedSchedule = async (sched) => {
     const { data, error } = await apiPut({
-      url: `/api/schedule/remove/assigned/${id}`,
+      url: `/api/schedule/remove/assigned/${sched._id}`,
     });
     if (data && !error) {
       mutate("/api/schedule-assigned/by-personel");
@@ -114,13 +114,12 @@ const Routes = () => {
               Routes
             </Text>
           </View>
-          <Text className="text-gray-500 text-[16px]">
-            It's time for delivery.
+          <Text className="text-gray-500 text-[14px]">
+          The schedules you have selected will serve as your route.
           </Text>
         </View>
-
         {schedules?.data.length && !isLoading ? (
-          <View className=" my-2 w-full  h-[100px] border-[1px] border-gray-200 rounded-xl  bg-white shadow-lg shadow-gray-600">
+          <View className=" my-2 w-full  h-[100px] border-[1px] border-gray-200 rounded-xl  bg-white ">
             <View className="flex-1   justify-center">
               <Text className="font-bold p-2">Places</Text>
               <ScrollView
@@ -163,13 +162,12 @@ const Routes = () => {
         )}
 
         {schedules?.data?.length ? (
-          <View className=" p-1 w-full h-full  rounded-lg bg-gray-100 shadow-lg shadow-gray-600">
-            <View className="p-2 bg-white rounded-lg">
+          <View className=" p-0 w-full h-full  rounded-lg bg-gray-100">
+            {/* <View className="p-2 bg-white rounded-lg">
               <Text className="text-gray-500 font-semibold">
-                Ang mga schedules na iyong napili ay magsisilbi bilang iyong
-                ruta.
+              The schedules you have selected will serve as your route.
               </Text>
-            </View>
+            </View> */}
             <View>
               {schedules?.data?.map((schedule, i) => (
                 <RenderSortTableView

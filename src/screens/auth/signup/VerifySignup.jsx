@@ -23,6 +23,7 @@ import { Formik } from "formik";
 import ErrorMessageModal from "../../../components/general/modal/ErrorMessageModal";
 import heroes from "../../../../assets/hero";
 import { apiPost } from "../../../services/api/axios.method";
+import CustomStatusBar from "../../../components/general/CustomStatusBar";
 
 const EnterOTP = ({ route, navigation }) => {
   const { email, sendOnRender } = route.params;
@@ -54,7 +55,8 @@ const EnterOTP = ({ route, navigation }) => {
     }
   }, []);
   return (
-    <View className="flex-col flex-1 justify-between w-full bg-white p-2 ml-[-2px]">
+    <View className="flex-col flex-1 justify-between w-full bg-white p-0 ml-[-2px]">
+      <CustomStatusBar />
       <Formik
         initialValues={{
           otp: "",

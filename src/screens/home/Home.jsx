@@ -294,7 +294,7 @@ const Home = ({ navigation }) => {
             Recent Deliveries
           </Text>
           <Text className="text-[12px] text-gray-500">
-          You have completed lists of previous deliveries
+          Your recent completed deliveries will show here.
           </Text>
 
           {recentDeliveries?.data?.length && !errorRecentDeliveries ? (
@@ -312,12 +312,12 @@ const Home = ({ navigation }) => {
               <View className=" w-[120px] h-[120px] items-center justify-center  overflow-hidden">
                 <Image
                   source={heroes?.up_to_date}
-                  className="h-full w-full  "
+                  className="h-full w-full rounded-md "
                 />
               </View>
-              <Text className="absolute left-0 top-[50] bg-white p-2 rounded-full font-semibold">
+              {/* <Text className="absolute left-0 top-[50] bg-white p-2 rounded-full font-semibold">
                 No Recent deliveries
-              </Text>
+              </Text> */}
             </View>
           )}
         </View>

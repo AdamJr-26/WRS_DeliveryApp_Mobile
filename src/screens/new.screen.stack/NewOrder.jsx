@@ -23,10 +23,11 @@ import { useSWRConfig } from "swr";
 import CustomerBalanceModal from "../../components/general/modal/CustomerBalanceModal";
 import CustomerBorrowedModal from "../../components/general/modal/CustomerBorrowedModal";
 import { useCallback } from "react";
-
+import { useRoute } from "@react-navigation/native";
 const NewOrder = ({ route, navigation }) => {
   const { mutate } = useSWRConfig();
-
+  const navigationRoute = useRoute();
+  const { walkIn } = navigationRoute.params;
   // modals state
   const [showBalanceModal, setShowBalanceModal] = useState(false);
   const [showBorrowedModal, setShowBorrowedModal] = useState(false);
@@ -34,7 +35,7 @@ const NewOrder = ({ route, navigation }) => {
   const { schedule: sched_params } = route.params;
   const [schedule, setSchedule] = useState();
   const [customer, setCustomer] = useState();
-
+  console.log("walkInwalkIn=>>>>>>>", walkIn);
   console.log("sched_paramssched_params", sched_params);
 
   // add customer to the state from navigation.
@@ -66,12 +67,20 @@ const NewOrder = ({ route, navigation }) => {
     mutate(`/api/credits/params/${customer?._id}`);
   }, [customer]);
 
-  const { data: customerBorrowed, error: customerBorrowedError } = useFetch({
+  const {
+    data: customerBorrowed,
+    error: customerBorrowedError,
+    mutate: mutateBorrowed,
+  } = useFetch({
     url: `/api/borrowed/total/gallon/${customer?._id}`,
   });
   console.log("customerBorrowed", customerBorrowed);
 
-  const { data: customerBalance, error: customerBalanceError } = useFetch({
+  const {
+    data: customerBalance,
+    error: customerBalanceError,
+    mutate: mutateTotalBalance,
+  } = useFetch({
     url: `/api/credits/params/${customer?._id}`,
   });
 
@@ -188,10 +197,14 @@ const NewOrder = ({ route, navigation }) => {
   // GET PAYMENT FROM TEXTINPUT
   const [payment, setPayment] = useState(0);
   const [orderToPay, setOrderToPay] = useState(0);
-
+  const [totalToCredit, setTotalToCredit] = useState(0);
   const handleNext = () => {
     setBeforeSubmitModal(!beforeSubmitModal);
     // get the total to pay
+  };
+
+  // total to pay and total to credit.
+  useEffect(() => {
     let total_to_pay = 0;
     for (let i = 0; i < form.length; i++) {
       const total_orders_to_pay =
@@ -200,9 +213,15 @@ const NewOrder = ({ route, navigation }) => {
         total_orders_to_pay * Number(form[i].price);
       total_to_pay = total_to_pay + total_to_pay_per_item_type;
     }
+    let total_to_credit = 0;
+    for (let item of form) {
+      total_to_credit = total_to_credit + item.price * item.credit;
+    }
+    setTotalToCredit(total_to_credit);
     setOrderToPay(total_to_pay);
-  };
+  }, [form]);
 
+  console.log("[FORM]", form);
   // HANDLE CLEAR
   const handleClear = () => {
     dispatchItems({
@@ -221,6 +240,7 @@ const NewOrder = ({ route, navigation }) => {
     const payload = {
       schedule_id: schedule?._id,
       customer: customer?._id,
+      walkIn: walkIn,
       items: form,
       total_payment: payment,
       order_to_pay: orderToPay, // as the total to pay of a customer.
@@ -251,6 +271,7 @@ const NewOrder = ({ route, navigation }) => {
       console.log("[ERROR]", submit_error);
     }
   };
+  // remove promo/discout by removing value of form.free.
 
   // handle if customer is uknown or not been set.
 
@@ -263,11 +284,13 @@ const NewOrder = ({ route, navigation }) => {
         setIsShow={setShowBalanceModal}
         isShow={showBalanceModal}
         customer={customer}
+        mutateBalance={mutateTotalBalance}
       />
       <CustomerBorrowedModal
         setIsShow={setShowBorrowedModal}
         isShow={showBorrowedModal}
         customer={customer}
+        mutateBorrowed={mutateBorrowed}
       />
       <SelectDiscount
         setIsShow={setIsshowDiscounts}
@@ -301,21 +324,22 @@ const NewOrder = ({ route, navigation }) => {
         isShow={isOpenSearchcustomer}
         setIsShow={setIsOpenSearchcustomer}
         selectCustomer={setCustomer}
-       
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="border-[1px] justify-between border-gray-300 p-1 max-h-[300px] h-[250px] w-full flex-row rounded-xl">
           <View className="relative w-[64%] border-[1px] p-2 border-gray-300 rounded-lg items-center justify-center">
-            <TouchableOpacity
-              onPress={() => setIsOpenSearchcustomer(!isOpenSearchcustomer)}
-              className="absolute right-4 top-4"
-            >
-              <MatIcons
-                name="account-switch-outline"
-                size={28}
-                color="#2389DA"
-              />
-            </TouchableOpacity>
+            {customer ? (
+              <TouchableOpacity
+                onPress={() => setIsOpenSearchcustomer(!isOpenSearchcustomer)}
+                className="absolute right-4 top-4"
+              >
+                <MatIcons
+                  name="account-switch-outline"
+                  size={28}
+                  color="#2389DA"
+                />
+              </TouchableOpacity>
+            ) : null}
             {customer ? (
               <>
                 <View className="w-[70px] h-[70px] rounded-full bg-gray-100 border-[1px] border-gray-300">
@@ -371,23 +395,37 @@ const NewOrder = ({ route, navigation }) => {
                 </View>
               </>
             ) : (
-              <View>
-                <Text>no customer</Text>
+              <View className="flex items-center justify-center">
+                {!customer ? (
+                  <TouchableOpacity
+                    onPress={() =>
+                      setIsOpenSearchcustomer(!isOpenSearchcustomer)
+                    }
+                 className="flex items-center justify-center"
+                  >
+                    <MatIcons
+                      name="account-switch-outline"
+                      size={42}
+                      color="#2389DA"
+                    />
+                    <Text className="font-bold">Select a customer</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
             )}
           </View>
           <View className="w-[35%] justify-between rounded-lg ">
             <TouchableOpacity
               onPress={() => setIsshowDiscounts(!isShowDiscounts)}
-              className="h-[49%] w-full border-[1px] border-gray-300 rounded-xl items-center justify-center"
+              className="h-[49%] w-full p-2 border-[1px] border-gray-300 rounded-xl items-center justify-center"
             >
-              <Text className="text-[12px]">Discount by</Text>
-              <Text className="font-bold text-[16px] ">
+              {/* <Text className="text-[12px]">Promo</Text> */}
+              <Text className="font-bold text-[14px]  text-center ">
                 {selectedDiscount
                   ? `Buy ${selectedDiscount?.get_free.buy || ""} get ${
                       selectedDiscount?.get_free.get || ""
                     }`
-                  : "No Discount"}
+                  : "Select a promo"}
               </Text>
             </TouchableOpacity>
             <View className="h-[49%] w-full border-[1px] border-gray-300 rounded-xl items-center justify-center">
@@ -398,13 +436,21 @@ const NewOrder = ({ route, navigation }) => {
         </View>
         <View className="mt-2 border-[1px] border-gray-300 rounded-lg">
           <View className="flex-row items-center justify-between p-2  bg-gray-100 rounded-lg">
-            <Text className="font-bold">Odered Items</Text>
-            <TouchableOpacity
-              onPress={() => setShowGallonModal(!showGallonModal)}
-              className="bg-[#2389DA] p-1 rounded-xl"
-            >
-              <Ionicons name="add" color="white" size={32} />
-            </TouchableOpacity>
+            <Text className="font-bold">Ordered Items</Text>
+            <View className="flex-row gap-2">
+              {/* <TouchableOpacity
+                onPress={() => setShowGallonModal(!showGallonModal)}
+                className="bg-[#2389DA] p-1 rounded-xl"
+              >
+                <Ionicons name="add" color="white" size={32} />
+              </TouchableOpacity> */}
+              <TouchableOpacity
+                onPress={() => setShowGallonModal(!showGallonModal)}
+                className="bg-[#2389DA] p-1 rounded-xl"
+              >
+                <Ionicons name="add" color="white" size={32} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View className="mt-1 p-1">
             {items.map((item, i) => (
@@ -418,28 +464,43 @@ const NewOrder = ({ route, navigation }) => {
               />
             ))}
           </View>
+
           {items.length ? (
-            <View className=" bottom-0 mt-4 flex-row p-2 items-center justify-center gap-x-1 opacity-80">
-              <TouchableOpacity
-                onPress={handleClear}
-                className="flex-row w-[49%]  bg-white p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"
-              >
-                <Text className="text-[#2389DA] bg-white font-bold text-center">
-                  Clear
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                disabled={isSubmitting}
-                onPress={handleNext}
-                className="flex-row w-[49%] bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
-              >
-                {isSubmitting ? (
-                  <ActivityIndicator size={16} color="white" />
-                ) : (
-                  <Text className="font-bold  text-white">Next</Text>
-                )}
-              </TouchableOpacity>
-            </View>
+            <>
+              <View className="p-2 flex  bg-gray-100 m-2 rounded-md">
+                <View className="flex flex-row mt-3 justify-between ">
+                  <Text className="text-[12px] ">Total to pay : </Text>
+                  <Text className="text-[14px] font-bold">₱ {orderToPay}</Text>
+                </View>
+                <View className="flex flex-row mt-3 justify-between ">
+                  <Text className="text-[12px] ">Total to credit : </Text>
+                  <Text className="text-[14px] font-bold">
+                    ₱ {totalToCredit}
+                  </Text>
+                </View>
+              </View>
+              <View className=" bottom-0 mt-4 flex-row p-2 items-center justify-center gap-x-1 opacity-80">
+                <TouchableOpacity
+                  onPress={handleClear}
+                  className="flex-row w-[49%]  bg-white p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"
+                >
+                  <Text className="text-[#2389DA] bg-white font-bold text-center">
+                    Clear
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={isSubmitting}
+                  onPress={handleNext}
+                  className="flex-row w-[49%] bg-[#2389DA] p-2 h-[50px]  items-center justify-center rounded-full"
+                >
+                  {isSubmitting ? (
+                    <ActivityIndicator size={16} color="white" />
+                  ) : (
+                    <Text className="font-bold  text-white">Next</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </>
           ) : (
             ""
           )}

@@ -29,7 +29,7 @@ const RenderItem = ({ day, item, getSchedules }) => {
     console.log("data?.data", data?.data);
     if (data?.data?.assigned && !error) {
       ToastAndroid.show(
-        "Added to your routes, now refreshing to get latest.",
+        "Added to your routes, now refreshing to get latest schedules.",
         ToastAndroid.LONG
       );
       getSchedules(); // to get updated the schedules list.

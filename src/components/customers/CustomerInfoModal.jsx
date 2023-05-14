@@ -109,11 +109,13 @@ const CustomerInfoModal = ({ isShow, setIsShow, customer }) => {
         setIsShow={setShowBalanceModal}
         isShow={showBalanceModal}
         customer={customer}
+        mutateBalance={mutateBalance}
       />
       <CustomerBorrowedModal
         setIsShow={setShowBorrowedModal}
         isShow={showBorrowedModal}
         customer={customer}
+        mutateBorrowed={mutateBorrowed}
       />
       <View className="flex-1 flex-col justify-between  ">
         {/*  touch to close */}
@@ -203,7 +205,7 @@ const CustomerInfoModal = ({ isShow, setIsShow, customer }) => {
                   Borrowed Gallon
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("New", {
                     screen: "Deliver Order",
@@ -220,7 +222,7 @@ const CustomerInfoModal = ({ isShow, setIsShow, customer }) => {
                 <Text className="text-gray-500 text-[12px] font-semibold">
                   Last delivery
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               {customerSchedule?.data?.length ? (
                 <View className="flex px-2 h-[80px] flex-grow border-[1px] bg-white mt-1 border-gray-200 w-[49%] rounded-lg shadow-lg shadow-gray-300 flex-col items-center justify-center">

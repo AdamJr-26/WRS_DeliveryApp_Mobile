@@ -23,6 +23,7 @@ import loginHero from "../../../../assets/hero/login.png";
 import { useAuth } from "../../../hooks/auth";
 import AppButton from "../../../components/general/AppButton";
 import heroes from "../../../../assets/hero";
+import CustomStatusBar from "../../../components/general/CustomStatusBar";
 
 const Login = ({ navigation }) => {
   useEffect(() => {
@@ -37,28 +38,30 @@ const Login = ({ navigation }) => {
   const loginValidationSchema = Yup.object().shape({
     gmail: Yup.string()
       .email("Please enter valid gmail")
-      .required("Gmail Address is Required"),
+      .required("Gmail Address is Required")
+      .lowercase(),
     password: Yup.string()
       .min(6, ({ min }) => `Password must be at least ${min} characters`)
       .required("Password is required"),
   });
 
   return (
-    <View className={Platform.OS === "android" ? "pt-5 flex-1" : "pt-0"}>
+    <View className={Platform.OS === "android" ? "pt-0 flex-1" : "pt-0"}>
       {/* form */}
+      <CustomStatusBar />
       <ScrollView className="flex-1 flex-col p-2 overflow-hidden bg-white">
         <View className="w-full h-[150px] max-h-[250px] rounded-xl overflow-hidden items-center justify-center">
-        <View
-              style={{
-                height: windowHeight / 5,
-              }}
-              className="w-full rounded-xl overflow-hidden p-10"
-            >
-              <Image
-                source={heroes.neptune_logo}
-                className=" w-full h-full object-contain rounded-xl "
-              />
-            </View>
+          <View
+            style={{
+              height: windowHeight / 5,
+            }}
+            className="w-full rounded-xl overflow-hidden p-10"
+          >
+            <Image
+              source={heroes.neptune_logo}
+              className=" w-full h-full object-contain rounded-xl "
+            />
+          </View>
         </View>
         <Text className=" text-[32px] font-bold text-gray-600 p-2">Log in</Text>
         <View className="p-2 flex-col justify-center">
@@ -66,6 +69,7 @@ const Login = ({ navigation }) => {
             validationSchema={loginValidationSchema}
             initialValues={{ gmail: "", password: "" }}
             onSubmit={async (values) => {
+              console.log("valuesvalues==>>", values);
               setIsSubmitting(true);
               const { success, error } = await login(values);
               if (success && !error) {

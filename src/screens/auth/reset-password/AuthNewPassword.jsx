@@ -21,6 +21,7 @@ import * as Yup from "yup";
 
 import AuthPasswordTextInput from "../../../components/auth/AuthPasswordTextInput";
 import { apiPost } from "../../../services/api/axios.method";
+import CustomStatusBar from "../../../components/general/CustomStatusBar";
 
 const AuthNewPassword = ({ route, navigation }) => {
   useEffect(() => {
@@ -37,7 +38,8 @@ const AuthNewPassword = ({ route, navigation }) => {
     }
   };
   return (
-    <View className={Platform.OS === "android" ? "pt-5 " : "pt-0"}>
+    <View className={Platform.OS === "android" ? "pt-0 " : "pt-0"}>
+      <CustomStatusBar />
       <ScrollView showsVerticalScrollIndicator={false} className="p-2">
         <View
           style={{
