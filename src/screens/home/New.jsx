@@ -51,27 +51,20 @@ const New = ({ navigation }) => {
               {[
                 {
                   iconName: "truck-plus-outline",
-                  label: "Delivery",
+                  label: "Create Delivery",
                   route: "New Delivery",
                   params: {},
                 },
                 {
                   iconName: "account-multiple-plus",
-                  label: "Customer",
+                  label: "create Customer",
                   route: "New Customer",
                   params: {},
                 },
-                {
-                  iconName: "border-color",
-                  label: "Deliver order",
-                  route: "Deliver Order",
-                  params: {
-                    schedule: [],
-                  },
-                },
+           
                 {
                   iconName: "calendar-edit",
-                  label: "Schedule",
+                  label: "Create Schedule",
                   route: "New Schedule",
                   params: {
                     customer: [],
@@ -86,14 +79,14 @@ const New = ({ navigation }) => {
                   className="flex-row p-2 mr-4"
                 >
                   <View className=" rounded-xl items-center justify-between">
-                    <View className="bg-blue-50 h-[75px] w-[75px] rounded-full items-center justify-center">
+                    <View className="bg-blue-50 h-[60px] w-[60px] rounded-full items-center justify-center">
                       <MatcomIcons
                         name={elem.iconName}
                         size={32}
                         color="#2389DA"
                       />
                     </View>
-                    <Text className="font-semibold mt-1 ">{elem.label}</Text>
+                    <Text className="font-semibold mt-2 text-[10px] ">{elem.label}</Text>
                   </View>
                 </TouchableOpacity>
               ))}

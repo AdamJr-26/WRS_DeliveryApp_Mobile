@@ -30,6 +30,7 @@ import { apiPost } from "../../services/api/axios.method";
 import ErrorMessageModal from "../../components/general/modal/ErrorMessageModal";
 
 import PromptModal from "../../components/general/modal/PromptModal";
+import LoadGallonModal from "../../components/new-delivery/LoadGallonModal";
 const ActionNewDelivery = ({ navigation }) => {
   const [selectVehicleModal, setSelectVehicleModal] = useState(false);
   const [selectGallonModal, setSelectGallonModal] = useState(false);
@@ -94,7 +95,7 @@ const ActionNewDelivery = ({ navigation }) => {
     selectedGallonsReducer,
     []
   );
-  console.log("selectedGallonsselectedGallons", selectedGallons);
+  console.log("selectedVehicleselectedVehicle", selectedVehicle);
 
   // FORM
 
@@ -148,11 +149,13 @@ const ActionNewDelivery = ({ navigation }) => {
       vehicle_id: selectedVehicle?._id,
       items: form,
     };
+    console.log("payload!!!!!!!!!!!", payload);
     var isAllFieldSupplied = true;
     // check if all items keys has supplied value.
     for (let i = 0; i < form.length; i++) {
       for (key in form[i]) {
-        if (form[i][key].length && payload?.vehicle_id) {
+        console.log("form[i][key]", form[i][key]);
+        if (payload?.vehicle_id) {
           isAllFieldSupplied = true;
         } else {
           isAllFieldSupplied = false;
@@ -194,6 +197,7 @@ const ActionNewDelivery = ({ navigation }) => {
     <SafeAreaView className="m-1 bg-gray-50 p-2 flex-1 ">
       <ScrollView
         showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -204,7 +208,8 @@ const ActionNewDelivery = ({ navigation }) => {
           isShow={selectVehicleModal}
           setSelectedVehicle={setSelectedVehicle}
         />
-        <ChooseGallonModal
+        <LoadGallonModal
+          selectedVehicle={selectedVehicle?._id}
           isShow={selectGallonModal}
           setIsShow={setSelectGallonModal}
           selectedGallons={selectedGallons}
@@ -225,6 +230,7 @@ const ActionNewDelivery = ({ navigation }) => {
           animationOutTiming={200}
         />
         {/* gallons  */}
+
         <View className="flex-row items-center justify-around w-full ">
           <View className=" h-[140px] w-[100px]">
             <TouchableOpacity
@@ -259,7 +265,7 @@ const ActionNewDelivery = ({ navigation }) => {
               </View>
             </TouchableOpacity>
             <Text className="text-center text-gray-600 text-[12px] mt-1 font-semibold">
-              Select gallon
+              Load Vehicle
             </Text>
           </View>
         </View>
@@ -278,17 +284,23 @@ const ActionNewDelivery = ({ navigation }) => {
                   className=" w-[80%] h-[80%] object-cover "
                 />
               </View>
-              <View className="w-[60%] p-2  justify-center">
+              <View className="w-[60%] p-2 flex   justify-around">
                 <View className="flex-row">
-                  <Text className="text-gray-500">Plate no.</Text>
-                  <Text className="ml-1 font-bold text-[16px]">
+                  <Text className="text-gray-600">Plate no.</Text>
+                  <Text className="ml-1 font-bold text-[16px] ">
                     {selectedVehicle?.vehicle_id.toUpperCase()}
                   </Text>
                 </View>
                 <View className="flex-row">
-                  <Text className="text-gray-500">Name: </Text>
-                  <Text className="ml-1 font-bold text-[16px]">
+                  <Text className="text-gray-600">Name: </Text>
+                  <Text className="ml-1 font-bold text-[16px] ">
                     {selectedVehicle?.vehicle_name}
+                  </Text>
+                </View>
+                <View className="flex-row">
+                  <Text className="text-gray-600">Load limit (KG): </Text>
+                  <Text className="ml-1 font-bold text-[16px] ">
+                    {selectedVehicle?.loadLimit}
                   </Text>
                 </View>
               </View>
@@ -337,10 +349,15 @@ const ActionNewDelivery = ({ navigation }) => {
                     {/* <Text className="text-[8px] font-semibold w-full ">PCS</Text> */}
 
                     <TextInput
-                      onChangeText={(value) =>
-                        handleFormInputsChange(value, i, gallon?._id)
+                      // onChangeText={(value) =>
+                      //   handleFormInputsChange(value, i, gallon?._id)
+                      // }
+                      onLayout={() =>
+                        handleFormInputsChange(gallon.total, i, gallon?._id)
                       }
-                      className="bg-gray-100 rounded-lg text-center py-2 text-[24px] w-[70px] h-full"
+                      editable={false}
+                      value={`${gallon.total}`}
+                      className="bg-gray-100 text-gray-600 rounded-lg text-center py-2 text-[24px] w-[70px] h-full"
                       keyboardType="numeric"
                       placeholder="0"
                     />
@@ -376,29 +393,15 @@ const ActionNewDelivery = ({ navigation }) => {
             <Text className="text-white font-bold ml-2">Create</Text>
           </TouchableOpacity>
         </View>
-      ) : (
-        // <View className="flex-row justify-between ">
-        //   <TouchableOpacity
-        //     onPress={handleReset}
-        //     className="w-[49%] py-3 flex-row bg-gray-50 border-[1px] border-gray-200 justify-center items-center rounded-xl"
-        //   >
-        //     <Pressable>
-        //       <Text className="text-center text-red-500">Reset</Text>
-        //     </Pressable>
-        //   </TouchableOpacity>
-        //   <TouchableOpacity
-        //     onPress={() => {
-        //       if (form.length && selectedVehicle) {
-        //         togglePrompt();
-        //       }
-        //     }}
-        //     className="w-[49%] py-3 bg-[#2389DA] flex-row justify-center items-center rounded-xl"
-        //   >
-        //     <Text className="text-center text-gray-50">Create</Text>
-        //   </TouchableOpacity>
-        // </View>
-        ""
-      )}
+      ) : null}
+      <View className="bg-gray-200  rounded-md p-2">
+        <Text className="font-bold">Note:</Text>
+        <Text className="text-gray-600">
+          When creating a delivery, we assume that you have already added
+          schedules to your routes. Therefore, the recommended gallon to load on
+          the vehicle will be provided.
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };

@@ -23,11 +23,26 @@ import { useSWRConfig } from "swr";
 import CustomerBalanceModal from "../../components/general/modal/CustomerBalanceModal";
 import CustomerBorrowedModal from "../../components/general/modal/CustomerBorrowedModal";
 import { useCallback } from "react";
-import { useRoute } from "@react-navigation/native";
+import {
+  useRoute,
+  useNavigation,
+  useFocusEffect,
+} from "@react-navigation/native";
 const NewOrder = ({ route, navigation }) => {
   const { mutate } = useSWRConfig();
   const navigationRoute = useRoute();
+
+  // walk in.
   const { walkIn } = navigationRoute.params;
+  useFocusEffect(
+    React.useCallback(() => {
+      if (walkIn) {
+        navigation.setOptions({
+          title: "Walk-in",
+        });
+      }
+    }, [])
+  );
   // modals state
   const [showBalanceModal, setShowBalanceModal] = useState(false);
   const [showBorrowedModal, setShowBorrowedModal] = useState(false);
@@ -85,7 +100,7 @@ const NewOrder = ({ route, navigation }) => {
   });
 
   // ------------------------------------------------
-
+  console.log("customerBalance==>>>>>>>>>", customerBalance);
   // create reducer for items
   const itemsReducer = (state, action) => {
     switch (action.type) {
@@ -199,6 +214,11 @@ const NewOrder = ({ route, navigation }) => {
   const [orderToPay, setOrderToPay] = useState(0);
   const [totalToCredit, setTotalToCredit] = useState(0);
   const handleNext = () => {
+    if (
+      customerBalance?.data[0]?.total_debt + totalToCredit >
+      creditLimits?.data[0]?.creditLimit
+    )
+      return;
     setBeforeSubmitModal(!beforeSubmitModal);
     // get the total to pay
   };
@@ -256,7 +276,7 @@ const NewOrder = ({ route, navigation }) => {
       mutate("/api/schedule-assigned/by-personel");
       handleClear();
       setIsSubmitting(false);
-
+      ToastAndroid.show("Delivered order successfully.", ToastAndroid.LONG);
       // if there has schedule attach.
       if (schedule?._id) {
         setRescheduleModal(true);
@@ -275,6 +295,19 @@ const NewOrder = ({ route, navigation }) => {
 
   // handle if customer is uknown or not been set.
 
+  // GET CREDIT LIMIT OF WRS.
+  const {
+    data: creditLimits,
+    error,
+    isValidating,
+    isLoading,
+  } = useFetch({
+    url: "/api/credit-limit",
+  });
+  console.log(
+    "customerBalance?.data[0]?.total_debt + totalToCredit",
+    customerBalance?.data[0]?.total_debt + totalToCredit
+  );
   return (
     <View
       className={Platform.OS === "android" ? "p-1 flex-1 bg-white" : "pt-0"}
@@ -401,7 +434,7 @@ const NewOrder = ({ route, navigation }) => {
                     onPress={() =>
                       setIsOpenSearchcustomer(!isOpenSearchcustomer)
                     }
-                 className="flex items-center justify-center"
+                    className="flex items-center justify-center"
                   >
                     <MatIcons
                       name="account-switch-outline"
@@ -452,9 +485,17 @@ const NewOrder = ({ route, navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
+          {schedule?.isToCredit ? (
+            <View className="p-2">
+              <Text className="font-bold">
+                This schedule/order is to credit.
+              </Text>
+            </View>
+          ) : null}
           <View className="mt-1 p-1">
             {items.map((item, i) => (
               <RenderItems
+                isToCredit={schedule?.isToCredit}
                 item={item}
                 key={i}
                 index={i}
@@ -479,7 +520,17 @@ const NewOrder = ({ route, navigation }) => {
                   </Text>
                 </View>
               </View>
-              <View className=" bottom-0 mt-4 flex-row p-2 items-center justify-center gap-x-1 opacity-80">
+              {customerBalance?.data[0]?.total_debt + totalToCredit >
+              creditLimits?.data[0]?.creditLimit ? (
+                <View className="flex items-center p-2  mt-4">
+                  <Text className="font-bold">
+                    The customer's credit will exceed the limit. ₱{" "}
+                    {creditLimits?.data[0]?.creditLimit}
+                  </Text>
+                </View>
+              ) : null}
+
+              <View className=" bottom-0 flex-row px-2 py-1 items-center justify-center gap-x-1 opacity-80">
                 <TouchableOpacity
                   onPress={handleClear}
                   className="flex-row w-[49%]  bg-white p-2 h-[50px] border-[1px] border-[#2389DA]  items-center justify-center rounded-full"

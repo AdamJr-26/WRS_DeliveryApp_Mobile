@@ -273,8 +273,8 @@ const AuthSignup = ({ navigation }) => {
               />
               <AppTextInput
                 values={values.address}
-                label="Addresss"
-                placeholder="Addresss"
+                label="Address"
+                placeholder="Address"
                 onChangeText={handleChange("address")}
                 onBlur={handleBlur("address")}
                 errors={errors.address}

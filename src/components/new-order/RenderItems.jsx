@@ -7,6 +7,7 @@ const RenderItems = ({
   form,
   handleFormInputsChange,
   selectedDiscount,
+  isToCredit,
 }) => {
   // handle calculation of paid and credited = total purchased.;
 
@@ -115,6 +116,25 @@ const RenderItems = ({
               handleFormInputsChange(value, index, item?._id, "credit")
             }
           />
+          {/* <TextInput
+            placeholder="0"
+            className="font-bold text-gray-800 text-[19px] items-center justify-center text-center border-b-[2px] mt-2 border-b-gray-300"
+            keyboardType="numeric"
+            // editable={!isToCredit}
+            value={`${isToCredit ? form[index]?.orders : form[index]?.credit}`}
+            onLayout={(e) => {
+              if (!isToCredit) return;
+              handleFormInputsChange(
+                form[index]?.orders,
+                index,
+                item?._id,
+                "credit"
+              );
+            }}
+            onChangeText={(value) =>
+              handleFormInputsChange(value, index, item?._id, "credit")
+            }
+          /> */}
         </View>
         <View className="p-1 flex-grow justify-center items">
           <Text className="text-center text-[10px] font-semibold text-gray-500 ">

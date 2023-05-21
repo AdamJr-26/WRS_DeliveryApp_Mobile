@@ -55,7 +55,7 @@ const NewScreenOptions = ({ navigation }) => {
               Customer
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() =>
               navigation.navigate("Deliver Order", {
                 params: { schedule: [] },
@@ -70,7 +70,7 @@ const NewScreenOptions = ({ navigation }) => {
             <Text className="font-bold text-gray-800 text-center mt-3">
               Deliver order
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() =>
               navigation.navigate("New Schedule", {
