@@ -43,7 +43,7 @@ const RenderSortTableView = ({
     }
   };
   return (
-    <View className="flex-col mt-0 p-3 border-[1px] border-gray-200 bg-white rounded-xl shadow-xl ">
+    <View className="flex-col max-w-[350px] h-[400px] mr-1 mt-0 p-3 border-[1px] border-gray-200 bg-white rounded-xl shadow-xl ">
       <TouchableOpacity
         className={
           customer?.address?.barangay === marked_place?.place
@@ -57,7 +57,7 @@ const RenderSortTableView = ({
               uri: customer?.display_photo,
             }}
             className=" w-full h-full rounded-full "
-          />
+          /> 
         </View>
         <View className="ml-2  ">
           <Text className="text-[19px] font-bold text-gray-700 ">
@@ -103,7 +103,7 @@ const RenderSortTableView = ({
           <TouchableOpacity
             onPress={() => sendEmail(schedule)}
             className="flex-row items-center gap-[2px]"
-          >
+          >  
             {isSending ? (
               <ActivityIndicator size={24} color="#2389DA" />
             ) : (

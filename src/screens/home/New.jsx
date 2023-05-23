@@ -61,7 +61,7 @@ const New = ({ navigation }) => {
                   route: "New Customer",
                   params: {},
                 },
-           
+
                 {
                   iconName: "calendar-edit",
                   label: "Create Schedule",
@@ -86,7 +86,9 @@ const New = ({ navigation }) => {
                         color="#2389DA"
                       />
                     </View>
-                    <Text className="font-semibold mt-2 text-[10px] ">{elem.label}</Text>
+                    <Text className="font-semibold mt-2 text-[10px] ">
+                      {elem.label}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               ))}
@@ -98,5 +100,7 @@ const New = ({ navigation }) => {
     </View>
   );
 };
-
+New.navigationOptions = {
+  tabBarVisible: false,
+};
 export default New;

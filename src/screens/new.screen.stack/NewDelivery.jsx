@@ -31,6 +31,7 @@ import ErrorMessageModal from "../../components/general/modal/ErrorMessageModal"
 
 import PromptModal from "../../components/general/modal/PromptModal";
 import LoadGallonModal from "../../components/new-delivery/LoadGallonModal";
+//  NOT USED
 const ActionNewDelivery = ({ navigation }) => {
   const [selectVehicleModal, setSelectVehicleModal] = useState(false);
   const [selectGallonModal, setSelectGallonModal] = useState(false);
@@ -84,7 +85,6 @@ const ActionNewDelivery = ({ navigation }) => {
         } else {
           return state;
         }
-
       default:
         alert("Oops. Invalid command, please try again.");
     }
@@ -96,9 +96,7 @@ const ActionNewDelivery = ({ navigation }) => {
     []
   );
   console.log("selectedVehicleselectedVehicle", selectedVehicle);
-
   // FORM
-
   const [form, setForm] = useState([]);
   useEffect(() => {
     function createForm() {
