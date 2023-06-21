@@ -248,11 +248,17 @@ const Delivery = () => {
       setDisabledNext(true);
     } else if (step.name === "Schedules" && selectedSchedules.length) {
       setDisabledNext(true);
+    } else if (step.name === "Finalize & Submit") {
+      if (exceededLoad > 0) {
+        setDisabledNext(false);
+      } else {
+        setDisabledNext(true);
+      }
     } else {
       setDisabledNext(false);
     }
   }, [step, selectedVehicle, selectedSchedules]);
-
+  console.log("e-----------------", exceededLoad);
   return (
     <View className="flex-1 bg-white ">
       <View className="px-[14px] py-4 border-b-[1px] border-gray-200 w-screen">
@@ -312,12 +318,12 @@ const Delivery = () => {
         />
       </View>
       <FormButtons
-        step={step.name}
+        stepName={step.name}
         handleNext={handleNext}
         handlePrev={handlePrev}
         enabledNext={disabledNext}
         enabledPrev={false}
-        enabledSubmit={false}
+        enabledSubmit={exceededLoad <= 0}
         handleSubmit={handleSubmit}
         isSubmitting={isSubmitting}
       />

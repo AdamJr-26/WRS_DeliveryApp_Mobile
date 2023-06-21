@@ -43,9 +43,9 @@ const StepSchedules = ({ handleSelectSchedule, selectedSchedules }) => {
         <TouchableOpacity
           key={i}
           onPress={() => handleSelectSchedule(schedule)}
-          className="flex-row  gap-x-2"
+          className="flex-row  gap-x-2 overflow-hidden ml-0 border-[1.5px] border-gray-200 rounded-xl"
         >
-          <View className="items-center justify-center">
+          <View className="items-center  justify-center">
             <MatComIcons
               name={
                 selectedSchedules.some(
@@ -59,10 +59,10 @@ const StepSchedules = ({ handleSelectSchedule, selectedSchedules }) => {
             />
           </View>
           <View
-            className={`gap-y-2 flex-1 mt-2 p-2 bg-white border-[1.5px] border-gray-200 rounded-xl`}
+            className={`gap-y-2 flex-1 mt-0  p-2 bg-white `}
           >
             <View className="flex-row justify-between ">
-              <View className="flex-row gap-x-3 items-center">
+              <View className="flex-row gap-x-3 items-center ">
                 <View className="h-[40px] w-[40px] bg-gray-200 rounded-full">
                   <Image
                     source={{
@@ -82,13 +82,7 @@ const StepSchedules = ({ handleSelectSchedule, selectedSchedules }) => {
                   </Text>
                 </View>
               </View>
-              <View className="flex-row items-center">
-                <TouchableOpacity className="bg-gray-100 p-4 rounded-full">
-                  <Text>
-                    <Ionicons name="call" size={16} />
-                  </Text>
-                </TouchableOpacity>
-              </View>
+  
             </View>
             <View className="h-[2px] w-[100%] bg-gray-200"></View>
             <View className="border-[1.5px] border-gray-200 px-2 py-4 rounded-xl">

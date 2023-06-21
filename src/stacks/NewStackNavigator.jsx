@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import nativeNagivation from "@react-navigation/native";
 
 import NewCustomer from "../screens/new.screen.stack/NewCustomer";
 import NewDelivery from "../screens/new.screen.stack/NewDelivery";
@@ -10,6 +11,7 @@ import CreateDelivery from "../screens/new.screen.stack/CreateDelivery";
 import Delivery from "../screens/new.screen.stack/Delivery";
 
 const NewStackNavigator = ({ navigation }) => {
+  
   const Stack = createNativeStackNavigator();
   useLayoutEffect(() => {
     navigation.setOptions({

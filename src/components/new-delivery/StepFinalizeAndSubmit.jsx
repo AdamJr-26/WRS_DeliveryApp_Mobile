@@ -25,12 +25,12 @@ const StepFinalizeAndSubmit = ({
           className={`flex-row rounded-xl border-[2px] border-gray-200
           overflow-hidden`}
         >
-          <View className="bg-gray-200 flex items-center justify-center h-[120px] w-[120px]">
+          <View className="bg-gray-200  flex items-center justify-center h-[120px] w-[120px]">
             <Image
               source={{
                 uri: selectedVehicle?.vehicle_image,
               }}
-              className=" w-[100%] h-[100%]  "
+              className=" w-[90%] h-[90%]  "
             />
           </View>
           <View className="p-2 justify-around flex-1">
@@ -111,7 +111,7 @@ const StepFinalizeAndSubmit = ({
         <View className="flex-row justify-between items-center">
           <Text className=" text-[12px] text-gray-400">Exceeded Load</Text>
           <Text className="font-semibold text-[14px] text-red-600">
-            {exceededLoad > 0 || 0}kg
+            {exceededLoad > 0 ? exceededLoad : 0}kg
           </Text>
         </View>
         <View className="flex-row justify-between items-center">
